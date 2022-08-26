@@ -1,0 +1,4 @@
+/vendor
+/.serverless
+/.phpunit.cache
+node_modules

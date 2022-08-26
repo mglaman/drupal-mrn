@@ -1,0 +1,65 @@
+{
+  "commit": {
+    "id": "edac7fa24df524400ed40f01a2decfa0dfa847cc",
+    "short_id": "edac7fa2",
+    "created_at": "2022-07-13T08:56:11.000-05:00",
+    "parent_ids": [
+      "caa5370cff99049875e21e10b536262d15d45585"
+    ],
+    "title": "Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module",
+    "message": "Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module\n",
+    "author_name": "mrinalini9",
+    "author_email": "mrinalini9@3611261.no-reply.drupal.org",
+    "authored_date": "2022-07-13T08:56:11.000-05:00",
+    "committer_name": "Matt Glaman",
+    "committer_email": "nmd.matt@gmail.com",
+    "committed_date": "2022-07-13T08:56:11.000-05:00",
+    "trailers": {},
+    "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/edac7fa24df524400ed40f01a2decfa0dfa847cc"
+  },
+  "commits": [
+    {
+      "id": "edac7fa24df524400ed40f01a2decfa0dfa847cc",
+      "short_id": "edac7fa2",
+      "created_at": "2022-07-13T08:56:11.000-05:00",
+      "parent_ids": [
+        "caa5370cff99049875e21e10b536262d15d45585"
+      ],
+      "title": "Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module",
+      "message": "Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module\n",
+      "author_name": "mrinalini9",
+      "author_email": "mrinalini9@3611261.no-reply.drupal.org",
+      "authored_date": "2022-07-13T08:56:11.000-05:00",
+      "committer_name": "Matt Glaman",
+      "committer_email": "nmd.matt@gmail.com",
+      "committed_date": "2022-07-13T08:56:11.000-05:00",
+      "trailers": {},
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/edac7fa24df524400ed40f01a2decfa0dfa847cc"
+    }
+  ],
+  "diffs": [
+    {
+      "old_path": "tests/modules/views_remote_data_pokeapi/views_remote_data_pokeapi.info.yml",
+      "new_path": "tests/modules/views_remote_data_pokeapi/views_remote_data_pokeapi.info.yml",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "diff": "@@ -1,7 +1,7 @@\n name: 'Views Remote Data: PokeAPI'\n description: 'Example module using Views Remote Data and the PokeAPI'\n type: module\n-core_version_requirement: ^9\n+core_version_requirement: '\u003e=9'\n dependencies:\n   - drupal:node\n   - drupal:file\n"
+    },
+    {
+      "old_path": "tests/modules/views_remote_data_test/views_remote_data_test.info.yml",
+      "new_path": "tests/modules/views_remote_data_test/views_remote_data_test.info.yml",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "diff": "@@ -1,6 +1,6 @@\n name: Views Remote Data test\n type: module\n-core_version_requirement: ^9\n+core_version_requirement: '\u003e=9'\n dependencies:\n   - entity_test:entity_test\n   - views_remote_data:views_remote_data\n"
+    }
+  ],
+  "compare_timeout": false,
+  "compare_same_ref": false,
+  "web_url": "https://git.drupalcode.org/project/views_remote_data/-/compare/caa5370cff99049875e21e10b536262d15d45585...edac7fa24df524400ed40f01a2decfa0dfa847cc"
+}

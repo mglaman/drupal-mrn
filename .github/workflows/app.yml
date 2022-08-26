@@ -1,0 +1,26 @@
+name: "Deploy App"
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/app.yml'
+      - 'app/**'
+jobs:
+  build:
+    name: "Build"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+
+      - name: "Install Node"
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: "npm install"
+        working-directory: ./app
+        run: "npm install"
+      - name: "npm build"
+        working-directory: ./app
+        run: "npm run build"
