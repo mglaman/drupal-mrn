@@ -18,8 +18,8 @@
   }
 
 </script>
-<div class="">
-    <main class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
+<div class="py-8">
+    <main class="container mx-auto max-w-screen-md shadow-sm bg-white p-8 rounded-lg">
         <h1 class="text-3xl">Generate release notes</h1>
         <p class="mb-2">Generates release notes for projects hosted on Drupal.org</p>
 
@@ -67,7 +67,10 @@
     </main>
     {#if notes.length > 0}
         <section class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
-            {notes}
+            <p class="mb-2">Here are you release notes!</p>
+            <textarea class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full h-96 sm:text-sm border-gray-300 rounded-md">
+                {notes}
+            </textarea>
         </section>
     {/if}
 </div>
