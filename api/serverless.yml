@@ -4,6 +4,9 @@ provider:
     name: aws
     region: us-east-1
     runtime: provided.al2
+    stage: prod
+    httpApi:
+        cors: true
 
 plugins:
     - ./vendor/bref/bref

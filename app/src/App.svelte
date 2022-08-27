@@ -1,17 +1,14 @@
 <script>
+  const apiUrl = 'https://qzr5qeis20.execute-api.us-east-1.amazonaws.com/';
   let project = '';
-  let ref1 = '';
-  let ref2 = 'HEAD';
+  let from = '';
+  let to = '';
+  let format = 'html'
   let notes = '';
 
-  async function getChanges() {
-    const projectParam = encodeURIComponent(`project/${project}`)
-    const url = `https://git.drupalcode.org/api/v4/projects/${projectParam}/repository/compare?from=${ref1}&to=${ref2}`
-    const compareResponse = await fetch(url);
-    const compareJson = await compareResponse.json();
-
-    const commits = compareJson.commits;
-    console.log(commits);
+  async function getChangeLog() {
+    const res = await fetch(`${apiUrl}?${new URLSearchParams({project, to, from, format})}`)
+    notes = await res.text()
   }
 
 </script>
@@ -28,14 +25,14 @@
       <div class="grid grid-cols-2">
         <div class="flex flex-col">
           <label class="text-sm" for="ref1">From</label>
-          <input id="ref1" type="text" bind:value={ref1} placeholder="1.0.0"/>
+          <input id="ref1" type="text" bind:value={from} placeholder="1.0.0"/>
         </div>
         <div class="flex flex-col">
           <label class="text-sm" for="ref2">To</label>
-          <input id="ref2" type="text" bind:value={ref2} placeholder="1.0.1"/>
+          <input id="ref2" type="text" bind:value={to} placeholder="1.0.1"/>
         </div>
       </div>
-      <button disabled={project.length === 0 && ref1.length === 0} on:click={getChanges} class="text-white bg-drupal-light-navy-blue px-2 py-1 rounded-md hover:bg-drupal-navy-blue">Generate!</button>
+      <button disabled={project.length === 0 && from.length === 0} on:click={getChangeLog} class="text-white bg-drupal-light-navy-blue px-2 py-1 rounded-md hover:bg-drupal-navy-blue">Generate!</button>
     </div>
   </main>
   {#if notes.length > 0}

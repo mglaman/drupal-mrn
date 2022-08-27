@@ -8,3 +8,4 @@
 .idea/dataSources.xml
 
 node_modules
+.env
