@@ -38,6 +38,7 @@ $changelog = new Changelog(
 
 $response = FormatOutputFactory::getFormatOutput($format)
   ->getResponse($changelog);
+$response->headers->set('Access-Control-Allow-Origin', '*');
 $response->headers->set('Cache-Control', 'public, max-age=86400');
 $timestamp = time();
 $response->setLastModified(new \DateTime(gmdate(\DateTimeInterface::RFC7231, $timestamp)));
