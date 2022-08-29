@@ -1,0 +1,175 @@
+{
+  "body": {
+    "value": "\u003Ch3 id=\u0022summary-problem-motivation\u0022\u003EProblem\/Motivation\u003C\/h3\u003E\n\u003Ch4 id=\u0022summary-steps-reproduce\u0022\u003ESteps to reproduce\u003C\/h4\u003E\n\u003Ch3 id=\u0022summary-proposed-resolution\u0022\u003EProposed resolution\u003C\/h3\u003E",
+    "summary": "",
+    "format": "1"
+  },
+  "taxonomy_vocabulary_9": [],
+  "field_issue_status": "7",
+  "field_issue_priority": "200",
+  "field_issue_category": "2",
+  "field_issue_component": "Code",
+  "field_project": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/node\/3258499",
+    "id": "3258499",
+    "resource": "node",
+    "machine_name": "views_remote_data"
+  },
+  "field_issue_files": [
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/6653354",
+        "id": "6653354",
+        "resource": "file",
+        "cid": "14594793"
+      },
+      "display": "1"
+    },
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/6653599",
+        "id": "6653599",
+        "resource": "file",
+        "cid": "14595881"
+      },
+      "display": "1"
+    },
+    {
+      "file": {
+        "uri": "https:\/\/www.drupal.org\/api-d7\/file\/6653600",
+        "id": "6653600",
+        "resource": "file",
+        "cid": "14595881"
+      },
+      "display": "1"
+    }
+  ],
+  "field_issue_related": [],
+  "field_issue_version": "1.0.x-dev",
+  "field_issue_credit": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14594776",
+      "id": "14594776",
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14594793",
+      "id": "14594793",
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14594794",
+      "id": "14594794",
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14595044",
+      "id": "14595044",
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14595881",
+      "id": "14595881",
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14605091",
+      "id": "14605091",
+      "resource": "comment"
+    }
+  ],
+  "field_issue_last_status_change": "1658930341",
+  "flag_project_issue_follow_user": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/user\/180064",
+      "id": 180064,
+      "resource": "user"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/user\/3611261",
+      "id": 3611261,
+      "resource": "user"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/user\/2416470",
+      "id": 2416470,
+      "resource": "user"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/user\/3473743",
+      "id": 3473743,
+      "resource": "user"
+    }
+  ],
+  "nid": "3294296",
+  "vid": "12710726",
+  "is_new": false,
+  "type": "project_issue",
+  "title": "Drupal 10 readiness for the module",
+  "language": "en",
+  "url": "https:\/\/www.drupal.org\/project\/views_remote_data\/issues\/3294296",
+  "edit_url": "https:\/\/www.drupal.org\/node\/3294296\/edit",
+  "status": "1",
+  "promote": "0",
+  "sticky": "0",
+  "created": "1657026132",
+  "changed": "1658930341",
+  "author": {
+    "uri": "https:\/\/www.drupal.org\/api-d7\/user\/3473743",
+    "id": "3473743",
+    "resource": "user"
+  },
+  "book_ancestors": [],
+  "comment": "2",
+  "comments": [
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14594776",
+      "id": 14594776,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14594793",
+      "id": 14594793,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14594794",
+      "id": 14594794,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14595044",
+      "id": 14595044,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14595881",
+      "id": 14595881,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14605090",
+      "id": 14605090,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14605091",
+      "id": 14605091,
+      "resource": "comment"
+    },
+    {
+      "uri": "https:\/\/www.drupal.org\/api-d7\/comment\/14627789",
+      "id": 14627789,
+      "resource": "comment"
+    }
+  ],
+  "comment_count": "8",
+  "comment_count_new": false,
+  "feeds_item_guid": null,
+  "feeds_item_url": null,
+  "feed_nid": null,
+  "flag_flag_tracker_follow_user": [],
+  "flag_tracker_follower_count": "4",
+  "has_new_content": null,
+  "last_comment_timestamp": "1658930341"
+}

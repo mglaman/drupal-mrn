@@ -23,6 +23,9 @@ functions:
           - httpApi:
               method: 'GET'
               path: /changelog
+          - httpApi:
+              method: 'GET'
+              path: /project
 
 # Exclude files from deployment
 package:

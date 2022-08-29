@@ -5,7 +5,11 @@ namespace App\Tests\FormatOutput;
 use App\Changelog;
 use App\FormatOutput\HtmlFormatOutput;
 use App\FormatOutput\MarkdownFormatOutput;
+use App\GitLab;
 use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use Nyholm\Psr7\Response;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,8 +23,14 @@ class MarkdownFormatOutputTest extends TestCase
      */
     public function testFormat()
     {
-        $client = new Client();
-        $fixture = json_decode(file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json'));
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler)
+        ]);
+        $fixture = (new GitLab($client))->compare('views_remote_data', '1.0.1', 'HEAD');
         $changelog = new Changelog(
           $client,
           'views_remote_data',
