@@ -17,9 +17,10 @@ ini_set('display_errors', '1');
 $request = Request::createFromGlobals();
 $project = $request->query->get('project', '');
 if (!is_string($project) || $project === '') {
-    return new JsonResponse([
+    (new JsonResponse([
       'message' => 'The project must be provided.',
-    ], 400);
+    ], 400))->send();
+    return;
 }
 $client = new Client();
 $gitlab = new GitLab($client);

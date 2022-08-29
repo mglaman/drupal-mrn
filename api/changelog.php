@@ -5,6 +5,7 @@ use App\Changelog;
 use App\FormatOutput\FormatOutputFactory;
 use App\GitLab;
 use GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 require __DIR__.'/vendor/autoload.php';
@@ -19,8 +20,27 @@ $from = $request->query->get('from', '');
 $to = $request->query->get('to', '');
 $format = $request->query->get('format', 'html');
 
+if (!is_string($project) || $project === '') {
+    (new JsonResponse([
+      'message' => 'Project cannot be empty',
+    ], 400))->send();
+    return;
+}
+
 $client = new Client();
-$compare = (new GitLab($client))->compare($project, $from, $to);
+try {
+    $compare = (new GitLab($client))->compare($project, $from, $to);
+} catch (\GuzzleHttp\Exception\RequestException $e) {
+    if ($e->hasResponse()) {
+        $response = $e->getResponse();
+        JsonResponse::fromJsonString((string) $response->getBody(), 400)->send();
+    } else {
+        (new JsonResponse([
+          'message' => 'error contacting gitlab',
+        ], 400))->send();
+    }
+    return;
+}
 $commits = $compare->commits;
 
 $changelog = new Changelog(
