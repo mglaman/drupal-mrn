@@ -1,5 +1,5 @@
 <script>
-  const apiUrl = 'https://qzr5qeis20.execute-api.us-east-1.amazonaws.com/changelog'
+  const apiUrl = 'https://api.drupal-mrn.dev/changelog'
   let project = ''
   let from = ''
   let to = ''

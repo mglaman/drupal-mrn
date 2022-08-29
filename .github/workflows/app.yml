@@ -33,3 +33,6 @@ jobs:
       - name: Deploy
         working-directory: ./app
         run: aws s3 sync ./dist s3://drupal-mrn-web
+      - name: Invlidate CloudFront
+        working-directory: ./app
+        run: aws cloudfront create-invalidation --distribution-id E2CL99C9FHPLRG --paths "/*"

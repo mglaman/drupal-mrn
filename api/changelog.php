@@ -3,12 +3,8 @@ declare(strict_types=1);
 
 use App\Changelog;
 use App\FormatOutput\FormatOutputFactory;
-use App\FormatOutput\JsonFormatOutput;
-use App\Formatter;
 use GuzzleHttp\Client;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 require __DIR__.'/vendor/autoload.php';
 
