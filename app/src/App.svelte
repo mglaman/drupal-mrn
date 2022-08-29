@@ -1,5 +1,5 @@
 <script>
-  const apiUrl = 'https://qzr5qeis20.execute-api.us-east-1.amazonaws.com/'
+  const apiUrl = 'https://qzr5qeis20.execute-api.us-east-1.amazonaws.com/changelog'
   let project = ''
   let from = ''
   let to = ''

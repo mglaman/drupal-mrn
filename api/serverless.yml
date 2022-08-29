@@ -5,6 +5,7 @@ provider:
     region: us-east-1
     runtime: provided.al2
     stage: prod
+    versionFunctions: false
     httpApi:
         cors: true
 
@@ -12,14 +13,16 @@ plugins:
     - ./vendor/bref/bref
 
 functions:
-    api:
-        handler: index.php
+    changelog:
+        handler: changelog.php
         description: ''
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
         layers:
             - ${bref:layer.php-81-fpm}
         events:
-            -   httpApi: '*'
+          - httpApi:
+              method: 'GET'
+              path: /changelog
 
 # Exclude files from deployment
 package:
