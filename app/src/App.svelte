@@ -8,7 +8,8 @@
   let error = ''
   let processing = false;
 
-  async function getChangeLog () {
+  async function getChangeLog (event) {
+    event.preventDefault()
     processing = true;
     try {
       const res = await fetch(`${apiUrl}?${new URLSearchParams({project, to, from, format})}`)
