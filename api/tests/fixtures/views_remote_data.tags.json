@@ -1,0 +1,125 @@
+[
+  {
+    "name": "1.0.1",
+    "message": "",
+    "target": "caa5370cff99049875e21e10b536262d15d45585",
+    "commit": {
+      "id": "caa5370cff99049875e21e10b536262d15d45585",
+      "short_id": "caa5370c",
+      "created_at": "2022-05-03T13:17:40.000+00:00",
+      "parent_ids": [
+        "b1dc1f1f71fb35578aa191403fc08f478c0dbffe"
+      ],
+      "title": "Issue #3278393 by mglaman: Argument #3 ($alias) must be of type string, null given",
+      "message": "Issue #3278393 by mglaman: Argument #3 ($alias) must be of type string, null given\n",
+      "author_name": "mglaman",
+      "author_email": "mglaman@2416470.no-reply.drupal.org",
+      "authored_date": "2022-05-03T13:17:40.000+00:00",
+      "committer_name": "mglaman",
+      "committer_email": "mglaman@2416470.no-reply.drupal.org",
+      "committed_date": "2022-05-03T13:17:40.000+00:00",
+      "trailers": {},
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/caa5370cff99049875e21e10b536262d15d45585"
+    },
+    "release": null,
+    "protected": false
+  },
+  {
+    "name": "1.0.0",
+    "message": "",
+    "target": "b1dc1f1f71fb35578aa191403fc08f478c0dbffe",
+    "commit": {
+      "id": "b1dc1f1f71fb35578aa191403fc08f478c0dbffe",
+      "short_id": "b1dc1f1f",
+      "created_at": "2022-03-30T19:32:46.000+00:00",
+      "parent_ids": [
+        "e9845f210fef97b8c73f082ca17a45f7c7a588e4"
+      ],
+      "title": "Issue #3268650: Installing example module",
+      "message": "Issue #3268650: Installing example module\n",
+      "author_name": "mglaman",
+      "author_email": "mglaman@2416470.no-reply.drupal.org",
+      "authored_date": "2022-03-30T19:32:46.000+00:00",
+      "committer_name": "mglaman",
+      "committer_email": "mglaman@2416470.no-reply.drupal.org",
+      "committed_date": "2022-03-30T19:32:46.000+00:00",
+      "trailers": {},
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/b1dc1f1f71fb35578aa191403fc08f478c0dbffe"
+    },
+    "release": null,
+    "protected": false
+  },
+  {
+    "name": "1.0.0-alpha3",
+    "message": "",
+    "target": "c78a8cb326e75a0ad22200dc84106e448b909188",
+    "commit": {
+      "id": "c78a8cb326e75a0ad22200dc84106e448b909188",
+      "short_id": "c78a8cb3",
+      "created_at": "2022-03-01T22:27:21.000+00:00",
+      "parent_ids": [
+        "19da57c777be28e1cc83e67e9c805a2c6b7b4fd7"
+      ],
+      "title": "Issue #3260489 by mglaman: Create a sort plugin for property values",
+      "message": "Issue #3260489 by mglaman: Create a sort plugin for property values\n",
+      "author_name": "mglaman",
+      "author_email": "mglaman@2416470.no-reply.drupal.org",
+      "authored_date": "2022-03-01T22:27:21.000+00:00",
+      "committer_name": "mglaman",
+      "committer_email": "mglaman@2416470.no-reply.drupal.org",
+      "committed_date": "2022-03-01T22:27:21.000+00:00",
+      "trailers": {},
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/c78a8cb326e75a0ad22200dc84106e448b909188"
+    },
+    "release": null,
+    "protected": false
+  },
+  {
+    "name": "1.0.0-alpha2",
+    "message": "",
+    "target": "19da57c777be28e1cc83e67e9c805a2c6b7b4fd7",
+    "commit": {
+      "id": "19da57c777be28e1cc83e67e9c805a2c6b7b4fd7",
+      "short_id": "19da57c7",
+      "created_at": "2022-03-01T20:44:04.000+00:00",
+      "parent_ids": [
+        "5efadca97c033e821497ea9686c4fe909545b29e"
+      ],
+      "title": "Issue #3259243 by mglaman: Create a cache plugin for our query",
+      "message": "Issue #3259243 by mglaman: Create a cache plugin for our query\n",
+      "author_name": "mglaman",
+      "author_email": "mglaman@2416470.no-reply.drupal.org",
+      "authored_date": "2022-03-01T20:44:04.000+00:00",
+      "committer_name": "mglaman",
+      "committer_email": "mglaman@2416470.no-reply.drupal.org",
+      "committed_date": "2022-03-01T20:44:04.000+00:00",
+      "trailers": {},
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/19da57c777be28e1cc83e67e9c805a2c6b7b4fd7"
+    },
+    "release": null,
+    "protected": false
+  },
+  {
+    "name": "1.0.0-alpha1",
+    "message": "",
+    "target": "f549c839ece4ae8475110b0ab2396b291f5fb43b",
+    "commit": {
+      "id": "f549c839ece4ae8475110b0ab2396b291f5fb43b",
+      "short_id": "f549c839",
+      "created_at": "2022-01-18T16:45:14.000-06:00",
+      "parent_ids": [],
+      "title": "Initial commit",
+      "message": "Initial commit\n",
+      "author_name": "Matt Glaman",
+      "author_email": "nmd.matt@gmail.com",
+      "authored_date": "2022-01-18T16:45:14.000-06:00",
+      "committer_name": "Matt Glaman",
+      "committer_email": "nmd.matt@gmail.com",
+      "committed_date": "2022-01-18T16:45:14.000-06:00",
+      "trailers": {},
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/f549c839ece4ae8475110b0ab2396b291f5fb43b"
+    },
+    "release": null,
+    "protected": false
+  }
+]

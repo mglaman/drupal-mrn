@@ -1,0 +1,28 @@
+[
+  {
+    "name": "1.0.x",
+    "commit": {
+      "id": "edac7fa24df524400ed40f01a2decfa0dfa847cc",
+      "short_id": "edac7fa2",
+      "created_at": "2022-07-13T13:56:11.000+00:00",
+      "parent_ids": null,
+      "title": "Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module",
+      "message": "Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module",
+      "author_name": "mrinalini9",
+      "author_email": "mrinalini9@3611261.no-reply.drupal.org",
+      "authored_date": "2022-07-13T13:56:11.000+00:00",
+      "committer_name": "Matt Glaman",
+      "committer_email": "nmd.matt@gmail.com",
+      "committed_date": "2022-07-13T13:56:11.000+00:00",
+      "trailers": null,
+      "web_url": "https://git.drupalcode.org/project/views_remote_data/-/commit/edac7fa24df524400ed40f01a2decfa0dfa847cc"
+    },
+    "merged": false,
+    "protected": false,
+    "developers_can_push": false,
+    "developers_can_merge": false,
+    "can_push": true,
+    "default": true,
+    "web_url": "https://git.drupalcode.org/project/views_remote_data/-/tree/1.0.x"
+  }
+]

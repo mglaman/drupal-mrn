@@ -39,7 +39,7 @@ final class GitLab
         return \json_decode((string) $response->getBody());
     }
 
-    public function branches(string $project): object {
+    public function branches(string $project): array {
         $project = urlencode('project/' . $project);
         $response = $this->client->request(
           'GET',
@@ -48,7 +48,7 @@ final class GitLab
         return \json_decode((string) $response->getBody());
     }
 
-    public function tags(string $project): object {
+    public function tags(string $project): array {
         $project = urlencode('project/' . $project);
         $response = $this->client->request(
           'GET',
