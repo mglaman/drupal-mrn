@@ -51,8 +51,9 @@ final class HtmlFormatOutput implements FormatOutputInterface
             );
             $buffer->writeln('<ul>');
             foreach ($changeCategoryItems as $change) {
+              $summary = preg_replace('/#(\d+)/S', sprintf('<a href="%s">#$1</a>', $change['link']), $change['summary']);
                 $buffer->writeln(
-                  sprintf('  <li>%s</li>', $change)
+                  sprintf('  <li>%s</li>', $summary)
                 );
             }
             $buffer->writeln('</ul>');

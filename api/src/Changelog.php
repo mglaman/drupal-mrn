@@ -117,7 +117,7 @@ final class Changelog
     {
         $grouped = [];
         foreach ($changes as $change) {
-            $grouped[$change['type']][] = $change['summary'];
+            $grouped[$change['type']][] = $change;
         }
         ksort($grouped);
         return $grouped;
