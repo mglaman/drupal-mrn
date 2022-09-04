@@ -54,7 +54,7 @@ Changes since [1.0.1](https://www.drupal.org/project/views_remote_data/releases/
 
 #### Task
 
-* #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module
+* [#3294296](https://www.drupal.org/i/3294296) by mrinalini9, Lal_: Drupal 10 readiness for the module
 
 MARKDOWN;
 
