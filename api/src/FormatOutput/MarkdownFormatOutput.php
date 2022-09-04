@@ -47,7 +47,8 @@ final class MarkdownFormatOutput implements FormatOutputInterface
             $buffer->writeln(sprintf('#### %s', $changeCategory));
             $buffer->writeln('');
             foreach ($changeCategoryItems as $change) {
-                $buffer->writeln(sprintf('* %s', $change));
+                $summary = preg_replace('/#(\d+)/S', sprintf('[#$1](%s)', $change['link']), $change['summary']);
+                $buffer->writeln(sprintf('* %s', $summary));
             }
             $buffer->writeln('');
         }

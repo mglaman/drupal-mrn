@@ -25,10 +25,28 @@ if (!is_string($project) || $project === '') {
 $client = new Client();
 $gitlab = new GitLab($client);
 
-$data = [
-  'tags' => $gitlab->tags($project),
-  'branches' => $gitlab->branches($project),
-];
+try {
+    $data = [
+      'tags' => $gitlab->tags($project),
+      'branches' => $gitlab->branches($project),
+    ];
+} catch (\GuzzleHttp\Exception\ClientException $exception) {
+    if ($exception->getResponse()->getStatusCode() === 404) {
+        (new JsonResponse([
+          'message' => 'The project cannot be found.'
+        ], 400))->send();
+        return;
+    }
+    (new JsonResponse([
+      'message' => 'error:' . $exception->getMessage(),
+    ], 400))->send();
+    return;
+} catch (\GuzzleHttp\Exception\RequestException $exception) {
+    (new JsonResponse([
+      'message' => 'error:' . $exception->getMessage(),
+    ], 400))->send();
+    return;
+}
 
 $response = new JsonResponse($data);
 $response->headers->set('Access-Control-Allow-Origin', '*');

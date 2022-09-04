@@ -1,6 +1,10 @@
 <script>
-  const apiUrl = 'https://api.drupal-mrn.dev/changelog'
+  const apiUrl = 'https://api.drupal-mrn.dev'
   let project = ''
+  let projectData = {
+    branches: [],
+    tags: [],
+  }
   let from = ''
   let to = ''
   let format = 'html'
@@ -8,11 +12,24 @@
   let error = ''
   let processing = false;
 
+  async function getProject() {
+    processing = true;
+    try {
+      const res = await fetch(`${apiUrl}/project?${new URLSearchParams({project})}`)
+      projectData = await res.json()
+    } catch (e) {
+      console.error(e)
+      error = e.message
+    } finally {
+      processing = false;
+    }
+  }
+
   async function getChangeLog (event) {
     event.preventDefault()
     processing = true;
     try {
-      const res = await fetch(`${apiUrl}?${new URLSearchParams({project, to, from, format})}`)
+      const res = await fetch(`${apiUrl}/changelog?${new URLSearchParams({project, to, from, format})}`)
       notes = await res.text()
     } catch (e) {
       console.error(e)
@@ -48,6 +65,7 @@
                 <div class="border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
                     <label for="project" class="block text-xs font-medium text-gray-800">Project</label>
                     <input type="text" name="project" autocomplete="off" id="project" bind:value={project}
+                           on:blur={getProject}
                            class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
                            placeholder="machine_name"
                            required>
