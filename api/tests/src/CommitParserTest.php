@@ -23,4 +23,30 @@ class CommitParserTest extends TestCase
         );
     }
 
+    /**
+     * @covers ::getNid
+     * @dataProvider commitsNids
+     */
+    public function testGetNid(string $commit, string $expected): void {
+      self::assertEquals(
+        $expected,
+        CommitParser::getNid($commit)
+      );
+    }
+
+    public function commitsNids() {
+      yield [
+        'Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module',
+        '3294296'
+      ];
+      yield [
+        'Fix issue 3178420',
+        '3178420',
+      ];
+      yield [
+        'Some random code changes without an nid',
+        '',
+      ];
+    }
+
 }

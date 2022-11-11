@@ -20,8 +20,15 @@ final class CommitParser {
 
     public static function getNid(string $title): ?string {
         $matches = [];
-        preg_match('/#(\d+)/S', $title, $matches);
-        return count($matches) === 2 ? $matches[1] : null;
+        // Drupal.org commits should have "Issue #{nid}".
+        if (preg_match('/#(\d+)/S', $title, $matches) === 1) {
+            return $matches[1];
+        }
+        // But maybe they forgot the leading "#" on the issue ID.
+        if (preg_match('/([0-9]{4,})/S', $title, $matches) === 1) {
+            return $matches[1];
+        }
+        return null;
     }
 
 }
