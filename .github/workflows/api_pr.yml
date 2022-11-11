@@ -1,0 +1,38 @@
+# @todo split into a test -> deploy workflow so tests can run on PRs.
+name: "Test API PR"
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/api.yml'
+      - 'api/**'
+
+concurrency: api_build
+jobs:
+  deploy:
+    name: "Deploy"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: "Install Node"
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+      - name: "Install PHP"
+        uses: "shivammathur/setup-php@v2"
+        with:
+          coverage: "none"
+          php-version: "8.1"
+      - name: "npm"
+        working-directory: ./api
+        run: "npm install"
+      - name: "composer"
+        working-directory: ./api
+        run: "composer install --no-interaction --no-progress"
+      - name: "phpunit"
+        working-directory: ./api
+        run: "php vendor/bin/phpunit"
