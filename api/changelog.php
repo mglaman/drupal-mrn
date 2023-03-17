@@ -17,7 +17,7 @@ $request = Request::createFromGlobals();
 
 $project = $request->query->get('project', '');
 $from = $request->query->get('from', '');
-$to = $request->query->get('to', '');
+$to = $request->query->get('to', 'HEAD');
 $format = $request->query->get('format', 'html');
 
 if (!is_string($project) || $project === '') {
