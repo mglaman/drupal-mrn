@@ -16,7 +16,13 @@
     processing = true;
     try {
       const res = await fetch(`${apiUrl}/project?${new URLSearchParams({project})}`)
-      projectData = await res.json()
+      if (!res.ok) {
+        const data = await res.json()
+        error = data.message
+      } else {
+        error = ''
+        projectData = await res.json()
+      }
     } catch (e) {
       console.error(e)
       error = e.message
@@ -45,28 +51,12 @@
         <div class="p-8">
             <h1 class="text-3xl">Generate release notes</h1>
             <p class="mb-2">Generates release notes for projects hosted on Drupal.org</p>
-
-            {#if error.length > 0}
-                <div class="rounded-md bg-red-50 p-4 my-4">
-                    <div class="flex">
-                        <div class="flex-shrink-0">
-                            <!-- Heroicon name: mini/x-circle -->
-                            <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div class="ml-3">
-                            {error}
-                        </div>
-                    </div>
-                </div>
-            {/if}
             <form class="space-y-4" on:submit={getChangeLog}>
-                <div class="border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
+                <div class="border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue {error !== '' ? 'border-red-300 focus:within:ring-red-300 focus-within:border-red-300' : ''}">
                     <label for="project" class="block text-xs font-medium text-gray-800">Project</label>
                     <input type="text" name="project" autocomplete="off" id="project" bind:value={project}
                            on:blur={getProject}
-                           class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
+                           class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg {error !== '' ? 'text-red-900 placeholder:text-red-300' : ''}"
                            placeholder="machine_name"
                            required>
                 </div>
@@ -84,11 +74,26 @@
                                required/>
                     </div>
                 </div>
+                {#if error.length > 0}
+                    <div class="rounded-md bg-red-50 p-4 my-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: mini/x-circle -->
+                                <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                {error}
+                            </div>
+                        </div>
+                    </div>
+                {/if}
                 <div class="flex flex-row items-center">
                     <button
                         type="submit"
-                        disabled={processing}
-                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue disabled:cursor-wait">
+                        disabled={processing || error}
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue {processing ? 'disabled:cursor-wait' : ''} {error ? 'cursor-not-allowed' : ''}">
                         Generate release notes
                     </button>
                     {#if processing}
