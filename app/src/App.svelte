@@ -108,9 +108,7 @@
     {#if notes.length > 0}
         <section class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
             <p class="mb-2">Here are you release notes!</p>
-            <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md">
-                {notes.trim()}
-            </textarea>
+            <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md">{notes}</textarea>
         </section>
     {/if}
 </div>
