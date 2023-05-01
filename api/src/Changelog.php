@@ -41,11 +41,15 @@ final class Changelog
 
             try {
                 $author = $gitlab->users($commit->author_name);
-                $commitContributors[] = $author[0]->username;
+                if (count($author) > 0) {
+                    $commitContributors[] = $author[0]->username;
+                }
             } catch (RequestException) {}
             try {
                 $committer = $gitlab->users($commit->committer_name);
-                $commitContributors[] = $committer[0]->username;
+                if (count($committer) > 0) {
+                    $commitContributors[] = $committer[0]->username;
+                }
             } catch (RequestException) {}
 
             $contributors[] = $commitContributors;

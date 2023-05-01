@@ -62,7 +62,7 @@ final class GitLab
           'GET',
           "https://git.drupalcode.org/api/v4/users?search=" . urlencode($search)
         );
-        return \json_decode((string) $response->getBody());
+        return \json_decode((string) $response->getBody()) ?: [];
     }
 
 }
