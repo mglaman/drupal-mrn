@@ -46,6 +46,11 @@
   }
 
 </script>
+<svelte:head>
+  <!-- Fathom - beautiful, simple website analytics -->
+  <script src="https://cdn.usefathom.com/script.js" data-spa="auto" data-site="IAGJCEDB" defer></script>
+  <!-- / Fathom -->
+</svelte:head>
 <div class="py-8">
     <main class="container mx-auto max-w-screen-md shadow-sm bg-white rounded-lg overflow-hidden">
         <div class="p-8">
