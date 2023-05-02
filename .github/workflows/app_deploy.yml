@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/app.yml'
+      - '.github/workflows/app_deploy.yml'
       - 'app/**'
 jobs:
   build:
