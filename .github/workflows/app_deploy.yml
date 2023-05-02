@@ -6,9 +6,10 @@ on:
     paths:
       - '.github/workflows/app_deploy.yml'
       - 'app/**'
+concurrency: app_build
 jobs:
   build:
-    name: "Build"
+    name: "Build & deploy"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"

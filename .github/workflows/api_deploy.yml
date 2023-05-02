@@ -1,4 +1,3 @@
-# @todo split into a test -> deploy workflow so tests can run on PRs.
 name: "Deploy API"
 on:
   push:
@@ -10,7 +9,7 @@ on:
 concurrency: api_build
 jobs:
   deploy:
-    name: "Deploy"
+    name: "Build & deploy"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
