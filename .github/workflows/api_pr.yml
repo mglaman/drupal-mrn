@@ -1,4 +1,3 @@
-# @todo split into a test -> deploy workflow so tests can run on PRs.
 name: "Test API PR"
 on:
   pull_request:
@@ -7,11 +6,9 @@ on:
     paths:
       - '.github/workflows/api.yml'
       - 'api/**'
-
-concurrency: api_build
 jobs:
   deploy:
-    name: "Deploy"
+    name: "PHPUnit"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
