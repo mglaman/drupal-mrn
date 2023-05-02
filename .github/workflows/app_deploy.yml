@@ -4,11 +4,12 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/app.yml'
+      - '.github/workflows/app_deploy.yml'
       - 'app/**'
+concurrency: app_build
 jobs:
   build:
-    name: "Build"
+    name: "Build & deploy"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
@@ -25,7 +26,7 @@ jobs:
         working-directory: ./app
         run: "npm run build"
       - name: "configure AWS"
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

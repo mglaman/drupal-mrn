@@ -1,16 +1,15 @@
-# @todo split into a test -> deploy workflow so tests can run on PRs.
 name: "Deploy API"
 on:
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/api.yml'
+      - '.github/workflows/api_deploy.yml'
       - 'api/**'
 concurrency: api_build
 jobs:
   deploy:
-    name: "Deploy"
+    name: "Build & deploy"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
