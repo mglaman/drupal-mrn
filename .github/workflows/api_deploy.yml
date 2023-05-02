@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/api.yml'
+      - '.github/workflows/api_deploy.yml'
       - 'api/**'
 concurrency: api_build
 jobs:
