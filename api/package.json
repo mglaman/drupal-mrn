@@ -8,6 +8,6 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "serverless": "^3.30.1"
+    "serverless": "^3.31.0"
   }
 }
