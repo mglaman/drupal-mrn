@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bref/bref",
-            "version": "2.0.8",
+            "version": "2.0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brefphp/bref.git",
-                "reference": "5cc49e853591dc6d08fa1187aec3716025618aba"
+                "reference": "56e49531a38fefb61c2d8b5013e22fb0cab1af1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brefphp/bref/zipball/5cc49e853591dc6d08fa1187aec3716025618aba",
-                "reference": "5cc49e853591dc6d08fa1187aec3716025618aba",
+                "url": "https://api.github.com/repos/brefphp/bref/zipball/56e49531a38fefb61c2d8b5013e22fb0cab1af1e",
+                "reference": "56e49531a38fefb61c2d8b5013e22fb0cab1af1e",
                 "shasum": ""
             },
             "require": {
@@ -70,7 +70,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brefphp/bref/issues",
-                "source": "https://github.com/brefphp/bref/tree/2.0.8"
+                "source": "https://github.com/brefphp/bref/tree/2.0.11"
             },
             "funding": [
                 {
@@ -82,7 +82,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-06-01T12:14:00+00:00"
+            "time": "2023-07-05T17:53:48+00:00"
         },
         {
             "name": "crwlr/query-string",
