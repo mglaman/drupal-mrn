@@ -57,4 +57,12 @@ final class GitLab
         return \json_decode((string) $response->getBody());
     }
 
+    public function users(string $search): array {
+        $response = $this->client->request(
+          'GET',
+          "https://git.drupalcode.org/api/v4/users?search=" . urlencode($search)
+        );
+        return \json_decode((string) $response->getBody()) ?: [];
+    }
+
 }

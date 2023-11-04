@@ -24,6 +24,8 @@ class JsonFormatOutputTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
+          new Response(200, [], json_encode([])),
+          new Response(200, [], json_encode([])),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
         ]);
         $client = new Client([
