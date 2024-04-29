@@ -25,6 +25,8 @@ class MarkdownFormatOutputTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
+            new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.author_name.json')),
+            new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.committer_name.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
         ]);
         $client = new Client([
@@ -42,9 +44,9 @@ class MarkdownFormatOutputTest extends TestCase
         $expected = <<<MARKDOWN
 /Add a summary here/
 
-### Contributors (2)
+### Contributors (3)
 
-[Lal_](https://www.drupal.org/u/lal_), [mrinalini9](https://www.drupal.org/u/mrinalini9)
+[Lal_](https://www.drupal.org/u/lal_), [mglaman](https://www.drupal.org/u/mglaman), [mrinalini9](https://www.drupal.org/u/mrinalini9)
 
 ### Changelog
 

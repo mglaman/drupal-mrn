@@ -24,6 +24,8 @@ class HtmlFormatOutputTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.author_name.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.committer_name.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
         ]);
         $client = new Client([
@@ -40,8 +42,8 @@ class HtmlFormatOutputTest extends TestCase
         $sut = new HtmlFormatOutput();
         $expected = <<<HTML
 <p><em>Add a summary here</em></p>
-<h3>Contributors (2)</h3>
-<p><a href="https://www.drupal.org/u/lal_">Lal_</a>, <a href="https://www.drupal.org/u/mrinalini9">mrinalini9</a></p>
+<h3>Contributors (3)</h3>
+<p><a href="https://www.drupal.org/u/lal_">Lal_</a>, <a href="https://www.drupal.org/u/mglaman">mglaman</a>, <a href="https://www.drupal.org/u/mrinalini9">mrinalini9</a></p>
 <h3>Changelog</h3>
 <p><strong>Issues:</strong> 1 issues resolved.</p>
 <p>Changes since <a href="https://www.drupal.org/project/views_remote_data/releases/1.0.1">1.0.1</a>:</p>

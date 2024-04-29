@@ -3,6 +3,8 @@
 namespace App\Tests;
 
 use App\GitLab;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit\Framework\TestCase;
@@ -17,10 +19,10 @@ class GitLabTest extends TestCase
      * @covers ::tags
      */
     public function testTags(): void {
-        $mockHandler = new \GuzzleHttp\Handler\MockHandler([
+        $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/views_remote_data.tags.json'))
         ]);
-        $client = new \GuzzleHttp\Client([
+        $client = new Client([
           'handler' => HandlerStack::create($mockHandler)
         ]);
         $sut = new GitLab($client);
@@ -31,14 +33,34 @@ class GitLabTest extends TestCase
      * @covers ::branches
      */
     public function testBranches(): void {
-        $mockHandler = new \GuzzleHttp\Handler\MockHandler([
+        $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/views_remote_data.branches.json'))
         ]);
-        $client = new \GuzzleHttp\Client([
+        $client = new Client([
           'handler' => HandlerStack::create($mockHandler)
         ]);
         $sut = new GitLab($client);
         self::assertCount(1, $sut->branches('views_remote_data'));
+    }
+
+    /**
+     * @covers ::users
+     */
+    public function testUsers(): void {
+        $mockHandler = new MockHandler([
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/users.search.author_name.json')),
+            new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/users.search.committer_name.json')),
+        ]);
+        $client = new Client([
+            'handler' => HandlerStack::create($mockHandler)
+        ]);
+        $sut = new GitLab($client);
+        $users = $sut->users('mrinalini9');
+        self::assertCount(1, $users);
+        self::assertEquals('mrinalini9', $users[0]->username);
+        $users = $sut->users('Matt Glaman');
+        self::assertCount(1, $users);
+        self::assertEquals('mglaman', $users[0]->username);
     }
 
 }

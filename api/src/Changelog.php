@@ -31,12 +31,27 @@ final class Changelog
       private readonly string $from,
       private readonly string $to
     ) {
+        $gitlab = new GitLab($this->client);
         if (count($commits) === 0) {
             throw new \RuntimeException('No commits for the changelog to process.');
         }
         $contributors = [];
         foreach ($commits as $commit) {
-            $contributors[] = CommitParser::extractUsernames($commit->title);
+            $commitContributors = CommitParser::extractUsernames($commit->title);
+            try {
+                $author = $gitlab->users($commit->author_name);
+                if (count($author) > 0) {
+                    $commitContributors[] = $author[0]->username;
+                }
+            } catch (RequestException) {}
+            try {
+                $committer = $gitlab->users($commit->committer_name);
+                if (count($committer) > 0) {
+                    $commitContributors[] = $committer[0]->username;
+                }
+            } catch (RequestException) {}
+            $contributors[] = $commitContributors;
+
             $nid = CommitParser::getNid($commit->title);
             if ($nid !== null) {
                 try {
