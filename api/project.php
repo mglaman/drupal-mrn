@@ -14,6 +14,10 @@ require __DIR__.'/vendor/autoload.php';
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+\Sentry\init([
+    'dsn' => 'https://ec3b995c19739bbb1a00f14d0ef4c723@o4505060230627328.ingest.us.sentry.io/4507170537340928',
+]);
+
 $request = Request::createFromGlobals();
 $project = $request->query->get('project', '');
 if (!is_string($project) || $project === '') {
