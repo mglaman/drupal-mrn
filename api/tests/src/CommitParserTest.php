@@ -34,7 +34,7 @@ class CommitParserTest extends TestCase
       );
     }
 
-    public function commitsNids() {
+    public static function commitsNids() {
       yield [
         'Issue #3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module',
         '3294296'

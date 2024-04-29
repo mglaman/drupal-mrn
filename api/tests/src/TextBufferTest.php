@@ -24,7 +24,7 @@ class TextBufferTest extends TestCase
         self::assertSame($output, (string) $sut);
     }
 
-    public function textData()
+    public static function textData()
     {
         yield 'single string' => [
           ['foobar'],

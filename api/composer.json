@@ -1,7 +1,7 @@
 {
     "name": "mglaman/drupal-mrn",
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "bref/bref": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
         "sentry/sentry": "^4.7",
