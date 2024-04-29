@@ -38,7 +38,6 @@ final class Changelog
         $contributors = [];
         foreach ($commits as $commit) {
             $commitContributors = CommitParser::extractUsernames($commit->title);
-
             try {
                 $author = $gitlab->users($commit->author_name);
                 if (count($author) > 0) {
@@ -51,8 +50,8 @@ final class Changelog
                     $commitContributors[] = $committer[0]->username;
                 }
             } catch (RequestException) {}
-
             $contributors[] = $commitContributors;
+
             $nid = CommitParser::getNid($commit->title);
             if ($nid !== null) {
                 try {
