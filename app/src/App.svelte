@@ -5,6 +5,7 @@
     branches: [],
     tags: [],
   }
+  let options = [];
   let from = ''
   let to = ''
   let format = 'html'
@@ -22,6 +23,7 @@
       } else {
         error = ''
         projectData = await res.json()
+        options = [...projectData.branches, ...projectData.tags].map(obj => obj.name).sort();
       }
     } catch (e) {
       console.error(e)
@@ -68,15 +70,25 @@
                 <div class="isolate -space-x-px grid grid-cols-2 rounded-md shadow-sm">
                     <div class="relative border border-gray-300 rounded-md rounded-r-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
                         <label class="block text-xs font-medium text-gray-900" for="ref1">From</label>
-                        <input id="ref1" type="text" bind:value={from} placeholder="1.0.0"
+                        <input id="ref1" list="ref1options" type="text" bind:value={from} placeholder="1.0.0"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
                                required/>
+                        <datalist id="ref1options">
+                            {#each options as value}
+                                <option value={value}></option>
+                            {/each}
+                        </datalist>
                     </div>
                     <div class="relative border border-gray-300 rounded-md rounded-l-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
                         <label class="block text-xs font-medium text-gray-900" for="ref2">To</label>
-                        <input id="ref2" type="text" bind:value={to} placeholder="1.0.1"
+                        <input id="ref2" list="ref2options" type="text" bind:value={to} placeholder="1.0.1"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
                                required/>
+                        <datalist id="ref2options">
+                            {#each options as value}
+                                <option value={value}></option>
+                            {/each}
+                        </datalist>
                     </div>
                 </div>
                 {#if error.length > 0}
@@ -97,7 +109,7 @@
                 <div class="flex flex-row items-center">
                     <button
                         type="submit"
-                        disabled={processing || error}
+                        disabled={processing || error.length > 0}
                         class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue {processing ? 'disabled:cursor-wait' : ''} {error ? 'cursor-not-allowed' : ''}">
                         Generate release notes
                     </button>
