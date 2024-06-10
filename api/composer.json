@@ -5,7 +5,7 @@
         "bref/bref": "^2.0",
         "guzzlehttp/guzzle": "^7.4",
         "sentry/sentry": "^4.7",
-        "symfony/http-foundation": "^6.1"
+        "symfony/http-foundation": "^7.1"
     },
     "autoload": {
         "psr-4": {
