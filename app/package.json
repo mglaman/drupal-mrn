@@ -17,6 +17,6 @@
     "vite": "^3.0.7"
   },
   "dependencies": {
-    "@sentry/svelte": "^7.112.2"
+    "@sentry/svelte": "^8.13.0"
   }
 }
