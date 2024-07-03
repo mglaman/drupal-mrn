@@ -50,7 +50,7 @@ final class Changelog
                     $commitContributors[] = $committer[0]->username;
                 }
             } catch (RequestException) {}
-            $contributors[] = $commitContributors;
+            array_push($contributors, $commitContributors);
 
             $nid = CommitParser::getNid($commit->title);
             if ($nid !== null) {
