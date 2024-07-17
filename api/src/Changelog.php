@@ -45,7 +45,7 @@ final class Changelog
                     $commitContributors[] = $author[0]->username;
                 }
             } catch (RequestException) {
-                if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)){
+                if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
                     $commitContributors[] = $authorMatches[0];
                 }
             }
@@ -55,7 +55,7 @@ final class Changelog
                     $commitContributors[] = $committer[0]->username;
                 }
             } catch (RequestException) {
-                if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)){
+                if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
                     $commitContributors[] = $committerMatches[0];
                 }
             }
