@@ -38,8 +38,8 @@ class ChangelogTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/views_remote_data.json')),
-          new Response(200, [], json_encode([])),
-          new Response(200, [], json_encode([])),
+          new Response(403),
+          new Response(403),
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')),
         ]);
         $client = new Client([
@@ -47,6 +47,11 @@ class ChangelogTest extends TestCase
         ]);
         $fixture = (new GitLab($client))->compare('views_remote_data', '1.0.1', 'HEAD');
         $sut = new Changelog($client, 'views_remote_data', $fixture->commits, '1.0.1', 'HEAD');
+        self::assertEquals([
+            'Lal_',
+            'mglaman',
+            'mrinalini9',
+        ], $sut->getContributors());
         self::assertEquals(          [
           [
             'nid' => '3294296',
