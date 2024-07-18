@@ -35,10 +35,10 @@ final class Changelog
         if (count($commits) === 0) {
             throw new \RuntimeException('No commits for the changelog to process.');
         }
+        $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
         $contributors = [];
         foreach ($commits as $commit) {
             $commitContributors = CommitParser::extractUsernames($commit->title);
-            $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
             try {
                 $author = $gitlab->users($commit->author_name);
                 if (count($author) > 0) {
