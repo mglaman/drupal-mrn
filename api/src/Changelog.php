@@ -35,6 +35,7 @@ final class Changelog
         if (count($commits) === 0) {
             throw new \RuntimeException('No commits for the changelog to process.');
         }
+        $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
         $contributors = [];
         foreach ($commits as $commit) {
             $commitContributors = CommitParser::extractUsernames($commit->title);
@@ -43,13 +44,21 @@ final class Changelog
                 if (count($author) > 0) {
                     $commitContributors[] = $author[0]->username;
                 }
-            } catch (RequestException) {}
+            } catch (RequestException) {
+                if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
+                    $commitContributors[] = $authorMatches[0];
+                }
+            }
             try {
                 $committer = $gitlab->users($commit->committer_name);
                 if (count($committer) > 0) {
                     $commitContributors[] = $committer[0]->username;
                 }
-            } catch (RequestException) {}
+            } catch (RequestException) {
+                if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
+                    $commitContributors[] = $committerMatches[0];
+                }
+            }
             $contributors[] = $commitContributors;
 
             $nid = CommitParser::getNid($commit->title);
