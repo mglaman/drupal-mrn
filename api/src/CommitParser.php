@@ -4,7 +4,7 @@ namespace App;
 
 final class CommitParser {
 
-    public static function extractUsernames(string $title): array {
+    public static function extractUsernames(string $title, $sort = false): array {
         $usernames = [];
         $matches = [];
         preg_match('/by ([^:]+):/S', $title, $matches);
@@ -13,6 +13,9 @@ final class CommitParser {
         }
         foreach (explode(',', $matches[1]) as $user) {
             $usernames[] = trim($user);
+        }
+        if ($sort) {
+            sort($usernames);
         }
 
         return $usernames;

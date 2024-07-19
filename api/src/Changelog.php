@@ -82,7 +82,7 @@ final class Changelog
               'link' => $nid !== null ? "https://www.drupal.org/i/$nid" : '',
               'type' => $issueCategoryLabel,
               'summary' => preg_replace('/^(Patch |- |Issue ){0,3}/', '', $commit->title),
-              'contributors' => $this->getChangeContributors($commit->title),
+              'contributors' => CommitParser::extractUsernames($commit->title, true),
             ];
         }
         $this->contributors = array_unique(array_merge(...$contributors));
@@ -145,18 +145,6 @@ final class Changelog
         }
         ksort($grouped);
         return $grouped;
-    }
-
-    private function getChangeContributors(string $change): array
-    {
-        $match = [];
-        preg_match('/by ([^:]+):/S', $change, $match);
-        if (count($match) !== 2) {
-            return [];
-        }
-        $names = explode(', ', $match[1]);
-        sort($names);
-        return $names;
     }
 
     private function formatLine(string $value): string
