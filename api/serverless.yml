@@ -3,7 +3,6 @@ service: drupal-mrn
 provider:
     name: aws
     region: us-east-1
-    runtime: provided.al2
     stage: prod
     versionFunctions: false
     httpApi:
@@ -17,8 +16,7 @@ functions:
         handler: changelog.php
         description: ''
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        layers:
-            - ${bref:layer.php-82-fpm}
+        runtime: php-82-fpm
         events:
           - httpApi:
               method: 'GET'
@@ -27,8 +25,7 @@ functions:
         handler: project.php
         description: ''
         timeout: 28 # in seconds (API Gateway has a timeout of 29 seconds)
-        layers:
-            - ${bref:layer.php-82-fpm}
+        runtime: php-82-fpm
         events:
           - httpApi:
               method: 'GET'
