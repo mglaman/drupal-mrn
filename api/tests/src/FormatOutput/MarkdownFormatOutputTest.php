@@ -52,7 +52,7 @@ class MarkdownFormatOutputTest extends TestCase
 
 **Issues**: 1 issues resolved.
 
-Changes since [1.0.1](https://www.drupal.org/project/views_remote_data/releases/1.0.1):
+Changes since [1.0.1](https://www.drupal.org/project/views_remote_data/releases/1.0.1) ([compare](https://git.drupalcode.org/project/views_remote_data/-/compare/1.0.1...1.0.2)):
 
 #### Task
 

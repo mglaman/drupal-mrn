@@ -39,9 +39,10 @@ final class HtmlFormatOutput implements FormatOutputInterface
         );
         $buffer->writeln(
           sprintf(
-            '<p>Changes since <a href="https://www.drupal.org/project/%2$s/releases/%1$s">%1$s</a>:</p>',
+            '<p>Changes since <a href="https://www.drupal.org/project/%2$s/releases/%1$s">%1$s</a> (<a href="https://git.drupalcode.org/project/%2$s/-/compare/%1$s...%3$s">compare</a>):</p>',
             $changelog->getFrom(),
-            $changelog->getProject()
+            $changelog->getProject(),
+            $changelog->getTo()
           )
         );
 

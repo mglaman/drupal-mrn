@@ -46,7 +46,7 @@ class HtmlFormatOutputTest extends TestCase
 <p><a href="https://www.drupal.org/u/lal_">Lal_</a>, <a href="https://www.drupal.org/u/mglaman">mglaman</a>, <a href="https://www.drupal.org/u/mrinalini9">mrinalini9</a></p>
 <h3>Changelog</h3>
 <p><strong>Issues:</strong> 1 issues resolved.</p>
-<p>Changes since <a href="https://www.drupal.org/project/views_remote_data/releases/1.0.1">1.0.1</a>:</p>
+<p>Changes since <a href="https://www.drupal.org/project/views_remote_data/releases/1.0.1">1.0.1</a> (<a href="https://git.drupalcode.org/project/views_remote_data/-/compare/1.0.1...1.0.2">compare</a>):</p>
 <h4>Task</h4>
 <ul>
   <li><a href="https://www.drupal.org/i/3294296">#3294296</a> by mrinalini9, Lal_: Drupal 10 readiness for the module</li>

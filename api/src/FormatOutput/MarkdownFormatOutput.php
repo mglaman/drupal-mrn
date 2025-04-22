@@ -40,7 +40,11 @@ final class MarkdownFormatOutput implements FormatOutputInterface
         );
         $buffer->writeln('');
         $buffer->writeln(
-          sprintf('Changes since [%1$s](https://www.drupal.org/project/%2$s/releases/%1$s):', $changelog->getFrom(), $changelog->getProject())
+          sprintf('Changes since [%1$s](https://www.drupal.org/project/%2$s/releases/%1$s) ([compare](https://git.drupalcode.org/project/%2$s/-/compare/%1$s...%3$s)):',
+            $changelog->getFrom(),
+            $changelog->getProject(),
+            $changelog->getTo()
+          )
         );
         $buffer->writeln('');
         foreach ($processedChanges as $changeCategory => $changeCategoryItems) {
