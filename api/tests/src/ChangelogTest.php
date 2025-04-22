@@ -9,17 +9,14 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use Nyholm\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \App\Changelog
- */
+#[CoversClass(Changelog::class)]
 class ChangelogTest extends TestCase
 {
 
-    /**
-     * @covers ::getContributors
-     */
     public function testGetContributors(): void
     {
         $client = $this->createMock(Client::class);
@@ -31,9 +28,6 @@ class ChangelogTest extends TestCase
         ], $sut->getContributors());
     }
 
-    /**
-     * @covers ::getChanges
-     */
     public function testGetChanges(): void
     {
         $mockHandler = new MockHandler([

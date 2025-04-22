@@ -3,18 +3,15 @@
 namespace App\Tests;
 
 use App\TextBuffer;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \App\TextBuffer
- */
+#[CoversClass(TextBuffer::class)]
 class TextBufferTest extends TestCase
 {
 
-    /**
-     * @covers ::writeln
-     * @dataProvider textData
-     */
+    #[DataProvider('textData')]
     public function testOutput(array $input, string $output): void
     {
         $sut = new TextBuffer();

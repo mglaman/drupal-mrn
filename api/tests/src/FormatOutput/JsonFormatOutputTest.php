@@ -9,17 +9,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use Nyholm\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \App\FormatOutput\JsonFormatOutput
- */
+#[CoversClass(JsonFormatOutput::class)]
 class JsonFormatOutputTest extends TestCase
 {
 
-    /**
-     * @covers ::format
-     */
     public function testFormat(): void
     {
         $mockHandler = new MockHandler([
