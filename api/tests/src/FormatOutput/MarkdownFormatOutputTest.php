@@ -10,17 +10,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use Nyholm\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \App\FormatOutput\MarkdownFormatOutput
- */
+#[CoversClass(MarkdownFormatOutput::class)]
 class MarkdownFormatOutputTest extends TestCase
 {
 
-    /**
-     * @covers ::format
-     */
     public function testFormat()
     {
         $mockHandler = new MockHandler([

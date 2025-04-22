@@ -3,17 +3,14 @@
 namespace App\Tests;
 
 use App\CommitParser;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \App\CommitParser
- */
+#[CoversClass(CommitParser::class)]
 class CommitParserTest extends TestCase
 {
 
-    /**
-     * @covers ::extractUsernames
-     */
     public function testExtractUsernames(): void {
         self::assertSame(
           ['mrinalini9', 'Lal_'],
@@ -23,10 +20,7 @@ class CommitParserTest extends TestCase
         );
     }
 
-    /**
-     * @covers ::getNid
-     * @dataProvider commitsNids
-     */
+    #[DataProvider('commitsNids')]
     public function testGetNid(string $commit, string $expected): void {
       self::assertEquals(
         $expected,

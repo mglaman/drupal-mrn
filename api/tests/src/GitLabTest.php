@@ -7,17 +7,13 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @coversDefaultClass \App\GitLab
- */
+#[CoversClass(GitLab::class)]
 class GitLabTest extends TestCase
 {
 
-    /**
-     * @covers ::tags
-     */
     public function testTags(): void {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/views_remote_data.tags.json'))
@@ -29,9 +25,6 @@ class GitLabTest extends TestCase
         self::assertCount(5, $sut->tags('views_remote_data'));
     }
 
-    /**
-     * @covers ::branches
-     */
     public function testBranches(): void {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/views_remote_data.branches.json'))
@@ -43,9 +36,6 @@ class GitLabTest extends TestCase
         self::assertCount(1, $sut->branches('views_remote_data'));
     }
 
-    /**
-     * @covers ::users
-     */
     public function testUsers(): void {
         $mockHandler = new MockHandler([
             new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/users.search.author_name.json')),
