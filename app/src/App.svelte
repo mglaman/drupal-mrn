@@ -56,8 +56,8 @@
 <div class="py-8">
     <main class="container mx-auto max-w-screen-md shadow-sm bg-white rounded-lg overflow-hidden">
         <div class="p-8">
-            <h1 class="text-3xl">Generate release notes</h1>
-            <p class="mb-2">Generates release notes for projects hosted on Drupal.org</p>
+            <h1 class="text-3xl font-bold mb-1">Generate release notes</h1>
+            <p class="mb-2 text-gray-700">Generates release notes for projects hosted on Drupal.org</p>
             <form class="space-y-4" on:submit={getChangeLog}>
                 <div class="border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue {error !== '' ? 'border-red-300 focus:within:ring-red-300 focus-within:border-red-300' : ''}">
                     <label for="project" class="block text-xs font-medium text-gray-800">Project</label>
@@ -72,7 +72,7 @@
                         <label class="block text-xs font-medium text-gray-900" for="ref1">From</label>
                         <input id="ref1" list="ref1options" type="text" bind:value={from} placeholder="1.0.0"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
-                               required/>
+                               required autocomplete="off"/>
                         <datalist id="ref1options">
                             {#each options as value}
                                 <option value={value}></option>
@@ -83,7 +83,7 @@
                         <label class="block text-xs font-medium text-gray-900" for="ref2">To</label>
                         <input id="ref2" list="ref2options" type="text" bind:value={to} placeholder="1.0.1"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
-                               required/>
+                               required autocomplete="off"/>
                         <datalist id="ref2options">
                             {#each options as value}
                                 <option value={value}></option>
@@ -109,8 +109,8 @@
                 <div class="flex flex-row items-center">
                     <button
                         type="submit"
-                        disabled={processing || error.length > 0}
-                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue {processing ? 'disabled:cursor-wait' : ''} {error ? 'cursor-not-allowed' : ''}">
+                        disabled={from === '' || to === '' || processing || error.length > 0}
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue disabled:bg-drupal-pale-gray disabled:text-gray-400 hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue {processing ? 'disabled:cursor-wait' : ''} {error ? 'cursor-not-allowed' : ''}">
                         Generate release notes
                     </button>
                     {#if processing}
@@ -132,7 +132,7 @@
     {#if notes.length > 0}
         <section class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
             <p class="mb-2">Here are your release notes!</p>
-            <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md">{notes}</textarea>
+            <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>
         </section>
     {/if}
 </div>
