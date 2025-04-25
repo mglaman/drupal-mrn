@@ -12,6 +12,7 @@
   let notes = ''
   let error = ''
   let processing = false;
+  let copied = false;
 
   async function getProject() {
     processing = true;
@@ -45,6 +46,14 @@
     } finally {
         processing = false;
     }
+  }
+
+  function copyNotes() {
+    navigator.clipboard.writeText(notes);
+    copied = true;
+    setTimeout(() => {
+      copied = false;
+    }, 1000);
   }
 
 </script>
@@ -133,6 +142,17 @@
         <section class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
             <p class="mb-2">Here are your release notes!</p>
             <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>
+            <div class="flex items-center">
+                <button
+                    on:click={copyNotes}
+                    class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue"
+                >
+                    Copy
+                </button>
+                {#if copied}
+                    <span class="ml-3 mt-4 text-sm text-gray-600 font-bold">Copied!</span>
+                {/if}
+            </div>
         </section>
     {/if}
 </div>
