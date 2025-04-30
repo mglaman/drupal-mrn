@@ -70,7 +70,7 @@
             <form class="space-y-4" on:submit={getChangeLog}>
                 <div class="border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue {error !== '' ? 'border-red-300 focus:within:ring-red-300 focus-within:border-red-300' : ''}">
                     <label for="project" class="block text-xs font-medium text-gray-800">Project</label>
-                    <input type="text" name="project" autocomplete="off" id="project" bind:value={project}
+                    <input type="text" name="project" id="project" bind:value={project}
                            on:blur={getProject}
                            class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg {error !== '' ? 'text-red-900 placeholder:text-red-300' : ''}"
                            placeholder="machine_name"
@@ -81,7 +81,7 @@
                         <label class="block text-xs font-medium text-gray-900" for="ref1">From</label>
                         <input id="ref1" list="ref1options" type="text" bind:value={from} placeholder="1.0.0"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
-                               required autocomplete="off"/>
+                               required />
                         <datalist id="ref1options">
                             {#each options as value}
                                 <option value={value}></option>
@@ -92,7 +92,7 @@
                         <label class="block text-xs font-medium text-gray-900" for="ref2">To</label>
                         <input id="ref2" list="ref2options" type="text" bind:value={to} placeholder="1.0.1"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
-                               required autocomplete="off"/>
+                               required/>
                         <datalist id="ref2options">
                             {#each options as value}
                                 <option value={value}></option>
