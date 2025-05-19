@@ -16,6 +16,9 @@
 
   async function getProject() {
     processing = true;
+    // Clear from/to values immediately when project changes
+    from = '';
+    to = '';
     try {
       const res = await fetch(`${apiUrl}/project?${new URLSearchParams({project})}`)
       if (!res.ok) {
