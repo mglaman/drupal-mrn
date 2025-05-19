@@ -14,6 +14,111 @@
   let processing = false;
   let copied = false;
 
+  function findPreviousVersion(version) {
+    if (!projectData.tags || projectData.tags.length === 0) {
+      return '';
+    }
+
+    // Check if the input version has a prefix
+    const hasPrefix = version.match(/^\d+\.x-/);
+    const prefix = hasPrefix ? hasPrefix[0] : '';
+
+    // Helper function to extract numeric suffix from pre-release identifiers
+    function getPreReleaseNumber(versionStr) {
+      const match = versionStr.match(/(alpha|beta|rc)(\d+)/);
+      return match ? parseInt(match[2], 10) : 0;
+    }
+
+    // Helper function to get sort weight for pre-release versions
+    function getPreReleaseWeight(versionStr) {
+      // Default weight for stable versions
+      let weight = 1000;
+
+      // Check for pre-release identifiers
+      if (versionStr.includes('-alpha')) weight = 100;
+      else if (versionStr.includes('-beta')) weight = 200;
+      else if (versionStr.includes('-rc')) weight = 300;
+      else if (versionStr.includes('-dev')) weight = 50;
+
+      // Add the numeric suffix to the weight for proper sorting within a pre-release type
+      const preReleaseNum = getPreReleaseNumber(versionStr);
+      weight += preReleaseNum;
+
+      return weight;
+    }
+
+    // Create a sorted list of version tags
+    const sortedTags = [...projectData.tags]
+      .map(tag => ({
+        ...tag,
+        // Store original name
+        originalName: tag.name,
+        // Strip prefixes like "8.x-" for comparison
+        compareValue: tag.name.replace(/^\d+\.x-/, ''),
+        // Store the prefix if any
+        prefix: tag.name.match(/^\d+\.x-/) ? tag.name.match(/^\d+\.x-/)[0] : '',
+        // Calculate weight for sorting pre-release versions
+        preReleaseWeight: getPreReleaseWeight(tag.name)
+      }))
+      .sort((a, b) => {
+        // First compare major.minor.patch parts numerically
+        const aBase = a.compareValue.split('-')[0];
+        const bBase = b.compareValue.split('-')[0];
+
+        const baseComparison = aBase.localeCompare(bBase, undefined, {
+          numeric: true,
+          sensitivity: 'base'
+        });
+
+        // If base versions are the same, compare by stability (stable > rc > beta > alpha)
+        if (baseComparison === 0) {
+          return a.preReleaseWeight - b.preReleaseWeight;
+        }
+
+        return baseComparison;
+      });
+
+    // Find the current version in the sorted list
+    const currentVersionStripped = version.replace(/^\d+\.x-/, '');
+
+    // First try to find a match with the same prefix
+    let currentIndex = -1;
+
+    if (prefix) {
+      // If input has prefix, first look for exact same prefix
+      currentIndex = sortedTags.findIndex(tag =>
+        tag.compareValue === currentVersionStripped && tag.prefix === prefix);
+    }
+
+    // If no match with same prefix or no prefix in input, find by version only
+    if (currentIndex === -1) {
+      currentIndex = sortedTags.findIndex(tag =>
+        tag.compareValue === currentVersionStripped);
+    }
+
+    if (currentIndex > 0) {
+      // Try to find previous version with the same prefix first
+      if (prefix) {
+        for (let i = currentIndex - 1; i >= 0; i--) {
+          if (sortedTags[i].prefix === prefix) {
+            return sortedTags[i].originalName;
+          }
+        }
+      }
+
+      // Otherwise return the immediate predecessor
+      return sortedTags[currentIndex - 1].originalName;
+    }
+
+    return '';
+  }
+
+  function handleVersionChange() {
+    if (to) {
+      from = findPreviousVersion(to);
+    }
+  }
+
   async function getProject() {
     processing = true;
     try {
@@ -25,6 +130,11 @@
         error = ''
         projectData = await res.json()
         options = [...projectData.branches, ...projectData.tags].map(obj => obj.name).sort();
+
+        // If version is already populated, update the previous release
+        if (to) {
+          from = findPreviousVersion(to);
+        }
       }
     } catch (e) {
       console.error(e)
@@ -78,22 +188,23 @@
                 </div>
                 <div class="isolate -space-x-px grid grid-cols-2 rounded-md shadow-sm">
                     <div class="relative border border-gray-300 rounded-md rounded-r-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
-                        <label class="block text-xs font-medium text-gray-900" for="ref1">From</label>
-                        <input id="ref1" list="ref1options" type="text" bind:value={from} placeholder="1.0.0"
+                        <label class="block text-xs font-medium text-gray-900" for="ref2">Version</label>
+                        <input id="ref2" list="ref2options" type="text" bind:value={to} placeholder="1.0.1"
+                               on:change={handleVersionChange}
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
-                               required />
-                        <datalist id="ref1options">
+                               required/>
+                        <datalist id="ref2options">
                             {#each options as value}
                                 <option value={value}></option>
                             {/each}
                         </datalist>
                     </div>
                     <div class="relative border border-gray-300 rounded-md rounded-l-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
-                        <label class="block text-xs font-medium text-gray-900" for="ref2">To</label>
-                        <input id="ref2" list="ref2options" type="text" bind:value={to} placeholder="1.0.1"
+                        <label class="block text-xs font-medium text-gray-900" for="ref1">Previous release</label>
+                        <input id="ref1" list="ref1options" type="text" bind:value={from} placeholder="1.0.0"
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
-                               required/>
-                        <datalist id="ref2options">
+                               required />
+                        <datalist id="ref1options">
                             {#each options as value}
                                 <option value={value}></option>
                             {/each}
