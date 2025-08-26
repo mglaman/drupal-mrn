@@ -52,6 +52,7 @@ class JsonFormatOutputTest extends TestCase
                 'link' => 'https://www.drupal.org/i/3294296',
                 'contributors' => [
                   'Lal_',
+                  'mglaman',
                   'mrinalini9',
                 ],
               ],

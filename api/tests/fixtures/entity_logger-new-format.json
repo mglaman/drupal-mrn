@@ -1,0 +1,486 @@
+{
+  "commit": {
+    "id": "46d7c92d03edac1fdbb92da288274273325e2774",
+    "short_id": "46d7c92d",
+    "created_at": "2025-08-21T14:54:54.000+00:00",
+    "parent_ids": [
+      "5ef7a343e8b35759b6a416bcacbfa8984c569c0a"
+    ],
+    "title": "[#3542407] feat: Code cleanup",
+    "message": "[#3542407] feat: Code cleanup\n\nAuthored-by: svendecabooter \u003c40491-svendecabooter@users.noreply.drupalcode.org\u003e\n",
+    "author_name": "Sven Decabooter",
+    "author_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+    "authored_date": "2025-08-21T14:54:54.000+00:00",
+    "committer_name": "Sven Decabooter",
+    "committer_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+    "committed_date": "2025-08-21T14:54:54.000+00:00",
+    "trailers": {},
+    "extended_trailers": {},
+    "web_url": "https://git.drupalcode.org/project/entity_logger/-/commit/46d7c92d03edac1fdbb92da288274273325e2774"
+  },
+  "commits": [
+    {
+      "id": "75a4340a57ee2ac6510c167f0e365476c66b2e16",
+      "short_id": "75a4340a",
+      "created_at": "2025-07-01T09:31:30.000+00:00",
+      "parent_ids": [
+        "b62e58c0f5d455e7eace670b9b597a8a18cda0f9"
+      ],
+      "title": "Issue #3519842 by aren33k, svendecabooter: Support OOP hooks",
+      "message": "Issue #3519842 by aren33k, svendecabooter: Support OOP hooks\n",
+      "author_name": "arne michiels",
+      "author_email": "71344-aren33k@users.noreply.drupalcode.org",
+      "authored_date": "2025-07-01T09:31:30.000+00:00",
+      "committer_name": "Sven Decabooter",
+      "committer_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+      "committed_date": "2025-07-01T09:31:30.000+00:00",
+      "trailers": {},
+      "extended_trailers": {},
+      "web_url": "https://git.drupalcode.org/project/entity_logger/-/commit/75a4340a57ee2ac6510c167f0e365476c66b2e16"
+    },
+    {
+      "id": "335012da74be4214294cf18763e97e085de5c713",
+      "short_id": "335012da",
+      "created_at": "2025-07-01T11:38:02.000+02:00",
+      "parent_ids": [
+        "75a4340a57ee2ac6510c167f0e365476c66b2e16"
+      ],
+      "title": "Update supported Drupal versions",
+      "message": "Update supported Drupal versions\n",
+      "author_name": "Sven Decabooter",
+      "author_email": "sdecabooter@gmail.com",
+      "authored_date": "2025-07-01T11:37:53.000+02:00",
+      "committer_name": "Sven Decabooter",
+      "committer_email": "sdecabooter@gmail.com",
+      "committed_date": "2025-07-01T11:38:02.000+02:00",
+      "trailers": {},
+      "extended_trailers": {},
+      "web_url": "https://git.drupalcode.org/project/entity_logger/-/commit/335012da74be4214294cf18763e97e085de5c713"
+    },
+    {
+      "id": "bbaa22a5d365da474535baf3a6c50b4fe69ad36e",
+      "short_id": "bbaa22a5",
+      "created_at": "2025-08-21T08:27:04.000+00:00",
+      "parent_ids": [
+        "335012da74be4214294cf18763e97e085de5c713"
+      ],
+      "title": "[#3526254] feat: Add a cleanup function",
+      "message": "[#3526254] feat: Add a cleanup function\n\nAuthored-by: eelkeblok \u003c12560-eelkeblok@users.noreply.drupalcode.org\u003e\nAuthored-by: svendecabooter \u003c40491-svendecabooter@users.noreply.drupalcode.org\u003e\n",
+      "author_name": "Eelke Blok",
+      "author_email": "12560-eelkeblok@users.noreply.drupalcode.org",
+      "authored_date": "2025-08-21T08:27:04.000+00:00",
+      "committer_name": "Sven Decabooter",
+      "committer_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+      "committed_date": "2025-08-21T08:27:04.000+00:00",
+      "trailers": {},
+      "extended_trailers": {},
+      "web_url": "https://git.drupalcode.org/project/entity_logger/-/commit/bbaa22a5d365da474535baf3a6c50b4fe69ad36e"
+    },
+    {
+      "id": "5ef7a343e8b35759b6a416bcacbfa8984c569c0a",
+      "short_id": "5ef7a343",
+      "created_at": "2025-08-21T09:08:53.000+00:00",
+      "parent_ids": [
+        "bbaa22a5d365da474535baf3a6c50b4fe69ad36e"
+      ],
+      "title": "[#3519925] feat: Add schema validation",
+      "message": "[#3519925] feat: Add schema validation\n\nAuthored-by: svendecabooter \u003c40491-svendecabooter@users.noreply.drupalcode.org\u003e\n",
+      "author_name": "Sven Decabooter",
+      "author_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+      "authored_date": "2025-08-21T09:08:53.000+00:00",
+      "committer_name": "Sven Decabooter",
+      "committer_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+      "committed_date": "2025-08-21T09:08:53.000+00:00",
+      "trailers": {},
+      "extended_trailers": {},
+      "web_url": "https://git.drupalcode.org/project/entity_logger/-/commit/5ef7a343e8b35759b6a416bcacbfa8984c569c0a"
+    },
+    {
+      "id": "46d7c92d03edac1fdbb92da288274273325e2774",
+      "short_id": "46d7c92d",
+      "created_at": "2025-08-21T14:54:54.000+00:00",
+      "parent_ids": [
+        "5ef7a343e8b35759b6a416bcacbfa8984c569c0a"
+      ],
+      "title": "[#3542407] feat: Code cleanup",
+      "message": "[#3542407] feat: Code cleanup\n\nAuthored-by: svendecabooter \u003c40491-svendecabooter@users.noreply.drupalcode.org\u003e\n",
+      "author_name": "Sven Decabooter",
+      "author_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+      "authored_date": "2025-08-21T14:54:54.000+00:00",
+      "committer_name": "Sven Decabooter",
+      "committer_email": "40491-svendecabooter@users.noreply.drupalcode.org",
+      "committed_date": "2025-08-21T14:54:54.000+00:00",
+      "trailers": {},
+      "extended_trailers": {},
+      "web_url": "https://git.drupalcode.org/project/entity_logger/-/commit/46d7c92d03edac1fdbb92da288274273325e2774"
+    }
+  ],
+  "diffs": [
+    {
+      "diff": "@@ -0,0 +1,8 @@\n+/.idea/\n+/web/\n+/vendor/\n+.editorconfig\n+.gitattributes\n+/recipes/\n+/.ddev/\n+phpcs.xml.dist\n",
+      "new_path": ".gitignore",
+      "old_path": ".gitignore",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -1 +1,2 @@\n enabled_entity_types: {  }\n+retention_period: 90\n",
+      "new_path": "config/install/entity_logger.settings.yml",
+      "old_path": "config/install/entity_logger.settings.yml",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -9,3 +9,16 @@ entity_logger.settings:\n       sequence:\n         type: string\n         label: 'Entity type'\n+        constraints:\n+          NotBlank: { }\n+          Choice:\n+            callback: \\Drupal\\entity_logger\\EntityLoggerSchemaHelper::getAvailableEntityTypeIdsForLogging\n+            message: 'The enabled entity type you selected is not valid. Possible choices: %choices.'\n+    retention_period:\n+      type: integer\n+      label: 'Retention period'\n+      constraints:\n+        Range:\n+          min: 0\n+  constraints:\n+    FullyValidatable: ~\n",
+      "new_path": "config/schema/entity_logger.schema.yml",
+      "old_path": "config/schema/entity_logger.schema.yml",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -1,7 +1,7 @@\n name: Entity Logger\n description: 'Adds log messages to specific entities'\n type: module\n-core_version_requirement: ^9 || ^10 || ^11\n+core_version_requirement: ^10.1 || ^11\n configure: entity_logger.settings\n dependencies:\n   - dynamic_entity_reference:dynamic_entity_reference\n",
+      "new_path": "entity_logger.info.yml",
+      "old_path": "entity_logger.info.yml",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -0,0 +1,20 @@\n+\u003c?php\n+\n+/**\n+ * @file\n+ * Install, update and uninstall functions for the entity_logger module.\n+ */\n+\n+/**\n+ * Add retention_period setting.\n+ */\n+function entity_logger_update_10001() {\n+  $config = \\Drupal::configFactory()-\u003egetEditable('entity_logger.settings');\n+  if ($config-\u003eget('retention_period') === NULL) {\n+    $config-\u003eset('retention_period', 0);\n+    $config-\u003esave();\n+    return t('Added retention_period setting with default value of 0 (never delete).');\n+  }\n+\n+  return t('Retention period setting already exists.');\n+}\n",
+      "new_path": "entity_logger.install",
+      "old_path": "entity_logger.install",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -6,59 +6,48 @@\n  */\n \n use Drupal\\Core\\Entity\\EntityInterface;\n+use Drupal\\Core\\Hook\\Attribute\\LegacyHook;\n use Drupal\\Core\\Routing\\RouteMatchInterface;\n-use Drupal\\entity_logger\\EntityTypeInfo;\n+use Drupal\\entity_logger\\Hook\\CronHooks;\n+use Drupal\\entity_logger\\Hook\\EntityHooks;\n+use Drupal\\entity_logger\\Hook\\HelpHooks;\n \n /**\n  * Implements hook_help().\n  */\n+#[LegacyHook]\n function entity_logger_help($route_name, RouteMatchInterface $route_match) {\n-  switch ($route_name) {\n-    // Main module help for the entity_logger module.\n-    case 'help.page.entity_logger':\n-      $output = '';\n-      $output .= '\u003ch3\u003e' . t('About') . '\u003c/h3\u003e';\n-      $output .= '\u003cp\u003e' . t('This module allows adding log messages to entities.\n-      Log messages are shown on a \"Log\" tab on the entity they are associated\n-      with.') . '\u003c/p\u003e';\n-      $output .= '\u003cp\u003e' . t('Log messages can be added to a configurable set of\n-      entity types.') . '\u003c/p\u003e';\n-      $output .= '\u003cp\u003e' . t('This module is intended to be used in cases where\n-      you want to store log messages but the default Drupal watchdog / logging\n-      interface is insufficient. E.g. you want the log messages to appear within\n-      the context of an entity, you want more\n-      persistency in the storage of these log message, and / or you want specific\n-      roles to access these log messages, while you do not want these roles to\n-      access the default Drupal watchdog UI.') . '\u003c/p\u003e';\n-      return $output;\n-\n-    default:\n-  }\n+  return \\Drupal::service(HelpHooks::class)-\u003ehelp($route_name, $route_match);\n }\n \n /**\n  * Implements hook_entity_type_alter().\n  */\n+#[LegacyHook]\n function entity_logger_entity_type_alter(array \u0026$entity_types) {\n-  return \\Drupal::service('class_resolver')\n-    -\u003egetInstanceFromDefinition(EntityTypeInfo::class)\n-    -\u003eentityTypeAlter($entity_types);\n+  return \\Drupal::service(EntityHooks::class)-\u003eentityTypeAlter($entity_types);\n }\n \n /**\n  * Implements hook_entity_operation().\n  */\n+#[LegacyHook]\n function entity_logger_entity_operation(EntityInterface $entity) {\n-  return \\Drupal::service('class_resolver')\n-    -\u003egetInstanceFromDefinition(EntityTypeInfo::class)\n-    -\u003eentityOperation($entity);\n+  return \\Drupal::service(EntityHooks::class)-\u003eentityOperation($entity);\n }\n \n /**\n  * Implements hook_entity_predelete().\n  */\n+#[LegacyHook]\n function entity_logger_entity_predelete(EntityInterface $entity) {\n-  /** @var \\Drupal\\entity_logger\\EntityLogEntryStorageInterface $log_entry_storage */\n-  $log_entry_storage = \\Drupal::entityTypeManager()-\u003egetStorage('entity_log_entry');\n-  $log_entry_storage-\u003edeleteForTargetEntity($entity);\n+  return \\Drupal::service(EntityHooks::class)-\u003eentityPreDelete($entity);\n+}\n+\n+/**\n+ * Implements hook_cron().\n+ */\n+#[LegacyHook]\n+function entity_logger_cron() {\n+  return \\Drupal::service(CronHooks::class)-\u003ecron();\n }\n",
+      "new_path": "entity_logger.module",
+      "old_path": "entity_logger.module",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -1,15 +1,31 @@\n services:\n   entity_logger:\n     class: Drupal\\entity_logger\\EntityLogger\n-    arguments: [ '@entity_type.manager', '@config.factory', '@logger.factory', '@logger.log_message_parser' ]\n+    autowire: true\n+  Drupal\\entity_logger\\EntityLoggerInterface: '@entity_logger'\n   entity_logger.instance:\n     class: Drupal\\entity_logger\\EntityLoggerInstance\n-    arguments: [ '@entity_logger' ]\n+    autowire: true\n+  Drupal\\entity_logger\\EntityLoggerInstanceInterface: '@entity_logger.instance'\n   entity_logger.instance.factory:\n     class: Drupal\\entity_logger\\EntityLoggerInstanceFactory\n-    arguments: [ '@entity_logger.instance' ]\n+    autowire: true\n   entity_logger.route_subscriber:\n     class: Drupal\\entity_logger\\Routing\\RouteSubscriber\n-    arguments: [ '@entity_type.manager' ]\n+    autowire: true\n     tags:\n       - { name: event_subscriber }\n+  Drupal\\entity_logger\\Hook\\HelpHooks:\n+    class: Drupal\\entity_logger\\Hook\\HelpHooks\n+    autowire: true\n+  Drupal\\entity_logger\\Hook\\EntityHooks:\n+    class: Drupal\\entity_logger\\Hook\\EntityHooks\n+    autowire: true\n+  Drupal\\entity_logger\\Hook\\CronHooks:\n+    class: Drupal\\entity_logger\\Hook\\CronHooks\n+    autowire: true\n+    arguments:\n+      $logger: '@logger.channel.entity_logger'\n+  logger.channel.entity_logger:\n+    parent: logger.channel_base\n+    arguments: ['entity_logger']\n",
+      "new_path": "entity_logger.services.yml",
+      "old_path": "entity_logger.services.yml",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -0,0 +1,21 @@\n+parameters:\n+  ignoreErrors:\n+    -\n+      message: \"#^Attribute class Drupal\\\\\\\\Core\\\\\\\\Hook\\\\\\\\Attribute\\\\\\\\LegacyHook does not exist\\\\.$#\"\n+      count: 5\n+      path: entity_logger.module\n+\n+    -\n+      message: \"#^Attribute class Drupal\\\\\\\\Core\\\\\\\\Hook\\\\\\\\Attribute\\\\\\\\Hook does not exist\\\\.$#\"\n+      count: 1\n+      path: src/Hook/CronHooks.php\n+\n+    -\n+      message: \"#^Attribute class Drupal\\\\\\\\Core\\\\\\\\Hook\\\\\\\\Attribute\\\\\\\\Hook does not exist\\\\.$#\"\n+      count: 3\n+      path: src/Hook/EntityHooks.php\n+\n+    -\n+      message: \"#^Attribute class Drupal\\\\\\\\Core\\\\\\\\Hook\\\\\\\\Attribute\\\\\\\\Hook does not exist\\\\.$#\"\n+      count: 1\n+      path: src/Hook/HelpHooks.php\n",
+      "new_path": "phpstan-baseline.neon",
+      "old_path": "phpstan-baseline.neon",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -0,0 +1,15 @@\n+# Configuration file for PHPStan static code checking, see https://phpstan.org .\n+# PHPStan is triggered on Drupal CI in commit-code-check.sh.\n+includes:\n+  - phpstan-baseline.neon\n+  - phar://phpstan.phar/conf/bleedingEdge.neon\n+\n+parameters:\n+  level: 1\n+\n+  paths:\n+    - .\n+  reportUnmatchedIgnoredErrors: false\n+  ignoreErrors:\n+    # new static() is a best practice in Drupal, so we cannot fix that.\n+    - \"#^Unsafe usage of new static#\"\n",
+      "new_path": "phpstan.neon",
+      "old_path": "phpstan.neon",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -51,7 +51,7 @@ class EntityLoggerController extends ControllerBase {\n    */\n   public function pageTitle(RouteMatchInterface $route_match): TranslatableMarkup {\n     $target_entity = $this-\u003egetEntityFromRouteMatch($route_match);\n-    return $this-\u003et('Logs for @label', ['@label' =\u003e $target_entity-\u003elabel()]);\n+    return $this-\u003et('Logs for @label', ['@label' =\u003e $target_entity?-\u003elabel()]);\n   }\n \n   /**\n@@ -64,7 +64,7 @@ class EntityLoggerController extends ControllerBase {\n    *   The entity object as determined from the passed-in route match.\n    */\n   protected function getEntityFromRouteMatch(RouteMatchInterface $route_match): ?EntityInterface {\n-    $parameter_name = $route_match-\u003egetRouteObject()-\u003egetOption('_entity_logger_entity_type_id');\n+    $parameter_name = $route_match-\u003egetRouteObject()?-\u003egetOption('_entity_logger_entity_type_id');\n     return $route_match-\u003egetParameter($parameter_name);\n   }\n \n",
+      "new_path": "src/Controller/EntityLoggerController.php",
+      "old_path": "src/Controller/EntityLoggerController.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -125,7 +125,7 @@ class EntityLogEntry extends ContentEntityBase implements EntityLogEntryInterfac\n    */\n   public function getContext(): array {\n     if (!$this-\u003eget('context')-\u003eisEmpty()) {\n-      return $this-\u003eget('context')-\u003efirst()-\u003egetValue();\n+      return $this-\u003eget('context')-\u003efirst()?-\u003egetValue();\n     }\n     else {\n       return [];\n@@ -158,8 +158,8 @@ class EntityLogEntry extends ContentEntityBase implements EntityLogEntryInterfac\n   /**\n    * {@inheritdoc}\n    */\n-  public static function preCreate(EntityStorageInterface $storage_controller, array \u0026$values) {\n-    parent::preCreate($storage_controller, $values);\n+  public static function preCreate(EntityStorageInterface $storage, array \u0026$values): void {\n+    parent::preCreate($storage, $values);\n     $values += [\n       'uid' =\u003e \\Drupal::currentUser()-\u003eid(),\n     ];\n",
+      "new_path": "src/Entity/EntityLogEntry.php",
+      "old_path": "src/Entity/EntityLogEntry.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -3,6 +3,7 @@\n namespace Drupal\\entity_logger;\n \n use Drupal\\Core\\Access\\AccessResult;\n+use Drupal\\Core\\Access\\AccessResultInterface;\n use Drupal\\Core\\Entity\\EntityAccessControlHandler;\n use Drupal\\Core\\Entity\\EntityInterface;\n use Drupal\\Core\\Session\\AccountInterface;\n@@ -15,7 +16,7 @@ class EntityLogEntryAccessControlHandler extends EntityAccessControlHandler {\n   /**\n    * {@inheritdoc}\n    */\n-  protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {\n+  protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account): AccessResultInterface {\n     /** @var \\Drupal\\entity_logger\\Entity\\EntityLogEntryInterface $entity */\n \n     switch ($operation) {\n@@ -36,7 +37,7 @@ class EntityLogEntryAccessControlHandler extends EntityAccessControlHandler {\n   /**\n    * {@inheritdoc}\n    */\n-  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {\n+  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL): AccessResultInterface {\n     return AccessResult::allowedIfHasPermission($account, 'add entity log entries');\n   }\n \n",
+      "new_path": "src/EntityLogEntryAccessControlHandler.php",
+      "old_path": "src/EntityLogEntryAccessControlHandler.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -16,44 +16,25 @@ use Symfony\\Component\\DependencyInjection\\ContainerInterface;\n  */\n class EntityLogEntryListBuilder extends EntityListBuilder {\n \n-  /**\n-   * The date formatter.\n-   *\n-   * @var \\Drupal\\Core\\Datetime\\DateFormatterInterface\n-   */\n-  protected $dateFormatter;\n-\n-  /**\n-   * View builder class for entity_log_entry entities.\n-   *\n-   * @var \\Drupal\\Core\\Entity\\EntityViewBuilderInterface\n-   */\n-  protected $entityLogEntryViewBuilder;\n-\n-  /**\n-   * The renderer service.\n-   *\n-   * @var \\Drupal\\Core\\Render\\RendererInterface\n-   */\n-  protected $renderer;\n-\n   /**\n    * Constructs a new EntityLogEntryListBuilder object.\n    *\n    * @param \\Drupal\\Core\\Entity\\EntityTypeInterface $entity_type\n    *   The entity type definition.\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entity_type_manager\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n    *   The entity type manager.\n-   * @param \\Drupal\\Core\\Datetime\\DateFormatterInterface $date_formatter\n+   * @param \\Drupal\\Core\\Datetime\\DateFormatterInterface $dateFormatter\n    *   The date formatter.\n    * @param \\Drupal\\Core\\Render\\RendererInterface $renderer\n    *   The renderer service.\n    */\n-  public function __construct(EntityTypeInterface $entity_type, EntityTypeManagerInterface $entity_type_manager, DateFormatterInterface $date_formatter, RendererInterface $renderer) {\n-    parent::__construct($entity_type, $entity_type_manager-\u003egetStorage($entity_type-\u003eid()));\n-    $this-\u003edateFormatter = $date_formatter;\n-    $this-\u003eentityLogEntryViewBuilder = $entity_type_manager-\u003egetViewBuilder('entity_log_entry');\n-    $this-\u003erenderer = $renderer;\n+  public function __construct(\n+    EntityTypeInterface $entity_type,\n+    protected EntityTypeManagerInterface $entityTypeManager,\n+    protected DateFormatterInterface $dateFormatter,\n+    protected RendererInterface $renderer,\n+  ) {\n+    parent::__construct($entity_type, $entityTypeManager-\u003egetStorage($entity_type-\u003eid()));\n   }\n \n   /**\n@@ -85,7 +66,8 @@ class EntityLogEntryListBuilder extends EntityListBuilder {\n   public function buildRow(EntityInterface $entity): array {\n     /** @var \\Drupal\\entity_logger\\Entity\\EntityLogEntryInterface $entity */\n     $row['id'] = $entity-\u003eid();\n-    $message = $this-\u003eentityLogEntryViewBuilder-\u003eview($entity);\n+    $entityLogEntryViewBuilder = $this-\u003eentityTypeManager-\u003egetViewBuilder('entity_log_entry');\n+    $message = $entityLogEntryViewBuilder-\u003eview($entity);\n     $row['message'] = $this-\u003erenderer-\u003erender($message);\n     $severity_levels = RfcLogLevel::getLevels();\n     $row['severity'] = $severity_levels[$entity-\u003egetSeverity()];\n",
+      "new_path": "src/EntityLogEntryListBuilder.php",
+      "old_path": "src/EntityLogEntryListBuilder.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -13,7 +13,7 @@ class EntityLogEntryStorage extends SqlContentEntityStorage implements EntityLog\n   /**\n    * {@inheritdoc}\n    */\n-  public function deleteForTargetEntity(EntityInterface $target_entity) {\n+  public function deleteForTargetEntity(EntityInterface $target_entity): void {\n     $ids = $this-\u003egetQuery()\n       -\u003eaccessCheck(FALSE)\n       -\u003econdition('target_entity.target_type', $target_entity-\u003egetEntityTypeId())\n",
+      "new_path": "src/EntityLogEntryStorage.php",
+      "old_path": "src/EntityLogEntryStorage.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -35,7 +35,6 @@ class EntityLogEntryViewBuilder extends EntityViewBuilder {\n \n       $entityType = $this-\u003eentityTypeId;\n       $this-\u003emoduleHandler()-\u003ealter([$entityType . '_build', 'entity_build'], $build_list[$key], $entity, $view_mode);\n-\n       $build_list[$key]['#weight'] = $weight++;\n     }\n \n",
+      "new_path": "src/EntityLogEntryViewBuilder.php",
+      "old_path": "src/EntityLogEntryViewBuilder.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -9,68 +9,44 @@ use Drupal\\Core\\Logger\\LoggerChannelFactoryInterface;\n use Drupal\\Core\\Logger\\LogMessageParserInterface;\n use Drupal\\Core\\Logger\\RfcLogLevel;\n use Drupal\\entity_logger\\Entity\\EntityLogEntryInterface;\n+use Drupal\\entity_logger\\Event\\EntityLoggerAvailableEntityTypesEvent;\n+use Drupal\\entity_logger\\Event\\EntityLoggerEvents;\n+use Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface;\n \n /**\n  * Service for logging to entities.\n  */\n class EntityLogger implements EntityLoggerInterface {\n \n-  /**\n-   * The entity_log_entry entity storage.\n-   *\n-   * @var \\Drupal\\Core\\Entity\\EntityStorageInterface\n-   */\n-  protected $entityLogEntryStorage;\n-\n-  /**\n-   * The entity_logger module settings.\n-   *\n-   * @var \\Drupal\\Core\\Config\\ImmutableConfig\n-   */\n-  protected $entityLoggerSettings;\n-\n-  /**\n-   * Factory service to load default Drupal logging service.\n-   *\n-   * @var \\Drupal\\Core\\Logger\\LoggerChannelFactoryInterface\n-   */\n-  protected $loggerFactory;\n-\n-  /**\n-   * The message's placeholders parser.\n-   *\n-   * @var \\Drupal\\Core\\Logger\\LogMessageParserInterface\n-   */\n-  protected $parser;\n-\n   /**\n    * EntityLogger constructor.\n    *\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entity_type_manager\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n    *   The entity type manager service.\n-   * @param \\Drupal\\Core\\Config\\ConfigFactoryInterface $config_factory\n+   * @param \\Drupal\\Core\\Config\\ConfigFactoryInterface $configFactory\n    *   The config factory service.\n-   * @param \\Drupal\\Core\\Logger\\LoggerChannelFactoryInterface $logger_factory\n+   * @param \\Drupal\\Core\\Logger\\LoggerChannelFactoryInterface $loggerFactory\n    *   The logger factory service.\n    * @param \\Drupal\\Core\\Logger\\LogMessageParserInterface $parser\n    *   The parser to use when extracting message variables.\n-   *\n-   * @throws \\Drupal\\Component\\Plugin\\Exception\\InvalidPluginDefinitionException\n-   * @throws \\Drupal\\Component\\Plugin\\Exception\\PluginNotFoundException\n+   * @param \\Symfony\\Contracts\\EventDispatcher\\EventDispatcherInterface $eventDispatcher\n+   *   The event dispatcher service.\n    */\n-  public function __construct(EntityTypeManagerInterface $entity_type_manager, ConfigFactoryInterface $config_factory, LoggerChannelFactoryInterface $logger_factory, LogMessageParserInterface $parser) {\n-    $this-\u003eentityLogEntryStorage = $entity_type_manager-\u003egetStorage('entity_log_entry');\n-    $this-\u003eentityLoggerSettings = $config_factory-\u003eget('entity_logger.settings');\n-    $this-\u003eloggerFactory = $logger_factory;\n-    $this-\u003eparser = $parser;\n-  }\n+  public function __construct(\n+    protected EntityTypeManagerInterface $entityTypeManager,\n+    protected ConfigFactoryInterface $configFactory,\n+    protected LoggerChannelFactoryInterface $loggerFactory,\n+    protected LogMessageParserInterface $parser,\n+    protected EventDispatcherInterface $eventDispatcher,\n+  ) {}\n \n   /**\n    * {@inheritdoc}\n    */\n-  public function log(EntityInterface $entity, string $message, array $context = [], int $severity = RfcLogLevel::INFO, string $logger_channel = NULL): ?EntityLogEntryInterface {\n-    $enabled_entity_types = $this-\u003eentityLoggerSettings-\u003eget('enabled_entity_types');\n-    if (!in_array($entity-\u003egetEntityTypeId(), $enabled_entity_types)) {\n+  public function log(EntityInterface $entity, string $message, array $context = [], int $severity = RfcLogLevel::INFO, ?string $logger_channel = NULL): ?EntityLogEntryInterface {\n+    $entityLoggerSettings = $this-\u003econfigFactory-\u003eget('entity_logger.settings');\n+    $enabled_entity_types = $entityLoggerSettings-\u003eget('enabled_entity_types');\n+    if (!in_array($entity-\u003egetEntityTypeId(), $enabled_entity_types, TRUE)) {\n       return NULL;\n     }\n \n@@ -79,7 +55,8 @@ class EntityLogger implements EntityLoggerInterface {\n     $context = $this-\u003eparser-\u003eparseMessagePlaceholders($message, $context);\n \n     /** @var \\Drupal\\entity_logger\\Entity\\EntityLogEntryInterface $log_entry */\n-    $log_entry = $this-\u003eentityLogEntryStorage-\u003ecreate([]);\n+    $entityLogEntryStorage = $this-\u003eentityTypeManager-\u003egetStorage('entity_log_entry');\n+    $log_entry = $entityLogEntryStorage-\u003ecreate([]);\n     $log_entry-\u003esetTargetEntity($entity);\n     $log_entry-\u003esetMessage($message, $context);\n     $log_entry-\u003esetSeverity($severity);\n@@ -91,4 +68,24 @@ class EntityLogger implements EntityLoggerInterface {\n     return $log_entry;\n   }\n \n+  /**\n+   * {@inheritdoc}\n+   */\n+  public function getAvailableEntityTypesForLogging(): array {\n+    // Get entity types that are explicitly made available via the event.\n+    $event_entity_types = [];\n+    $event = new EntityLoggerAvailableEntityTypesEvent($event_entity_types);\n+    $this-\u003eeventDispatcher-\u003edispatch($event, EntityLoggerEvents::AVAILABLE_ENTITY_TYPES);\n+    $event_entity_types = $event-\u003egetEntityTypes();\n+\n+    // Render a list of all entity types that should be available.\n+    $entity_types = [];\n+    foreach ($this-\u003eentityTypeManager-\u003egetDefinitions() as $entity_type_id =\u003e $entity_type) {\n+      if ($entity_type-\u003ehasLinkTemplate('canonical') || in_array($entity_type_id, $event_entity_types, TRUE)) {\n+        $entity_types[$entity_type_id] = $entity_type-\u003egetLabel();\n+      }\n+    }\n+    return $entity_types;\n+  }\n+\n }\n",
+      "new_path": "src/EntityLogger.php",
+      "old_path": "src/EntityLogger.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -11,36 +11,27 @@ use Drupal\\entity_logger\\Entity\\EntityLogEntryInterface;\n  */\n class EntityLoggerInstance implements EntityLoggerInstanceInterface {\n \n-  /**\n-   * The entity logger service.\n-   *\n-   * @var \\Drupal\\entity_logger\\EntityLoggerInterface\n-   */\n-  protected $entityLogger;\n-\n   /**\n    * The entity for this entity logger instance.\n    *\n-   * @var \\Drupal\\Core\\Entity\\EntityInterface\n+   * @var \\Drupal\\Core\\Entity\\EntityInterface|null\n    */\n-  protected $entity;\n+  protected ?EntityInterface $entity = NULL;\n \n   /**\n    * The optional Drupal logging channel.\n    *\n    * @var string|null\n    */\n-  protected $channel;\n+  protected ?string $channel = NULL;\n \n   /**\n-   * Constructs a EntityLoggerInstance object.\n+   * Constructs an EntityLoggerInstance object.\n    *\n-   * @param \\Drupal\\entity_logger\\EntityLoggerInterface $entity_logger\n+   * @param \\Drupal\\entity_logger\\EntityLoggerInterface $entityLogger\n    *   The entity logger service.\n    */\n-  public function __construct(EntityLoggerInterface $entity_logger) {\n-    $this-\u003eentityLogger = $entity_logger;\n-  }\n+  public function __construct(protected EntityLoggerInterface $entityLogger) {}\n \n   /**\n    * {@inheritdoc}\n",
+      "new_path": "src/EntityLoggerInstance.php",
+      "old_path": "src/EntityLoggerInstance.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -9,27 +9,18 @@ use Drupal\\Core\\Entity\\EntityInterface;\n  */\n class EntityLoggerInstanceFactory implements EntityLoggerInstanceFactoryInterface {\n \n-  /**\n-   * The entity logger instance service.\n-   *\n-   * @var \\Drupal\\entity_logger\\EntityLoggerInstanceInterface\n-   */\n-  protected $entityLoggerInstance;\n-\n   /**\n    * Constructs a new EntityLogger Instance object.\n    *\n-   * @param \\Drupal\\entity_logger\\EntityLoggerInstanceInterface $entity_logger_instance\n+   * @param \\Drupal\\entity_logger\\EntityLoggerInstanceInterface $entityLoggerInstance\n    *   The entity logger instance service.\n    */\n-  public function __construct(EntityLoggerInstanceInterface $entity_logger_instance) {\n-    $this-\u003eentityLoggerInstance = $entity_logger_instance;\n-  }\n+  public function __construct(protected EntityLoggerInstanceInterface $entityLoggerInstance) {}\n \n   /**\n    * {@inheritdoc}\n    */\n-  public function get(EntityInterface $entity, string $channel = NULL): EntityLoggerInstance {\n+  public function get(EntityInterface $entity, ?string $channel = NULL): EntityLoggerInstance {\n     $this-\u003eentityLoggerInstance-\u003esetEntity($entity);\n     if ($channel) {\n       $this-\u003eentityLoggerInstance-\u003esetLoggerChannel($channel);\n",
+      "new_path": "src/EntityLoggerInstanceFactory.php",
+      "old_path": "src/EntityLoggerInstanceFactory.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -20,6 +20,6 @@ interface EntityLoggerInstanceFactoryInterface {\n    * @return \\Drupal\\entity_logger\\EntityLoggerInstance\n    *   The entity logger instance.\n    */\n-  public function get(EntityInterface $entity, string $channel = NULL): EntityLoggerInstance;\n+  public function get(EntityInterface $entity, ?string $channel = NULL): EntityLoggerInstance;\n \n }\n",
+      "new_path": "src/EntityLoggerInstanceFactoryInterface.php",
+      "old_path": "src/EntityLoggerInstanceFactoryInterface.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -34,7 +34,7 @@ interface EntityLoggerInstanceInterface {\n   public function setLoggerChannel(string $channel): EntityLoggerInstanceInterface;\n \n   /**\n-   * Add log message to entity logger, with given severity.\n+   * Add a log message to entity logger, with given severity.\n    *\n    * @param string $message\n    *   The log message.\n",
+      "new_path": "src/EntityLoggerInstanceInterface.php",
+      "old_path": "src/EntityLoggerInstanceInterface.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -28,6 +28,14 @@ interface EntityLoggerInterface {\n    * @return \\Drupal\\entity_logger\\Entity\\EntityLogEntryInterface|null\n    *   The created log entry entity.\n    */\n-  public function log(EntityInterface $entity, string $message, array $context = [], int $severity = RfcLogLevel::INFO, string $logger_channel = NULL): ?EntityLogEntryInterface;\n+  public function log(EntityInterface $entity, string $message, array $context = [], int $severity = RfcLogLevel::INFO, ?string $logger_channel = NULL): ?EntityLogEntryInterface;\n+\n+  /**\n+   * Get a list of available entity types to enable entity logger on.\n+   *\n+   * @return array\n+   *   Options list of available entity types.\n+   */\n+  public function getAvailableEntityTypesForLogging(): array;\n \n }\n",
+      "new_path": "src/EntityLoggerInterface.php",
+      "old_path": "src/EntityLoggerInterface.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -0,0 +1,23 @@\n+\u003c?php\n+\n+declare(strict_types=1);\n+\n+namespace Drupal\\entity_logger;\n+\n+/**\n+ * Helper class for Entity Logger schema definition.\n+ */\n+class EntityLoggerSchemaHelper {\n+\n+  /**\n+   * Get a list of available entity type IDS to enable entity logger on.\n+   *\n+   * @return array\n+   *   List of entity type IDs to enable entity logger on.\n+   */\n+  public static function getAvailableEntityTypeIdsForLogging(): array {\n+    $service = \\Drupal::service('entity_logger');\n+    return array_keys($service-\u003egetAvailableEntityTypesForLogging());\n+  }\n+\n+}\n",
+      "new_path": "src/EntityLoggerSchemaHelper.php",
+      "old_path": "src/EntityLoggerSchemaHelper.php",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -14,7 +14,7 @@ class EntityLoggerAvailableEntityTypesEvent extends Event {\n    *\n    * @var array\n    */\n-  protected $entityTypes;\n+  protected array $entityTypes;\n \n   /**\n    * EntityLoggerAvailableEntityTypesEvent constructor.\n@@ -32,8 +32,8 @@ class EntityLoggerAvailableEntityTypesEvent extends Event {\n    * @param string $entity_type\n    *   The entity type ID to make available.\n    */\n-  public function addEntityType(string $entity_type) {\n-    if (!in_array($entity_type, $this-\u003eentityTypes)) {\n+  public function addEntityType(string $entity_type): void {\n+    if (!in_array($entity_type, $this-\u003eentityTypes, TRUE)) {\n       $this-\u003eentityTypes[] = $entity_type;\n     }\n   }\n",
+      "new_path": "src/Event/EntityLoggerAvailableEntityTypesEvent.php",
+      "old_path": "src/Event/EntityLoggerAvailableEntityTypesEvent.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -20,7 +20,7 @@ use Symfony\\Component\\DependencyInjection\\ContainerInterface;\n class EntityLogEntryForm extends ContentEntityForm {\n \n   /**\n-   * Constructs a EntityLogEntryForm object.\n+   * Constructs an EntityLogEntryForm object.\n    *\n    * @param \\Drupal\\Core\\Entity\\EntityRepositoryInterface $entity_repository\n    *   The entity repository service.\n@@ -54,7 +54,8 @@ class EntityLogEntryForm extends ContentEntityForm {\n   public function form(array $form, FormStateInterface $form_state): array {\n     $form = parent::form($form, $form_state);\n     if (isset($form['severity']['widget'][0]['value'])) {\n-      // Transform severity numeric field to select list with known log levels.\n+      // Transform severity numeric field to a select list with known log\n+      // levels.\n       $form['severity']['widget'][0]['value']['#type'] = 'select';\n       $form['severity']['widget'][0]['value']['#options'] = RfcLogLevel::getLevels();\n     }\n@@ -64,7 +65,7 @@ class EntityLogEntryForm extends ContentEntityForm {\n   /**\n    * {@inheritdoc}\n    */\n-  public function save(array $form, FormStateInterface $form_state) {\n+  public function save(array $form, FormStateInterface $form_state): int {\n     /** @var \\Drupal\\entity_logger\\Entity\\EntityLogEntryInterface $entity */\n     $entity = $this-\u003egetEntity();\n     $target_entity = $entity-\u003eisNew() ? $this-\u003egetTargetEntity() : $entity-\u003egetTargetEntity();\n",
+      "new_path": "src/Form/EntityLogEntryForm.php",
+      "old_path": "src/Form/EntityLogEntryForm.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -4,13 +4,10 @@ namespace Drupal\\entity_logger\\Form;\n \n use Drupal\\Core\\Config\\ConfigFactoryInterface;\n use Drupal\\Core\\Config\\TypedConfigManagerInterface;\n-use Drupal\\Core\\Entity\\EntityTypeManagerInterface;\n use Drupal\\Core\\Form\\ConfigFormBase;\n use Drupal\\Core\\Form\\FormStateInterface;\n-use Drupal\\entity_logger\\Event\\EntityLoggerAvailableEntityTypesEvent;\n-use Drupal\\entity_logger\\Event\\EntityLoggerEvents;\n+use Drupal\\entity_logger\\EntityLoggerInterface;\n use Symfony\\Component\\DependencyInjection\\ContainerInterface;\n-use Symfony\\Component\\EventDispatcher\\EventDispatcherInterface;\n \n /**\n  * Configure Entity Logger settings.\n@@ -18,22 +15,19 @@ use Symfony\\Component\\EventDispatcher\\EventDispatcherInterface;\n class EntityLoggerSettingsForm extends ConfigFormBase {\n \n   /**\n-   * Constructs a EntityLoggerSettingsForm.\n+   * Constructs an EntityLoggerSettingsForm.\n    *\n    * @param \\Drupal\\Core\\Config\\ConfigFactoryInterface $config_factory\n    *   Defines the configuration object factory.\n    * @param \\Drupal\\Core\\Config\\TypedConfigManagerInterface $typedConfigManager\n    *   The typed config manager.\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n-   *   Manages entity type plugin definitions.\n-   * @param \\Symfony\\Component\\EventDispatcher\\EventDispatcherInterface $eventDispatcher\n-   *   The event dispatcher service.\n+   * @param \\Drupal\\entity_logger\\EntityLoggerInterface $entityLogger\n+   *   The entity logger service.\n    */\n   public function __construct(\n     ConfigFactoryInterface $config_factory,\n     TypedConfigManagerInterface $typedConfigManager,\n-    protected EntityTypeManagerInterface $entityTypeManager,\n-    protected EventDispatcherInterface $eventDispatcher,\n+    protected EntityLoggerInterface $entityLogger,\n   ) {\n     parent::__construct($config_factory, $typedConfigManager);\n   }\n@@ -45,8 +39,7 @@ class EntityLoggerSettingsForm extends ConfigFormBase {\n     return new static(\n       $container-\u003eget('config.factory'),\n       $container-\u003eget('config.typed'),\n-      $container-\u003eget('entity_type.manager'),\n-      $container-\u003eget('event_dispatcher')\n+      $container-\u003eget('entity_logger'),\n     );\n   }\n \n@@ -79,51 +72,52 @@ class EntityLoggerSettingsForm extends ConfigFormBase {\n     ];\n \n     // Get all applicable entity types.\n-    foreach ($this-\u003egetAvailableEntityTypes() as $entity_type_id =\u003e $entity_type_name) {\n+    foreach ($this-\u003eentityLogger-\u003egetAvailableEntityTypesForLogging() as $entity_type_id =\u003e $entity_type_name) {\n       $form['enabled_entity_types'][$entity_type_id] = [\n         '#type' =\u003e 'checkbox',\n         '#title' =\u003e $entity_type_name,\n         '#default_value' =\u003e in_array($entity_type_id, $config-\u003eget('enabled_entity_types')),\n       ];\n     }\n+\n+    // Retention period options in days.\n+    $retention_options = [\n+      0 =\u003e $this-\u003et('Never delete'),\n+      7 =\u003e $this-\u003et('1 week'),\n+      30 =\u003e $this-\u003et('1 month'),\n+      90 =\u003e $this-\u003et('3 months'),\n+      180 =\u003e $this-\u003et('6 months'),\n+      365 =\u003e $this-\u003et('1 year'),\n+    ];\n+\n+    $form['retention_period'] = [\n+      '#type' =\u003e 'select',\n+      '#title' =\u003e $this-\u003et('Retention period'),\n+      '#description' =\u003e $this-\u003et('Specify how long to keep log entries. Entries older than the specified period will be deleted in batch on cron.'),\n+      '#options' =\u003e $retention_options,\n+      '#default_value' =\u003e $config-\u003eget('retention_period') ?? 90,\n+    ];\n+\n     return parent::buildForm($form, $form_state);\n   }\n \n   /**\n    * {@inheritdoc}\n    */\n-  public function submitForm(array \u0026$form, FormStateInterface $form_state) {\n+  public function submitForm(array \u0026$form, FormStateInterface $form_state): void {\n     $config = $this-\u003econfig('entity_logger.settings');\n-    $enabled_entity_types = array_filter($form_state-\u003egetValue('enabled_entity_types'), function ($checked) {\n+    $enabled_entity_types = array_filter($form_state-\u003egetValue('enabled_entity_types'), static function ($checked) {\n       return (bool) $checked;\n     });\n     $config-\u003eset('enabled_entity_types', array_keys($enabled_entity_types));\n+\n+    // Save retention period.\n+    $config-\u003eset('retention_period', (int) $form_state-\u003egetValue('retention_period'));\n+\n+    // Save the config.\n     $config-\u003esave();\n \n     parent::submitForm($form, $form_state);\n   }\n \n-  /**\n-   * Get a list of available entity types to enable entity logger on.\n-   *\n-   * @return array\n-   *   Options list of available entity types.\n-   */\n-  protected function getAvailableEntityTypes(): array {\n-    // Get entity types that are explicitly made available via the event.\n-    $event_entity_types = [];\n-    $event = new EntityLoggerAvailableEntityTypesEvent($event_entity_types);\n-    $this-\u003eeventDispatcher-\u003edispatch($event, EntityLoggerEvents::AVAILABLE_ENTITY_TYPES);\n-    $event_entity_types = $event-\u003egetEntityTypes();\n-\n-    // Render a list of all entity types that should be available.\n-    $entity_types = [];\n-    foreach ($this-\u003eentityTypeManager-\u003egetDefinitions() as $entity_type_id =\u003e $entity_type) {\n-      if ($entity_type-\u003ehasLinkTemplate('canonical') || in_array($entity_type_id, $event_entity_types)) {\n-        $entity_types[$entity_type_id] = $entity_type-\u003egetLabel();\n-      }\n-    }\n-    return $entity_types;\n-  }\n-\n }\n",
+      "new_path": "src/Form/EntityLoggerSettingsForm.php",
+      "old_path": "src/Form/EntityLoggerSettingsForm.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -0,0 +1,95 @@\n+\u003c?php\n+\n+declare(strict_types=1);\n+\n+namespace Drupal\\entity_logger\\Hook;\n+\n+use Drupal\\Core\\Config\\ConfigFactoryInterface;\n+use Drupal\\Component\\Datetime\\TimeInterface;\n+use Drupal\\Core\\Entity\\EntityTypeManagerInterface;\n+use Drupal\\Core\\Hook\\Attribute\\Hook;\n+use Psr\\Log\\LoggerInterface;\n+\n+/**\n+ * Provides cron hooks.\n+ */\n+class CronHooks {\n+\n+  public function __construct(\n+    protected ConfigFactoryInterface $configFactory,\n+    protected EntityTypeManagerInterface $entityTypeManager,\n+    protected TimeInterface $time,\n+    protected LoggerInterface $logger,\n+  ) {}\n+\n+  /**\n+   * Implements hook_cron().\n+   *\n+   * Cleans up old entity log entries based on the configured retention period.\n+   *\n+   * @throws \\Drupal\\Component\\Plugin\\Exception\\InvalidPluginDefinitionException\n+   * @throws \\Drupal\\Component\\Plugin\\Exception\\PluginNotFoundException\n+   * @throws \\Drupal\\Core\\Entity\\EntityStorageException\n+   */\n+  #[Hook('cron')]\n+  public function cron(): void {\n+    $config = $this-\u003econfigFactory-\u003eget('entity_logger.settings');\n+    $retentionDays = (int) $config-\u003eget('retention_period');\n+    if ($retentionDays \u003e 0) {\n+      $cutoff = $this-\u003etime-\u003egetRequestTime() - ($retentionDays * 86400);\n+      /** @var \\Drupal\\entity_logger\\EntityLogEntryStorageInterface $storage */\n+      $storage = $this-\u003eentityTypeManager-\u003egetStorage('entity_log_entry');\n+\n+      $totalDeleted = 0;\n+      $batchSize = 100;\n+      $startTime = microtime(TRUE);\n+      $timeLimit = 10;\n+\n+      do {\n+        // Check if we've exceeded the time limit and emit a warning if we have.\n+        // Especially when enabling this after a long period of time, it is fine\n+        // to exceed the time limit for several runs, but when this happens\n+        // consistently, it is a sign that the log fills faster than we can\n+        // clean it up. Consider running cron more often, or reduce the amount\n+        // of logging.\n+        if ((microtime(TRUE) - $startTime) \u003e $timeLimit) {\n+          $this-\u003elogger-\u003ewarning(\n+            'Retention cleanup stopped after @seconds seconds to avoid using excessive time. Deleted @count entries older than @days days.',\n+            [\n+              '@seconds' =\u003e $timeLimit,\n+              '@count' =\u003e $totalDeleted,\n+              '@days' =\u003e $retentionDays,\n+            ],\n+          );\n+          return;\n+        }\n+\n+        // Find entries older than the cutoff timestamp, limited to batch size.\n+        $ids = $storage-\u003egetQuery()\n+          -\u003eaccessCheck(FALSE)\n+          -\u003econdition('created', $cutoff, '\u003c')\n+          -\u003esort('id')\n+          -\u003erange(0, $batchSize)\n+          -\u003eexecute();\n+\n+        if ($ids) {\n+          $entries = $storage-\u003eloadMultiple($ids);\n+          $storage-\u003edelete($entries);\n+          $deleted = count($entries);\n+          $totalDeleted += $deleted;\n+\n+          // Clear the entity storage cache to free memory.\n+          $storage-\u003eresetCache($ids);\n+        }\n+      } while (!empty($ids));\n+\n+      if ($totalDeleted \u003e 0) {\n+        $this-\u003elogger-\u003enotice(\n+          'Deleted @count log entries older than @days days.',\n+          ['@count' =\u003e $totalDeleted, '@days' =\u003e $retentionDays]\n+        );\n+      }\n+    }\n+  }\n+\n+}\n",
+      "new_path": "src/Hook/CronHooks.php",
+      "old_path": "src/Hook/CronHooks.php",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -1,79 +1,76 @@\n \u003c?php\n \n-namespace Drupal\\entity_logger;\n+declare(strict_types=1);\n+\n+namespace Drupal\\entity_logger\\Hook;\n \n use Drupal\\Core\\Config\\ConfigFactoryInterface;\n-use Drupal\\Core\\DependencyInjection\\ContainerInjectionInterface;\n use Drupal\\Core\\Entity\\EntityInterface;\n+use Drupal\\Core\\Entity\\EntityTypeManagerInterface;\n+use Drupal\\Core\\Hook\\Attribute\\Hook;\n use Drupal\\Core\\Session\\AccountInterface;\n use Drupal\\Core\\StringTranslation\\StringTranslationTrait;\n-use Symfony\\Component\\DependencyInjection\\ContainerInterface;\n \n /**\n- * Defines entity type information for entity_logger.\n+ * Provides entity hooks.\n  */\n-class EntityTypeInfo implements ContainerInjectionInterface {\n+class EntityHooks {\n \n   use StringTranslationTrait;\n \n   /**\n-   * The current user.\n-   *\n-   * @var \\Drupal\\Core\\Session\\AccountInterface\n-   */\n-  protected $currentUser;\n-\n-  /**\n-   * The entity logger module settings.\n+   * Constructs an EntityHooks object.\n    *\n-   * @var \\Drupal\\Core\\Config\\ImmutableConfig\n-   */\n-  protected $entityLoggerSettings;\n-\n-  /**\n-   * EntityTypeInfo constructor.\n-   *\n-   * @param \\Drupal\\Core\\Session\\AccountInterface $current_user\n-   *   Current user.\n-   * @param \\Drupal\\Core\\Config\\ConfigFactoryInterface $config_factory\n+   * @param \\Drupal\\Core\\Config\\ConfigFactoryInterface $configFactory\n    *   The config factory service.\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n+   *   The entity type manager service.\n+   * @param \\Drupal\\Core\\Session\\AccountInterface $currentUser\n+   *   The current user.\n    */\n-  public function __construct(AccountInterface $current_user, ConfigFactoryInterface $config_factory) {\n-    $this-\u003ecurrentUser = $current_user;\n-    $this-\u003eentityLoggerSettings = $config_factory-\u003eget('entity_logger.settings');\n-  }\n+  public function __construct(\n+    protected ConfigFactoryInterface $configFactory,\n+    protected EntityTypeManagerInterface $entityTypeManager,\n+    protected AccountInterface $currentUser,\n+  ) {}\n \n   /**\n-   * {@inheritdoc}\n+   * Implements hook_entity_type_alter().\n+   *\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeInterface[] $entityTypes\n+   *   The master entity type list to alter.\n    */\n-  public static function create(ContainerInterface $container): EntityTypeInfo {\n-    return new static(\n-      $container-\u003eget('current_user'),\n-      $container-\u003eget('config.factory')\n-    );\n+  #[Hook('entity_type_alter')]\n+  public function entityTypeAlter(array \u0026$entityTypes): void {\n+    $entity_logger_settings = $this-\u003econfigFactory-\u003eget('entity_logger.settings');\n+    $enabledEntityTypes = $entity_logger_settings-\u003eget('enabled_entity_types');\n+    if (is_array($enabledEntityTypes)) {\n+      foreach ($entityTypes as $entityTypeId =\u003e $entityType) {\n+        if (in_array($entityTypeId, $enabledEntityTypes, TRUE)) {\n+          $entityType-\u003esetLinkTemplate('entity-logger', \"/entity_logger/$entityTypeId/{{$entityTypeId}}\");\n+        }\n+      }\n+    }\n   }\n \n   /**\n-   * Add link templates to appropriate entity types.\n+   * Implements hook_entity_predelete().\n    *\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeInterface[] $entity_types\n-   *   The master entity type list to alter.\n+   * @param \\Drupal\\Core\\Entity\\EntityInterface $entity\n+   *   The given entity.\n    *\n-   * @see hook_entity_type_alter()\n+   * @throws \\Drupal\\Component\\Plugin\\Exception\\InvalidPluginDefinitionException\n+   * @throws \\Drupal\\Component\\Plugin\\Exception\\PluginNotFoundException\n    */\n-  public function entityTypeAlter(array \u0026$entity_types) {\n-    $enabled_entity_types = $this-\u003eentityLoggerSettings-\u003eget('enabled_entity_types');\n-    if (is_array($enabled_entity_types)) {\n-      foreach ($entity_types as $entity_type_id =\u003e $entity_type) {\n-        if (in_array($entity_type_id, $enabled_entity_types)) {\n-          $entity_type-\u003esetLinkTemplate('entity-logger', \"/entity_logger/$entity_type_id/{{$entity_type_id}}\");\n-        }\n-      }\n-    }\n+  #[Hook('entity_predelete')]\n+  public function entityPreDelete(EntityInterface $entity): void {\n+    /** @var \\Drupal\\entity_logger\\EntityLogEntryStorageInterface $log_entry_storage */\n+    $log_entry_storage = $this-\u003eentityTypeManager-\u003egetStorage('entity_log_entry');\n+    $log_entry_storage-\u003edeleteForTargetEntity($entity);\n   }\n \n   /**\n-   * Add entity operation on entities that supports it.\n+   * Implements hook_entity_operation().\n    *\n    * @param \\Drupal\\Core\\Entity\\EntityInterface $entity\n    *   The entity on which to define an operation.\n@@ -81,8 +78,9 @@ class EntityTypeInfo implements ContainerInjectionInterface {\n    * @return array\n    *   An array of operation definitions.\n    *\n-   * @see hook_entity_operation()\n+   * @throws \\Drupal\\Core\\Entity\\EntityMalformedException\n    */\n+  #[Hook('entity_operation')]\n   public function entityOperation(EntityInterface $entity): array {\n     $operations = [];\n     if ($this-\u003ecurrentUser-\u003ehasPermission('view entity log entries')) {\n",
+      "new_path": "src/Hook/EntityHooks.php",
+      "old_path": "src/EntityTypeInfo.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": true,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -0,0 +1,49 @@\n+\u003c?php\n+\n+declare(strict_types=1);\n+\n+namespace Drupal\\entity_logger\\Hook;\n+\n+use Drupal\\Core\\Hook\\Attribute\\Hook;\n+use Drupal\\Core\\Routing\\RouteMatchInterface;\n+\n+/**\n+ * Provides Help hook implementations.\n+ */\n+class HelpHooks {\n+\n+  /**\n+   * Implements hook_help().\n+   *\n+   * @param string $routeName\n+   *   The route name.\n+   * @param \\Drupal\\Core\\Routing\\RouteMatchInterface $routeMatch\n+   *   The route match service.\n+   *\n+   * @return string|null\n+   *   The help text when the route name is correct, otherwise null.\n+   */\n+  #[Hook('help')]\n+  public function help(string $routeName, RouteMatchInterface $routeMatch): ?string {\n+    if ($routeName === 'help.page.entity_logger') {\n+      $output = '\u003ch3\u003e' . t('About') . '\u003c/h3\u003e';\n+      $output .= '\u003cp\u003e' . t('This module allows adding log messages to entities.\n+    Log messages are shown on a \"Log\" tab on the entity they are associated\n+    with.') . '\u003c/p\u003e';\n+      $output .= '\u003cp\u003e' . t('Log messages can be added to a configurable set of\n+    entity types.') . '\u003c/p\u003e';\n+      $output .= '\u003cp\u003e' . t('This module is intended to be used in cases where\n+    you want to store log messages but the default Drupal watchdog / logging\n+    interface is insufficient. E.g. you want the log messages to appear within\n+    the context of an entity, you want more\n+    persistency in the storage of these log message, and / or you want specific\n+    roles to access these log messages, while you do not want these roles to\n+    access the default Drupal watchdog UI.') . '\u003c/p\u003e';\n+\n+      return $output;\n+    }\n+\n+    return NULL;\n+  }\n+\n+}\n",
+      "new_path": "src/Hook/HelpHooks.php",
+      "old_path": "src/Hook/HelpHooks.php",
+      "a_mode": "0",
+      "b_mode": "100644",
+      "new_file": true,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -15,22 +15,13 @@ class EntityLoggerLocalAction extends DeriverBase implements ContainerDeriverInt\n \n   use StringTranslationTrait;\n \n-  /**\n-   * The entity type manager.\n-   *\n-   * @var \\Drupal\\Core\\Entity\\EntityTypeManagerInterface\n-   */\n-  protected $entityTypeManager;\n-\n   /**\n    * Constructs a EntityLoggerLocalAction object.\n    *\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entity_type_manager\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n    *   The entity type manager.\n    */\n-  public function __construct(EntityTypeManagerInterface $entity_type_manager) {\n-    $this-\u003eentityTypeManager = $entity_type_manager;\n-  }\n+  public function __construct(protected EntityTypeManagerInterface $entityTypeManager) {}\n \n   /**\n    * {@inheritdoc}\n",
+      "new_path": "src/Plugin/Derivative/EntityLoggerLocalAction.php",
+      "old_path": "src/Plugin/Derivative/EntityLoggerLocalAction.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -19,23 +19,18 @@ class EntityLoggerLocalTask extends DeriverBase implements ContainerDeriverInter\n \n   use StringTranslationTrait;\n \n-  /**\n-   * The entity manager.\n-   *\n-   * @var \\Drupal\\Core\\Entity\\EntityTypeManagerInterface\n-   */\n-  protected $entityTypeManager;\n-\n   /**\n    * Creates an EntityLoggerLocalTask object.\n    *\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entity_type_manager\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n    *   The entity manager.\n    * @param \\Drupal\\Core\\StringTranslation\\TranslationInterface $string_translation\n    *   The translation manager.\n    */\n-  public function __construct(EntityTypeManagerInterface $entity_type_manager, TranslationInterface $string_translation) {\n-    $this-\u003eentityTypeManager = $entity_type_manager;\n+  public function __construct(\n+    protected EntityTypeManagerInterface $entityTypeManager,\n+    TranslationInterface $string_translation,\n+  ) {\n     $this-\u003estringTranslation = $string_translation;\n   }\n \n@@ -45,7 +40,7 @@ class EntityLoggerLocalTask extends DeriverBase implements ContainerDeriverInter\n   public static function create(ContainerInterface $container, $base_plugin_id) {\n     return new static(\n       $container-\u003eget('entity_type.manager'),\n-      $container-\u003eget('string_translation')\n+      $container-\u003eget('string_translation'),\n     );\n   }\n \n",
+      "new_path": "src/Plugin/Derivative/EntityLoggerLocalTask.php",
+      "old_path": "src/Plugin/Derivative/EntityLoggerLocalTask.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -16,7 +16,7 @@ class EntityLogEntryAddLocalAction extends LocalActionDefault {\n    */\n   public function getRouteParameters(RouteMatchInterface $route_match) {\n     $route_parameters = parent::getRouteParameters($route_match);\n-    $type = $route_match-\u003egetRouteObject()-\u003egetOption('_entity_logger_entity_type_id');\n+    $type = $route_match-\u003egetRouteObject()?-\u003egetOption('_entity_logger_entity_type_id');\n     if ($type) {\n       $route_parameters['entity_type'] = $type;\n       $entity = $route_match-\u003egetParameter($type);\n",
+      "new_path": "src/Plugin/Menu/LocalAction/EntityLogEntryAddLocalAction.php",
+      "old_path": "src/Plugin/Menu/LocalAction/EntityLogEntryAddLocalAction.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -17,8 +17,7 @@ class SeverityLabel extends FieldPluginBase {\n   /**\n    * {@inheritdoc}\n    */\n-  public function query() {\n-  }\n+  public function query(): void {}\n \n   /**\n    * {@inheritdoc}\n",
+      "new_path": "src/Plugin/views/field/SeverityLabel.php",
+      "old_path": "src/Plugin/views/field/SeverityLabel.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    },
+    {
+      "diff": "@@ -16,27 +16,18 @@ use Symfony\\Component\\Routing\\RouteCollection;\n  */\n class RouteSubscriber extends RouteSubscriberBase {\n \n-  /**\n-   * The entity type manager service.\n-   *\n-   * @var \\Drupal\\Core\\Entity\\EntityTypeManagerInterface\n-   */\n-  protected $entityTypeManager;\n-\n   /**\n    * Constructs a new RouteSubscriber object.\n    *\n-   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entity_manager\n+   * @param \\Drupal\\Core\\Entity\\EntityTypeManagerInterface $entityTypeManager\n    *   The entity type manager.\n    */\n-  public function __construct(EntityTypeManagerInterface $entity_manager) {\n-    $this-\u003eentityTypeManager = $entity_manager;\n-  }\n+  public function __construct(protected EntityTypeManagerInterface $entityTypeManager) {}\n \n   /**\n    * {@inheritdoc}\n    */\n-  protected function alterRoutes(RouteCollection $collection) {\n+  protected function alterRoutes(RouteCollection $collection): void {\n     foreach ($this-\u003eentityTypeManager-\u003egetDefinitions() as $entity_type_id =\u003e $entity_type) {\n       if ($route = $this-\u003egetEntityLoggerRoute($entity_type)) {\n         $collection-\u003eadd(\"entity.$entity_type_id.entity_logger\", $route);\n",
+      "new_path": "src/Routing/RouteSubscriber.php",
+      "old_path": "src/Routing/RouteSubscriber.php",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    }
+  ],
+  "compare_timeout": false,
+  "compare_same_ref": false,
+  "web_url": "https://git.drupalcode.org/project/entity_logger/-/compare/b62e58c0f5d455e7eace670b9b597a8a18cda0f9...46d7c92d03edac1fdbb92da288274273325e2774"
+}

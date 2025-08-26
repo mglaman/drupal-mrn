@@ -37,7 +37,7 @@ class ChangelogTest extends TestCase
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')),
         ]);
         $client = new Client([
-          'handler' => HandlerStack::create($mockHandler)
+          'handler' => HandlerStack::create($mockHandler),
         ]);
         $fixture = (new GitLab($client))->compare('views_remote_data', '1.0.1', 'HEAD');
         $sut = new Changelog($client, 'views_remote_data', $fixture->commits, '1.0.1', 'HEAD');
@@ -46,7 +46,7 @@ class ChangelogTest extends TestCase
             'mglaman',
             'mrinalini9',
         ], $sut->getContributors());
-        self::assertEquals(          [
+        self::assertEquals([
           [
             'nid' => '3294296',
             'type' => 'Task',
@@ -54,10 +54,22 @@ class ChangelogTest extends TestCase
             'link' => 'https://www.drupal.org/i/3294296',
             'contributors' => [
               'Lal_',
+              'mglaman',
               'mrinalini9',
             ],
           ],
         ], $sut->getChanges());
+    }
+
+    public function testNewFormat(): void {
+      $client = $this->createMock(Client::class);
+      $fixture = json_decode(file_get_contents(__DIR__ . '/../fixtures/entity_logger-new-format.json'), FALSE, 512, JSON_THROW_ON_ERROR);
+      $sut = new Changelog($client, 'entity_logger', $fixture->commits, '1.0.11', '1.0.12');
+      self::assertEquals([
+        'aren33k',
+        'eelkeblok',
+        'svendecabooter',
+      ], $sut->getContributors());
     }
 
 }

@@ -4,20 +4,34 @@ namespace App;
 
 final class CommitParser {
 
-    public static function extractUsernames(string $title, $sort = false): array {
-        $usernames = [];
-        $matches = [];
-        preg_match('/by ([^:]+):/S', $title, $matches);
-        if (count($matches) !== 2) {
-            return $usernames;
-        }
-        foreach (explode(',', $matches[1]) as $user) {
-            $usernames[] = trim($user);
-        }
+    public static function extractUsernames(\stdClass $commit, $sort = false): array {
+        $from_title = self::extractUsernamesFromString($commit->title);
+        $from_message = self::extractUsernamesFromString($commit->message);
+        $usernames = array_merge($from_title, $from_message);
+
+        $usernames = array_values(array_unique($usernames));
         if ($sort) {
             sort($usernames);
         }
 
+        return $usernames;
+    }
+
+    private static function extractUsernamesFromString(string $message): array {
+        $usernames = [];
+        // The classic "by" line in a commit title.
+        $matches = [];
+        if (preg_match('/by ([^:]+):/S', $message, $matches) === 1) {
+            foreach (explode(',', $matches[1]) as $user) {
+                $usernames[] = trim($user);
+            }
+        }
+
+        if (preg_match_all('/^(?:Authored-by|Co-authored-by): ([^<]+) <[^>]+>/m', $message, $matches)) {
+            foreach ($matches[1] as $user) {
+                $usernames[] = trim($user);
+            }
+        }
         return $usernames;
     }
 
