@@ -69,6 +69,15 @@ class CommitParserTest extends TestCase
             false,
             []
         ];
+        $message_with_by_trailer = "feat: A new feature\n\nBy: smustgrave";
+        yield 'by trailer' => [
+            (object) [
+                'title' => 'feat: A new feature',
+                'message' => $message_with_by_trailer,
+            ],
+            false,
+            ['smustgrave'],
+        ];
     }
 
     #[DataProvider('commitsNids')]
