@@ -6,6 +6,8 @@
         <cache>
           <versions>
             <info id="Local" version="9.5.23" />
+            <info id="Local/Users/mglaman/Projects/drupal-mrn/api/vendor/autoload.php" version="11.2.7" />
+            <info id="Local/api/vendor/autoload.php" version="11.2.7" />
           </versions>
         </cache>
       </tool>
