@@ -27,9 +27,11 @@ final class CommitParser {
             }
         }
 
-        if (preg_match_all('/^(?:By|Authored-by|Co-authored-by): ([^<]+)(?: <[^>]+>)?$/mi', $message, $matches)) {
-            foreach ($matches[1] as $user) {
-                $usernames[] = trim($user);
+        // Split message into lines and check each for username patterns.
+        foreach (explode("\n", $message) as $line) {
+            $line = trim($line);
+            if (preg_match('/^(?:By|Authored-by|Co-authored-by):\s*([^<]+)(?:\s*<[^>]+>)?$/i', $line, $matches)) {
+                $usernames[] = trim($matches[1]);
             }
         }
         return $usernames;
