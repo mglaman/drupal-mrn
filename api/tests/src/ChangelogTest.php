@@ -70,6 +70,13 @@ class ChangelogTest extends TestCase
         'eelkeblok',
         'svendecabooter',
       ], $sut->getContributors());
+
+      $fixture = json_decode(file_get_contents(__DIR__ . '/../fixtures/eca_flag-2.0.5.json'), FALSE, 512, JSON_THROW_ON_ERROR);
+      $sut = new Changelog($client, 'entity_logger', $fixture->commits, '2.0.5', '2.0.4');
+      self::assertEquals([
+        'anaconda777',
+        'jurgenhaas',
+      ], $sut->getContributors());
     }
 
 }

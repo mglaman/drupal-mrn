@@ -1,0 +1,58 @@
+{
+  "commit": {
+    "id": "16948cfb0e7279651ebf90e769e1d2a28e9b117b",
+    "short_id": "16948cfb",
+    "created_at": "2025-09-05T12:15:30.000+02:00",
+    "parent_ids": [
+      "b5f71c073b1fb218547944b32b1550e66306ef60"
+    ],
+    "title": "[#3545061] feat: Support flag 5.0",
+    "message": "[#3545061] feat: Support flag 5.0\n\nBy: anaconda777\nBy: jurgenhaas\n",
+    "author_name": "Jürgen Haas",
+    "author_email": "juergen.haas@lakedrops.com",
+    "authored_date": "2025-09-05T12:15:30.000+02:00",
+    "committer_name": "Jürgen Haas",
+    "committer_email": "juergen.haas@lakedrops.com",
+    "committed_date": "2025-09-05T12:15:30.000+02:00",
+    "trailers": {},
+    "extended_trailers": {},
+    "web_url": "https://git.drupalcode.org/project/eca_flag/-/commit/16948cfb0e7279651ebf90e769e1d2a28e9b117b"
+  },
+  "commits": [
+    {
+      "id": "16948cfb0e7279651ebf90e769e1d2a28e9b117b",
+      "short_id": "16948cfb",
+      "created_at": "2025-09-05T12:15:30.000+02:00",
+      "parent_ids": [
+        "b5f71c073b1fb218547944b32b1550e66306ef60"
+      ],
+      "title": "[#3545061] feat: Support flag 5.0",
+      "message": "[#3545061] feat: Support flag 5.0\n\nBy: anaconda777\nBy: jurgenhaas\n",
+      "author_name": "Jürgen Haas",
+      "author_email": "juergen.haas@lakedrops.com",
+      "authored_date": "2025-09-05T12:15:30.000+02:00",
+      "committer_name": "Jürgen Haas",
+      "committer_email": "juergen.haas@lakedrops.com",
+      "committed_date": "2025-09-05T12:15:30.000+02:00",
+      "trailers": {},
+      "extended_trailers": {},
+      "web_url": "https://git.drupalcode.org/project/eca_flag/-/commit/16948cfb0e7279651ebf90e769e1d2a28e9b117b"
+    }
+  ],
+  "diffs": [
+    {
+      "diff": "@@ -10,6 +10,6 @@\n   \"require\": {\n     \"php\": \"\u003e=8.1\",\n     \"drupal/eca\": \"^2.0 || ^3.0\",\n-    \"drupal/flag\": \"^4.0\"\n+    \"drupal/flag\": \"^4.0 || ^5.0\"\n   }\n }\n",
+      "new_path": "composer.json",
+      "old_path": "composer.json",
+      "a_mode": "100644",
+      "b_mode": "100644",
+      "new_file": false,
+      "renamed_file": false,
+      "deleted_file": false,
+      "generated_file": null
+    }
+  ],
+  "compare_timeout": false,
+  "compare_same_ref": false,
+  "web_url": "https://git.drupalcode.org/project/eca_flag/-/compare/b5f71c073b1fb218547944b32b1550e66306ef60...16948cfb0e7279651ebf90e769e1d2a28e9b117b"
+}
