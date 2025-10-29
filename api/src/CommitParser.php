@@ -21,7 +21,7 @@ final class CommitParser {
         $usernames = [];
         // The classic "by" line in a commit title.
         $matches = [];
-        if (preg_match('/by ([^:]+):/S', $message, $matches) === 1) {
+        if (preg_match('/\bby ([^:\n]+):/S', $message, $matches) === 1) {
             foreach (explode(',', $matches[1]) as $user) {
                 $usernames[] = trim($user);
             }
