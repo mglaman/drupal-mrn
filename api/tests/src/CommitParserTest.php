@@ -78,6 +78,16 @@ class CommitParserTest extends TestCase
             false,
             ['smustgrave'],
         ];
+        // Test case for issue: "by" word in commit message should not be confused as contributor
+        $message_with_by_in_text = "[#3531858] fix(Internal HTTP API): CanvasController's response must vary by access result cacheability\n\nBy: wim leers\nBy: mglaman\nBy: penyaskito";
+        yield 'by word in message text' => [
+            (object) [
+                'title' => "[#3531858] fix(Internal HTTP API): CanvasController's response must vary by access result cacheability",
+                'message' => $message_with_by_in_text,
+            ],
+            false,
+            ['wim leers', 'mglaman', 'penyaskito'],
+        ];
     }
 
     #[DataProvider('commitsNids')]
