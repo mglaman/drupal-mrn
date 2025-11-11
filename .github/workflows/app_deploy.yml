@@ -6,7 +6,11 @@ on:
     paths:
       - '.github/workflows/app_deploy.yml'
       - 'app/**'
-concurrency: app_build
+concurrency:
+  group: app_build
+  cancel-in-progress: false
+permissions:
+  contents: read
 jobs:
   build:
     name: "Build & deploy"
@@ -19,6 +23,8 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "20"
+          cache: 'npm'
+          cache-dependency-path: './app/package-lock.json'
       - name: "npm install"
         working-directory: ./app
         run: "npm install"
