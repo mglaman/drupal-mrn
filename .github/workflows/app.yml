@@ -1,19 +1,25 @@
-name: "Deploy App"
+name: "App"
 on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/app.yml'
+      - 'app/**'
   push:
     branches:
       - main
     paths:
-      - '.github/workflows/app_deploy.yml'
+      - '.github/workflows/app.yml'
       - 'app/**'
 concurrency:
-  group: app_build
-  cancel-in-progress: false
+  group: ${{ github.event_name == 'pull_request' && format('app-pr-{0}', github.event.pull_request.number) || 'app_build' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 permissions:
   contents: read
 jobs:
   build:
-    name: "Build & deploy"
+    name: "Build & Test"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
@@ -32,14 +38,17 @@ jobs:
         working-directory: ./app
         run: "npm run build"
       - name: "configure AWS"
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: aws-actions/configure-aws-credentials@v5
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
       - name: Deploy
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: ./app
         run: aws s3 sync ./dist s3://drupal-mrn-web
-      - name: Invlidate CloudFront
+      - name: Invalidate CloudFront
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         working-directory: ./app
         run: aws cloudfront create-invalidation --distribution-id E2CL99C9FHPLRG --paths "/*"

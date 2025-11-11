@@ -1,19 +1,25 @@
-name: "Test API PR"
+name: "API"
 on:
   pull_request:
     branches:
       - main
     paths:
-      - '.github/workflows/api_pr.yml'
+      - '.github/workflows/api.yml'
+      - 'api/**'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/api.yml'
       - 'api/**'
 concurrency:
-  group: api-pr-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+  group: ${{ github.event_name == 'pull_request' && format('api-pr-{0}', github.event.pull_request.number) || 'api_build' }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 permissions:
   contents: read
 jobs:
-  deploy:
-    name: "PHPUnit"
+  test:
+    name: "Build & Test"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
@@ -47,3 +53,11 @@ jobs:
       - name: "phpunit"
         working-directory: ./api
         run: "php vendor/bin/phpunit"
+      - name: "Deploy"
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        working-directory: ./api
+        env:
+          AWS_DEFAULT_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: "npm run deploy"
