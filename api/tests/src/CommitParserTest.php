@@ -88,6 +88,26 @@ class CommitParserTest extends TestCase
             false,
             ['wim leers', 'mglaman', 'penyaskito'],
         ];
+        // Test case for new format with @ prefix in usernames
+        $message_with_at_prefix = "fix(Redux-integrated field widgets): mglaman/drupal-mrn#3521641 AJAX race condition\n\nBy: @bnjmnm\nBy: @larowlan\nBy: @wimleers\nBy: @hooroomoo\nBy: @mglaman";
+        yield 'new format with @ prefix' => [
+            (object) [
+                'title' => 'fix(Redux-integrated field widgets): mglaman/drupal-mrn#3521641 AJAX race condition',
+                'message' => $message_with_at_prefix,
+            ],
+            true,
+            ['bnjmnm', 'hooroomoo', 'larowlan', 'mglaman', 'wimleers'],
+        ];
+        // Test case for mixed format (old without @ and new with @) should deduplicate
+        $message_mixed_format = "Issue #123 by userA, userB: Fix stuff.\n\nBy: @userA\nBy: @userC";
+        yield 'mixed format with and without @ prefix' => [
+            (object) [
+                'title' => 'Issue #123 by userA, userB: Fix stuff.',
+                'message' => $message_mixed_format,
+            ],
+            true,
+            ['userA', 'userB', 'userC'],
+        ];
     }
 
     #[DataProvider('commitsNids')]
