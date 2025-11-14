@@ -23,7 +23,7 @@ final class CommitParser {
         $matches = [];
         if (preg_match('/\bby ([^:\n]+):/S', $message, $matches) === 1) {
             foreach (explode(',', $matches[1]) as $user) {
-                $usernames[] = trim($user);
+                $usernames[] = ltrim(trim($user), '@');
             }
         }
 
@@ -31,7 +31,7 @@ final class CommitParser {
         foreach (explode("\n", $message) as $line) {
             $line = trim($line);
             if (preg_match('/^(?:By|Authored-by|Co-authored-by):\s*([^<]+)(?:\s*<[^>]+>)?$/i', $line, $matches)) {
-                $usernames[] = trim($matches[1]);
+                $usernames[] = ltrim(trim($matches[1]), '@');
             }
         }
         return $usernames;
