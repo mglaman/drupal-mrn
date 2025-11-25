@@ -72,7 +72,7 @@ final class Changelog
             if ($nid !== null) {
                 try {
                     $issue = \json_decode(
-                      (string) $this->client->get("https://www.drupal.org/api-d7/node/$nid.json")
+                      (string) $this->client->request('GET', "https://www.drupal.org/api-d7/node/$nid.json")
                         ->getBody()
                     );
                     $issueCategory = $issue->field_issue_category ?? 0;

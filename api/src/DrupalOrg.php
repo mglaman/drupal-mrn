@@ -30,9 +30,15 @@ final class DrupalOrg
             );
             $response = $this->client->request('GET', $url);
             $data = \json_decode((string) $response->getBody());
-            return $data->list ?? [];
+            if ($data === null || !isset($data->list)) {
+                return [];
+            }
+            return $data->list;
         } catch (RequestException) {
             // If the request fails, return empty array
+            return [];
+        } catch (\JsonException) {
+            // If JSON decoding fails, return empty array
             return [];
         }
     }
@@ -52,12 +58,15 @@ final class DrupalOrg
             );
             $response = $this->client->request('GET', $url);
             $data = \json_decode((string) $response->getBody());
-            // The API returns a list array, get the first project node
-            if (isset($data->list) && count($data->list) > 0) {
-                return $data->list[0]->nid ?? null;
+            if ($data === null || !isset($data->list) || count($data->list) === 0) {
+                return null;
             }
-            return null;
+            // The API returns a list array, get the first project node
+            return $data->list[0]->nid ?? null;
         } catch (RequestException) {
+            return null;
+        } catch (\JsonException) {
+            // If JSON decoding fails, return null
             return null;
         }
     }
