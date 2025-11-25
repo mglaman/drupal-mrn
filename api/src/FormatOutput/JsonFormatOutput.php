@@ -22,6 +22,7 @@ final class JsonFormatOutput implements FormatOutputInterface
           'from' => $changelog->getFrom(),
           'to' => $changelog->getTo(),
           'changes' => $changelog->getChanges(),
+          'changeRecords' => $changelog->getChangeRecords(),
         ], JSON_THROW_ON_ERROR);
     }
 

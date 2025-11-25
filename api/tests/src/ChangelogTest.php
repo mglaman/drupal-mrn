@@ -32,9 +32,11 @@ class ChangelogTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/views_remote_data.json')),
+          new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
           new Response(403),
           new Response(403),
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')),
+          new Response(200, [], '{"list":[]}'), // Change records API response (empty)
         ]);
         $client = new Client([
           'handler' => HandlerStack::create($mockHandler),
@@ -77,6 +79,34 @@ class ChangelogTest extends TestCase
         'anaconda777',
         'jurgenhaas',
       ], $sut->getContributors());
+    }
+
+    public function testGetChangeRecords(): void
+    {
+        $changeRecordFixture = file_get_contents(__DIR__.'/../fixtures/3500807.json');
+        $changeRecordsResponse = sprintf('{"list":[%s]}', $changeRecordFixture);
+
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/redis-compare.json')), // GitLab compare
+          new Response(200, [], '{"list":[{"nid":"923314"}]}'), // Project ID lookup for Redis
+          new Response(403), // User search (author)
+          new Response(403), // User search (committer)
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup (using existing fixture)
+          new Response(200, [], $changeRecordsResponse), // Change records API response
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $fixture = (new GitLab($client))->compare('redis', '8.x-1.8', '8.x-1.9');
+        $sut = new Changelog($client, 'redis', $fixture->commits, '8.x-1.8', '8.x-1.9');
+
+        // Verify change records are returned
+        $changeRecords = $sut->getChangeRecords();
+        self::assertCount(1, $changeRecords);
+        self::assertEquals('3500807', $changeRecords[0]->nid);
+        self::assertEquals('Ability to treat invalidateAll() like a deleteAll()', $changeRecords[0]->title);
+        self::assertEquals('https://www.drupal.org/node/3500807', $changeRecords[0]->url);
+        self::assertEquals('8.x-1.9', $changeRecords[0]->field_change_to);
     }
 
 }
