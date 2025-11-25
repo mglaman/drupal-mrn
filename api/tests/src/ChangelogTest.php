@@ -83,16 +83,13 @@ class ChangelogTest extends TestCase
 
     public function testGetChangeRecords(): void
     {
-        $changeRecordFixture = file_get_contents(__DIR__.'/../fixtures/3500807.json');
-        $changeRecordsResponse = sprintf('{"list":[%s]}', $changeRecordFixture);
-
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/redis-compare.json')), // GitLab compare
           new Response(200, [], '{"list":[{"nid":"923314"}]}'), // Project ID lookup for Redis
           new Response(403), // User search (author)
           new Response(403), // User search (committer)
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup (using existing fixture)
-          new Response(200, [], $changeRecordsResponse), // Change records API response
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/change-records-redis.json')), // Change records API response
         ]);
         $client = new Client([
           'handler' => HandlerStack::create($mockHandler),
