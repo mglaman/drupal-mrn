@@ -24,6 +24,8 @@ final class Changelog
 
     private array $contributors;
 
+    private array $changeRecords = [];
+
     public function __construct(
       private readonly ClientInterface $client,
       private readonly string $project,
@@ -37,6 +39,11 @@ final class Changelog
         }
         $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
         $contributors = [];
+
+        // Get project ID from machine name
+        $drupalOrg = new DrupalOrg($this->client);
+        $projectId = $drupalOrg->getProjectId($this->project);
+
         foreach ($commits as $commit) {
             $commitContributors = CommitParser::extractUsernames($commit);
             try {
@@ -65,7 +72,7 @@ final class Changelog
             if ($nid !== null) {
                 try {
                     $issue = \json_decode(
-                      (string) $this->client->get("https://www.drupal.org/api-d7/node/$nid.json")
+                      (string) $this->client->request('GET', "https://www.drupal.org/api-d7/node/$nid.json")
                         ->getBody()
                     );
                     $issueCategory = $issue->field_issue_category ?? 0;
@@ -89,6 +96,11 @@ final class Changelog
         }
         $this->contributors = array_unique(array_merge(...$contributors));
         sort($this->contributors);
+
+        // Fetch change records if we have a project ID
+        if ($projectId !== null) {
+            $this->changeRecords = $drupalOrg->getChangeRecords($projectId, $this->to);
+        }
     }
 
     /**
@@ -137,6 +149,14 @@ final class Changelog
     public function getTo(): string
     {
         return $this->to;
+    }
+
+    /**
+     * @return array
+     */
+    public function getChangeRecords(): array
+    {
+        return $this->changeRecords;
     }
 
     public static function groupByType(array $changes): array

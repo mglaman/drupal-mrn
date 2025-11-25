@@ -20,9 +20,11 @@ class HtmlFormatOutputTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
+          new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.author_name.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.committer_name.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/change-record-views-remote-data.json')), // Change records API response
         ]);
         $client = new Client([
           'handler' => HandlerStack::create($mockHandler)
@@ -46,6 +48,10 @@ class HtmlFormatOutputTest extends TestCase
 <h4>Task</h4>
 <ul>
   <li><a href="https://www.drupal.org/i/3294296">#3294296</a> by mrinalini9, Lal_: Drupal 10 readiness for the module</li>
+</ul>
+<h3>Change Records</h3>
+<ul>
+  <li><a href="https://www.drupal.org/node/1234567">Test change record for views_remote_data</a></li>
 </ul>
 HTML;
 

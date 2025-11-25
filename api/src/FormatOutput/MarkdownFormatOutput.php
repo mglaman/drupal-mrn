@@ -56,6 +56,22 @@ final class MarkdownFormatOutput implements FormatOutputInterface
             }
             $buffer->writeln('');
         }
+
+        // Add change records section if any exist
+        $changeRecords = $changelog->getChangeRecords();
+        if (count($changeRecords) > 0) {
+            $buffer->writeln('### Change Records');
+            $buffer->writeln('');
+            foreach ($changeRecords as $changeRecord) {
+                $title = $changeRecord->title ?? '';
+                $url = $changeRecord->url ?? '';
+                if ($title && $url) {
+                    $buffer->writeln(sprintf('* [%s](%s)', $title, $url));
+                }
+            }
+            $buffer->writeln('');
+        }
+
         return (string) $buffer;
     }
 

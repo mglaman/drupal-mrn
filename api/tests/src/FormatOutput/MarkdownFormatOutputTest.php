@@ -21,9 +21,11 @@ class MarkdownFormatOutputTest extends TestCase
     {
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
+          new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
             new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.author_name.json')),
             new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.committer_name.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/change-record-views-remote-data.json')), // Change records API response
         ]);
         $client = new Client([
           'handler' => HandlerStack::create($mockHandler)
@@ -53,6 +55,10 @@ Changes since [1.0.1](https://www.drupal.org/project/views_remote_data/releases/
 #### Task
 
 * [#3294296](https://www.drupal.org/i/3294296) by mrinalini9, Lal_: Drupal 10 readiness for the module
+
+### Change Records
+
+* [Test change record for views_remote_data](https://www.drupal.org/node/1234567)
 
 MARKDOWN;
 

@@ -59,6 +59,24 @@ final class HtmlFormatOutput implements FormatOutputInterface
             }
             $buffer->writeln('</ul>');
         }
+
+        // Add change records section if any exist
+        $changeRecords = $changelog->getChangeRecords();
+        if (count($changeRecords) > 0) {
+            $buffer->writeln('<h3>Change Records</h3>');
+            $buffer->writeln('<ul>');
+            foreach ($changeRecords as $changeRecord) {
+                $title = $changeRecord->title ?? '';
+                $url = $changeRecord->url ?? '';
+                if ($title && $url) {
+                    $buffer->writeln(
+                      sprintf('  <li><a href="%s">%s</a></li>', htmlspecialchars($url), htmlspecialchars($title))
+                    );
+                }
+            }
+            $buffer->writeln('</ul>');
+        }
+
         return (string) $buffer;
     }
 
