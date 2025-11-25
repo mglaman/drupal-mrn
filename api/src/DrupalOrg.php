@@ -62,22 +62,5 @@ final class DrupalOrg
         }
     }
 
-    /**
-     * Get project ID from an issue NID.
-     * This is a helper method to extract project ID from an issue.
-     *
-     * @param string $nid The issue node ID
-     * @return string|null The project ID, or null if not found
-     */
-    public function getProjectIdFromIssue(string $nid): ?string
-    {
-        try {
-            $response = $this->client->request('GET', "https://www.drupal.org/api-d7/node/$nid.json");
-            $issue = \json_decode((string) $response->getBody());
-            return $issue->field_project->id ?? null;
-        } catch (RequestException) {
-            return null;
-        }
-    }
 }
 
