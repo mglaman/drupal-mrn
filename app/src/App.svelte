@@ -13,6 +13,7 @@
   let error = ''
   let processing = false;
   let copied = false;
+  let viewMode = 'preview'; // 'source' or 'preview'
 
   function findPreviousVersion(version) {
     if (!projectData.tags || projectData.tags.length === 0) {
@@ -254,19 +255,53 @@
     </main>
     {#if notes.length > 0}
         <section class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
-            <p class="mb-2">Here are your release notes!</p>
-            <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>
-            <div class="flex items-center">
-                <button
-                    on:click={copyNotes}
-                    class="mt-4 inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue"
-                >
-                    Copy
-                </button>
-                {#if copied}
-                    <span class="ml-3 mt-4 text-sm text-gray-600 font-bold">Copied!</span>
-                {/if}
+            <div class="mb-4 flex items-center justify-between">
+                <p class="mb-0">Here are your release notes!</p>
+                <div class="flex items-center gap-3">
+                    {#if format === 'html'}
+                        <div class="flex rounded-lg border border-gray-300 p-1" role="tablist">
+                            <button
+                                type="button"
+                                role="tab"
+                                on:click={() => viewMode = 'preview'}
+                                class="px-4 py-2 text-sm font-medium rounded-md transition-colors {viewMode === 'preview' ? 'bg-drupal-light-navy-blue text-white' : 'text-gray-700 hover:bg-gray-100'}"
+                            >
+                                Preview
+                            </button>
+                            <button
+                                type="button"
+                                role="tab"
+                                on:click={() => viewMode = 'source'}
+                                class="px-4 py-2 text-sm font-medium rounded-md transition-colors {viewMode === 'source' ? 'bg-drupal-light-navy-blue text-white' : 'text-gray-700 hover:bg-gray-100'}"
+                            >
+                                Source
+                            </button>
+                        </div>
+                    {/if}
+                    <button
+                        on:click={copyNotes}
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue"
+                    >
+                        Copy
+                    </button>
+                    {#if copied}
+                        <span class="text-sm text-gray-600 font-bold">Copied!</span>
+                    {/if}
+                </div>
             </div>
+            {#if format === 'html' && viewMode === 'preview'}
+                <div
+                    role="region"
+                    aria-label="Release notes preview"
+                    class="prose prose-sm max-w-none border border-gray-300 rounded-md p-6 h-96 overflow-y-auto"
+                    on:dblclick={() => viewMode = 'source'}
+                    title="Double-click to view source"
+                >
+                    {@html notes}
+                </div>
+            {:else}
+                <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>
+            {/if}
         </section>
     {/if}
 </div>
