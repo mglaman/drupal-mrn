@@ -18,13 +18,16 @@ class JsonFormatOutputTest extends TestCase
 
     public function testFormat(): void
     {
+        $changeRecordFixture = file_get_contents(__DIR__.'/../../fixtures/change-record-views-remote-data.json');
+        $changeRecordsResponse = sprintf('{"list":[%s]}', $changeRecordFixture);
+
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
           new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
             new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.author_name.json')),
             new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.committer_name.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
-          new Response(200, [], '{"list":[]}'), // Change records API response (empty)
+          new Response(200, [], $changeRecordsResponse), // Change records API response
         ]);
         $client = new Client([
           'handler' => HandlerStack::create($mockHandler)
@@ -38,6 +41,7 @@ class JsonFormatOutputTest extends TestCase
           '1.0.2'
         );
         $sut = new JsonFormatOutput();
+        $result = json_decode($sut->format($changelog), true);
         self::assertEquals(
           [
             'contributors' => [
@@ -61,10 +65,21 @@ class JsonFormatOutputTest extends TestCase
             ],
             'from' => '1.0.1',
             'to' => '1.0.2',
-            'changeRecords' => [],
           ],
-          json_decode($sut->format($changelog), true)
+          [
+            'contributors' => $result['contributors'],
+            'issueCount' => $result['issueCount'],
+            'changes' => $result['changes'],
+            'from' => $result['from'],
+            'to' => $result['to'],
+          ]
         );
+        // Verify change records are present
+        self::assertArrayHasKey('changeRecords', $result);
+        self::assertCount(1, $result['changeRecords']);
+        self::assertEquals('1234567', $result['changeRecords'][0]['nid']);
+        self::assertEquals('Test change record for views_remote_data', $result['changeRecords'][0]['title']);
+        self::assertEquals('https://www.drupal.org/node/1234567', $result['changeRecords'][0]['url']);
     }
 
 }
