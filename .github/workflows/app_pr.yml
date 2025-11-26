@@ -44,7 +44,7 @@ jobs:
         run: "npm install"
       - name: "Install Playwright Browsers"
         working-directory: ./app
-        run: "npx playwright install --with-deps chromium"
+        run: "npx playwright install --with-deps"
       - name: "Run visual regression tests"
         working-directory: ./app
         run: "npm run test:visual"
