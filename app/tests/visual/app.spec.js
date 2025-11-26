@@ -165,11 +165,15 @@ test.describe('Visual Regression Tests', () => {
 
     const button = page.getByRole('button', { name: /generate release notes/i })
     await button.click()
-    await page.waitForTimeout(1000)
+    
+    // Wait for content to load and render
+    await page.waitForLoadState('networkidle')
+    await page.waitForTimeout(500)
 
     await expect(page).toHaveScreenshot('release-notes-displayed.png', {
       fullPage: true,
-      animations: 'disabled'
+      animations: 'disabled',
+      maxDiffPixelRatio: 0.02  // Allow up to 2% difference for font rendering variations
     })
   })
 
