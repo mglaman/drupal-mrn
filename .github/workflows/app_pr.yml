@@ -4,11 +4,11 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/app.yml'
+      - '.github/workflows/app_pr.yml'
       - 'app/**'
 jobs:
-  build:
-    name: "Build"
+  test:
+    name: "Unit & Component Tests"
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
@@ -21,6 +21,37 @@ jobs:
       - name: "npm install"
         working-directory: ./app
         run: "npm install"
+      - name: "Run tests"
+        working-directory: ./app
+        run: "npm run test"
       - name: "npm build"
         working-directory: ./app
         run: "npm run build"
+  
+  visual:
+    name: "Visual Regression Tests"
+    runs-on: "ubuntu-latest"
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v5
+
+      - name: "Install Node"
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+      - name: "npm install"
+        working-directory: ./app
+        run: "npm install"
+      - name: "Install Playwright Browsers"
+        working-directory: ./app
+        run: "npx playwright install --with-deps"
+      - name: "Run visual regression tests"
+        working-directory: ./app
+        run: "npm run test:visual"
+      - name: "Upload test results"
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: app/playwright-report/
+          retention-days: 30
