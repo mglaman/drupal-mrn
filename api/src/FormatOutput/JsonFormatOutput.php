@@ -16,12 +16,21 @@ final class JsonFormatOutput implements FormatOutputInterface
      */
     public function format(Changelog $changelog): string
     {
+        $processedChanges = Changelog::groupByType($changelog->getChanges());
+        $groupedChanges = [];
+        foreach ($processedChanges as $type => $changes) {
+            $groupedChanges[] = [
+              'type' => $type,
+              'changes' => $changes,
+            ];
+        }
+        
         return json_encode([
           'contributors' => $changelog->getContributors(),
           'issueCount' => $changelog->getIssueCount(),
           'from' => $changelog->getFrom(),
           'to' => $changelog->getTo(),
-          'changes' => $changelog->getChanges(),
+          'changes' => $groupedChanges,
           'changeRecords' => $changelog->getChangeRecords(),
         ], JSON_THROW_ON_ERROR);
     }
