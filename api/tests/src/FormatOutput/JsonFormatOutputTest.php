@@ -49,14 +49,19 @@ class JsonFormatOutputTest extends TestCase
             'issueCount' => 1,
             'changes' => [
               [
-                'nid' => '3294296',
                 'type' => 'Task',
-                'summary' => '#3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module',
-                'link' => 'https://www.drupal.org/i/3294296',
-                'contributors' => [
-                  'Lal_',
-                  'mglaman',
-                  'mrinalini9',
+                'changes' => [
+                  [
+                    'nid' => '3294296',
+                    'type' => 'Task',
+                    'summary' => '#3294296 by mrinalini9, Lal_: Drupal 10 readiness for the module',
+                    'link' => 'https://www.drupal.org/i/3294296',
+                    'contributors' => [
+                      'Lal_',
+                      'mglaman',
+                      'mrinalini9',
+                    ],
+                  ],
                 ],
               ],
             ],
