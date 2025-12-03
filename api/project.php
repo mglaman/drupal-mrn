@@ -15,7 +15,7 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 \Sentry\init([
-    'dsn' => 'https://ec3b995c19739bbb1a00f14d0ef4c723@o4505060230627328.ingest.us.sentry.io/4507170537340928',
+  'dsn' => 'https://0ecd7a4d3b954f20b06e84efc52f4e8b@o4505060230627328.ingest.us.sentry.io/4507170561327104',
 ]);
 
 $request = Request::createFromGlobals();
