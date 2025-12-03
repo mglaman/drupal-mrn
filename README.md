@@ -12,7 +12,7 @@ Features:
 The following request gets the release notes for the Token module's 8.x-1.11 release.
 
 ```http request
-GET https://qzr5qeis20.execute-api.us-east-1.amazonaws.com?project=token&from=8.x-1.10&to=8.x-1.11
+GET https://api.drupal-mrn.dev/changelog?project=token&from=8.x-1.10&to=8.x-1.11
 ```
 
 ## Contributing
