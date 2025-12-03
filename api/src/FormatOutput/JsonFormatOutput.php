@@ -24,7 +24,7 @@ final class JsonFormatOutput implements FormatOutputInterface
               'changes' => $changes,
             ];
         }
-        
+
         return json_encode([
           'contributors' => $changelog->getContributors(),
           'issueCount' => $changelog->getIssueCount(),
