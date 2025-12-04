@@ -71,5 +71,46 @@ final class DrupalOrg
         }
     }
 
+    /**
+     * Fetch contributors for an issue from the contribution records API.
+     *
+     * @param string $nid The issue node ID
+     * @return array Array of contributor display names
+     */
+    public function getContributorsFromJsonApi(string $nid): array
+    {
+        try {
+            $url = sprintf(
+              'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=https://www.drupal.org/node/%s&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user&fields[user--user]=display_name',
+              urlencode($nid)
+            );
+            $response = $this->client->request('GET', $url);
+            $data = \json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
+            
+            // Check if we have data
+            if (!isset($data->data) || count($data->data) === 0) {
+                return [];
+            }
+            
+            // Extract display names from included users
+            $contributors = [];
+            if (isset($data->included)) {
+                foreach ($data->included as $item) {
+                    if ($item->type === 'user--user' && isset($item->attributes->display_name)) {
+                        $contributors[] = $item->attributes->display_name;
+                    }
+                }
+            }
+            
+            return $contributors;
+        } catch (RequestException) {
+            // If the request fails, return empty array
+            return [];
+        } catch (\JsonException) {
+            // If JSON decoding fails, return empty array
+            return [];
+        }
+    }
+
 }
 

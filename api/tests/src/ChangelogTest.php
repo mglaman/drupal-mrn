@@ -33,8 +33,7 @@ class ChangelogTest extends TestCase
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/views_remote_data.json')),
           new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
-          new Response(403),
-          new Response(403),
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-3294296.json')), // JSON:API contribution record
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')),
           new Response(200, [], '{"list":[]}'), // Change records API response (empty)
         ]);
@@ -86,6 +85,7 @@ class ChangelogTest extends TestCase
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/redis-compare.json')), // GitLab compare
           new Response(200, [], '{"list":[{"nid":"923314"}]}'), // Project ID lookup for Redis
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // JSON:API contribution record (empty, fallback to commit parsing)
           new Response(403), // User search (author)
           new Response(403), // User search (committer)
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup (using existing fixture)
@@ -104,6 +104,61 @@ class ChangelogTest extends TestCase
         self::assertEquals('Ability to treat invalidateAll() like a deleteAll()', $changeRecords[0]->title);
         self::assertEquals('https://www.drupal.org/node/3500807', $changeRecords[0]->url);
         self::assertEquals('8.x-1.9', $changeRecords[0]->field_change_to);
+    }
+
+    public function testGetContributorsFromJsonApi(): void
+    {
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/views_remote_data.json')), // GitLab compare
+          new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-3560441.json')), // JSON:API with contributors
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup
+          new Response(200, [], '{"list":[]}'), // Change records API response (empty)
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $fixture = (new GitLab($client))->compare('views_remote_data', '1.0.1', 'HEAD');
+        $sut = new Changelog($client, 'views_remote_data', $fixture->commits, '1.0.1', 'HEAD');
+        
+        // Verify contributors from JSON:API are used
+        self::assertEquals([
+            'System Message',
+            'penyaskito',
+            'wim leers',
+        ], $sut->getContributors());
+        
+        $changes = $sut->getChanges();
+        self::assertEquals([
+            'System Message',
+            'penyaskito',
+            'wim leers',
+        ], $changes[0]['contributors']);
+    }
+
+    public function testGetContributorsFallbackToCommitParsing(): void
+    {
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/views_remote_data.json')), // GitLab compare
+          new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // JSON:API with no data - trigger fallback
+          new Response(403), // User search (author) - fallback to commit parsing
+          new Response(403), // User search (committer) - fallback to commit parsing
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup
+          new Response(200, [], '{"list":[]}'), // Change records API response (empty)
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $fixture = (new GitLab($client))->compare('views_remote_data', '1.0.1', 'HEAD');
+        $sut = new Changelog($client, 'views_remote_data', $fixture->commits, '1.0.1', 'HEAD');
+        
+        // Verify fallback to commit parsing works
+        self::assertEquals([
+            'Lal_',
+            'mglaman',
+            'mrinalini9',
+        ], $sut->getContributors());
     }
 
 }
