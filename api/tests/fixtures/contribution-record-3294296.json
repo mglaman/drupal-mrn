@@ -1,0 +1,100 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "node--contribution_record",
+      "id": "test-record-id",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/node/contribution_record/test-record-id"
+        }
+      },
+      "relationships": {
+        "field_contributors": {
+          "data": [
+            {
+              "type": "paragraph--contributor",
+              "id": "contributor-1"
+            },
+            {
+              "type": "paragraph--contributor",
+              "id": "contributor-2"
+            },
+            {
+              "type": "paragraph--contributor",
+              "id": "contributor-3"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "paragraph--contributor",
+      "id": "contributor-1",
+      "relationships": {
+        "field_contributor_user": {
+          "data": {
+            "type": "user--user",
+            "id": "user-1"
+          }
+        }
+      }
+    },
+    {
+      "type": "paragraph--contributor",
+      "id": "contributor-2",
+      "relationships": {
+        "field_contributor_user": {
+          "data": {
+            "type": "user--user",
+            "id": "user-2"
+          }
+        }
+      }
+    },
+    {
+      "type": "paragraph--contributor",
+      "id": "contributor-3",
+      "relationships": {
+        "field_contributor_user": {
+          "data": {
+            "type": "user--user",
+            "id": "user-3"
+          }
+        }
+      }
+    },
+    {
+      "type": "user--user",
+      "id": "user-1",
+      "attributes": {
+        "display_name": "mrinalini9"
+      }
+    },
+    {
+      "type": "user--user",
+      "id": "user-2",
+      "attributes": {
+        "display_name": "Lal_"
+      }
+    },
+    {
+      "type": "user--user",
+      "id": "user-3",
+      "attributes": {
+        "display_name": "mglaman"
+      }
+    }
+  ]
+}

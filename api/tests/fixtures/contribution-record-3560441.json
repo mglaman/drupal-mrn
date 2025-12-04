@@ -1,0 +1,188 @@
+{
+  "jsonapi": {
+    "version": "1.0",
+    "meta": {
+      "links": {
+        "self": {
+          "href": "http://jsonapi.org/format/1.0/"
+        }
+      }
+    }
+  },
+  "data": [
+    {
+      "type": "node--contribution_record",
+      "id": "388cc1f8-b553-480d-a74a-9b92c1a154a3",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/node/contribution_record/388cc1f8-b553-480d-a74a-9b92c1a154a3?resourceVersion=id%3A21765452"
+        }
+      },
+      "relationships": {
+        "field_contributors": {
+          "data": [
+            {
+              "type": "paragraph--contributor",
+              "id": "2e4f6575-df6d-437d-b847-f1d8da0f46f4",
+              "meta": {
+                "target_revision_id": 26329998,
+                "drupal_internal__target_id": 9155517
+              }
+            },
+            {
+              "type": "paragraph--contributor",
+              "id": "ad04a762-166b-4202-a4cc-45a218570e81",
+              "meta": {
+                "target_revision_id": 26330005,
+                "drupal_internal__target_id": 9155524
+              }
+            },
+            {
+              "type": "paragraph--contributor",
+              "id": "7ec7f1c6-d4e6-4a65-bd7b-eede92e0f623",
+              "meta": {
+                "target_revision_id": 26330089,
+                "drupal_internal__target_id": 9155608
+              }
+            }
+          ],
+          "links": {
+            "related": {
+              "href": "https://www.drupal.org/jsonapi/node/contribution_record/388cc1f8-b553-480d-a74a-9b92c1a154a3/field_contributors?resourceVersion=id%3A21765452"
+            },
+            "self": {
+              "href": "https://www.drupal.org/jsonapi/node/contribution_record/388cc1f8-b553-480d-a74a-9b92c1a154a3/relationships/field_contributors?resourceVersion=id%3A21765452"
+            }
+          }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "type": "paragraph--contributor",
+      "id": "2e4f6575-df6d-437d-b847-f1d8da0f46f4",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/paragraph/contributor/2e4f6575-df6d-437d-b847-f1d8da0f46f4?resourceVersion=id%3A26329998"
+        }
+      },
+      "relationships": {
+        "field_contributor_user": {
+          "data": {
+            "type": "user--user",
+            "id": "c874bae8-75ec-4ea6-9049-0bd8528585ba",
+            "meta": {
+              "drupal_internal__target_id": 99777
+            }
+          },
+          "links": {
+            "related": {
+              "href": "https://www.drupal.org/jsonapi/paragraph/contributor/2e4f6575-df6d-437d-b847-f1d8da0f46f4/field_contributor_user?resourceVersion=id%3A26329998"
+            },
+            "self": {
+              "href": "https://www.drupal.org/jsonapi/paragraph/contributor/2e4f6575-df6d-437d-b847-f1d8da0f46f4/relationships/field_contributor_user?resourceVersion=id%3A26329998"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "paragraph--contributor",
+      "id": "ad04a762-166b-4202-a4cc-45a218570e81",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/paragraph/contributor/ad04a762-166b-4202-a4cc-45a218570e81?resourceVersion=id%3A26330005"
+        }
+      },
+      "relationships": {
+        "field_contributor_user": {
+          "data": {
+            "type": "user--user",
+            "id": "22fffe1f-ba39-4776-92ba-3286f7fba024",
+            "meta": {
+              "drupal_internal__target_id": 180064
+            }
+          },
+          "links": {
+            "related": {
+              "href": "https://www.drupal.org/jsonapi/paragraph/contributor/ad04a762-166b-4202-a4cc-45a218570e81/field_contributor_user?resourceVersion=id%3A26330005"
+            },
+            "self": {
+              "href": "https://www.drupal.org/jsonapi/paragraph/contributor/ad04a762-166b-4202-a4cc-45a218570e81/relationships/field_contributor_user?resourceVersion=id%3A26330005"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "paragraph--contributor",
+      "id": "7ec7f1c6-d4e6-4a65-bd7b-eede92e0f623",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/paragraph/contributor/7ec7f1c6-d4e6-4a65-bd7b-eede92e0f623?resourceVersion=id%3A26330089"
+        }
+      },
+      "relationships": {
+        "field_contributor_user": {
+          "data": {
+            "type": "user--user",
+            "id": "e77e7ff7-997f-4c2e-ad4c-9315778c925e",
+            "meta": {
+              "drupal_internal__target_id": 959536
+            }
+          },
+          "links": {
+            "related": {
+              "href": "https://www.drupal.org/jsonapi/paragraph/contributor/7ec7f1c6-d4e6-4a65-bd7b-eede92e0f623/field_contributor_user?resourceVersion=id%3A26330089"
+            },
+            "self": {
+              "href": "https://www.drupal.org/jsonapi/paragraph/contributor/7ec7f1c6-d4e6-4a65-bd7b-eede92e0f623/relationships/field_contributor_user?resourceVersion=id%3A26330089"
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "user--user",
+      "id": "c874bae8-75ec-4ea6-9049-0bd8528585ba",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/user/user/c874bae8-75ec-4ea6-9049-0bd8528585ba"
+        }
+      },
+      "attributes": {
+        "display_name": "wim leers"
+      }
+    },
+    {
+      "type": "user--user",
+      "id": "22fffe1f-ba39-4776-92ba-3286f7fba024",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/user/user/22fffe1f-ba39-4776-92ba-3286f7fba024"
+        }
+      },
+      "attributes": {
+        "display_name": "System Message"
+      }
+    },
+    {
+      "type": "user--user",
+      "id": "e77e7ff7-997f-4c2e-ad4c-9315778c925e",
+      "links": {
+        "self": {
+          "href": "https://www.drupal.org/jsonapi/user/user/e77e7ff7-997f-4c2e-ad4c-9315778c925e"
+        }
+      },
+      "attributes": {
+        "display_name": "penyaskito"
+      }
+    }
+  ],
+  "links": {
+    "self": {
+      "href": "https://www.drupal.org/jsonapi/node/contribution_record?fields%5Bnode--contribution_record%5D=field_contributors&fields%5Bparagraph--contributor%5D=field_contributor_user&fields%5Buser--user%5D=display_name&filter%5Bfield_source_link.uri%5D=https%3A//www.drupal.org/node/3560441&include=field_contributors.field_contributor_user"
+    }
+  }
+}

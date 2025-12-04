@@ -45,30 +45,40 @@ final class Changelog
         $projectId = $drupalOrg->getProjectId($this->project);
 
         foreach ($commits as $commit) {
-            $commitContributors = CommitParser::extractUsernames($commit);
-            try {
-                $author = $gitlab->users($commit->author_name);
-                if (count($author) > 0) {
-                    $commitContributors[] = $author[0]->username;
-                }
-            } catch (RequestException) {
-                if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
-                    $commitContributors[] = $authorMatches[0];
-                }
+            $nid = CommitParser::getNid($commit->title);
+            $commitContributors = [];
+            
+            // Try to fetch contributors from JSON:API if we have an issue ID
+            if ($nid !== null) {
+                $commitContributors = $drupalOrg->getContributorsFromJsonApi($nid);
             }
-            try {
-                $committer = $gitlab->users($commit->committer_name);
-                if (count($committer) > 0) {
-                    $commitContributors[] = $committer[0]->username;
+            
+            // Fallback to commit parsing if JSON:API didn't return contributors
+            if (empty($commitContributors)) {
+                $commitContributors = CommitParser::extractUsernames($commit);
+                try {
+                    $author = $gitlab->users($commit->author_name);
+                    if (count($author) > 0) {
+                        $commitContributors[] = $author[0]->username;
+                    }
+                } catch (RequestException) {
+                    if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
+                        $commitContributors[] = $authorMatches[0];
+                    }
                 }
-            } catch (RequestException) {
-                if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
-                    $commitContributors[] = $committerMatches[0];
+                try {
+                    $committer = $gitlab->users($commit->committer_name);
+                    if (count($committer) > 0) {
+                        $commitContributors[] = $committer[0]->username;
+                    }
+                } catch (RequestException) {
+                    if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
+                        $commitContributors[] = $committerMatches[0];
+                    }
                 }
             }
             $contributors[] = $commitContributors;
 
-            $nid = CommitParser::getNid($commit->title);
             if ($nid !== null) {
                 try {
                     $issue = \json_decode(
