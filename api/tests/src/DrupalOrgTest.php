@@ -27,7 +27,6 @@ class DrupalOrgTest extends TestCase
         
         self::assertEquals([
             'wim leers',
-            'System Message',
             'penyaskito',
         ], $contributors);
     }

@@ -123,14 +123,12 @@ class ChangelogTest extends TestCase
         
         // Verify contributors from JSON:API are used
         self::assertEquals([
-            'System Message',
             'penyaskito',
             'wim leers',
         ], $sut->getContributors());
         
         $changes = $sut->getChanges();
         self::assertEquals([
-            'System Message',
             'penyaskito',
             'wim leers',
         ], $changes[0]['contributors']);

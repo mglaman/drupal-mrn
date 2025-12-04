@@ -97,7 +97,11 @@ final class DrupalOrg
             if (isset($data->included)) {
                 foreach ($data->included as $item) {
                     if ($item->type === 'user--user' && isset($item->attributes->display_name)) {
-                        $contributors[] = $item->attributes->display_name;
+                        $displayName = $item->attributes->display_name;
+                        // Exclude "System Message" contributor
+                        if ($displayName !== 'System Message') {
+                            $contributors[] = $displayName;
+                        }
                     }
                 }
             }
