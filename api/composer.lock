@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "bref/bref",
-            "version": "2.4.15",
+            "version": "2.4.16",
             "source": {
                 "type": "git",
                 "url": "https://github.com/brefphp/bref.git",
-                "reference": "45261cfd8e99ee0e6d7fb1a36b37a403912cecc2"
+                "reference": "ce27aa118938138e919bce58ce0c2a65013632c2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/brefphp/bref/zipball/45261cfd8e99ee0e6d7fb1a36b37a403912cecc2",
-                "reference": "45261cfd8e99ee0e6d7fb1a36b37a403912cecc2",
+                "url": "https://api.github.com/repos/brefphp/bref/zipball/ce27aa118938138e919bce58ce0c2a65013632c2",
+                "reference": "ce27aa118938138e919bce58ce0c2a65013632c2",
                 "shasum": ""
             },
             "require": {
@@ -31,7 +31,7 @@
                 "psr/http-message": "^1.0|^2.0",
                 "psr/http-server-handler": "^1.0",
                 "riverline/multipart-parser": "^2.1.2",
-                "symfony/process": "^4.4|^5.0|^6.0|^7.0"
+                "symfony/process": "^4.4|^5.0|^6.0|^7.0|^8.0"
             },
             "require-dev": {
                 "async-aws/core": "^1.0",
@@ -43,8 +43,8 @@
                 "guzzlehttp/guzzle": "^7.5",
                 "phpstan/phpstan": "^1.10.26",
                 "phpunit/phpunit": "^9.6.10",
-                "symfony/console": "^4.4|^5.0|^6.0|^7.0",
-                "symfony/yaml": "^4.4|^5.0|^6.0|^7.0"
+                "symfony/console": "^4.4|^5.0|^6.0|^7.0|^8.0",
+                "symfony/yaml": "^4.4|^5.0|^6.0|^7.0|^8.0"
             },
             "bin": [
                 "bref",
@@ -71,7 +71,7 @@
             ],
             "support": {
                 "issues": "https://github.com/brefphp/bref/issues",
-                "source": "https://github.com/brefphp/bref/tree/2.4.15"
+                "source": "https://github.com/brefphp/bref/tree/2.4.16"
             },
             "funding": [
                 {
@@ -83,7 +83,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-10-25T16:58:41+00:00"
+            "time": "2025-12-01T14:15:08+00:00"
         },
         {
             "name": "crwlr/query-string",
@@ -1550,16 +1550,16 @@
         },
         {
             "name": "symfony/process",
-            "version": "v7.3.4",
+            "version": "v7.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/process.git",
-                "reference": "f24f8f316367b30810810d4eb30c543d7003ff3b"
+                "reference": "7ca8dc2d0dcf4882658313aba8be5d9fd01026c8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/process/zipball/f24f8f316367b30810810d4eb30c543d7003ff3b",
-                "reference": "f24f8f316367b30810810d4eb30c543d7003ff3b",
+                "url": "https://api.github.com/repos/symfony/process/zipball/7ca8dc2d0dcf4882658313aba8be5d9fd01026c8",
+                "reference": "7ca8dc2d0dcf4882658313aba8be5d9fd01026c8",
                 "shasum": ""
             },
             "require": {
@@ -1591,7 +1591,7 @@
             "description": "Executes commands in sub-processes",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/process/tree/v7.3.4"
+                "source": "https://github.com/symfony/process/tree/v7.4.0"
             },
             "funding": [
                 {
@@ -1611,7 +1611,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-09-11T10:12:26+00:00"
+            "time": "2025-10-16T11:21:06+00:00"
         }
     ],
     "packages-dev": [
