@@ -2,8 +2,10 @@
 
 namespace App;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\Utils;
 
 final class DrupalOrg
 {
@@ -110,7 +112,7 @@ final class DrupalOrg
         }
 
         // Check if client supports async requests (not a mock)
-        if (!($this->client instanceof \GuzzleHttp\Client)) {
+        if (!($this->client instanceof Client)) {
             // Fallback to sequential requests for test mocks
             $contributors = [];
             foreach ($nids as $nid) {
@@ -130,7 +132,7 @@ final class DrupalOrg
             }
 
             // Wait for all promises to complete
-            $results = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
+            $results = Utils::settle($promises)->wait();
 
             // Process results
             $contributors = [];
