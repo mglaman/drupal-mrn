@@ -87,26 +87,7 @@ final class DrupalOrg
             $response = $this->client->request('GET', $url);
             $data = \json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
             
-            // Check if we have data
-            if (!isset($data->data) || count($data->data) === 0) {
-                return [];
-            }
-            
-            // Extract display names from included users
-            $contributors = [];
-            if (isset($data->included)) {
-                foreach ($data->included as $item) {
-                    if ($item->type === 'user--user' && isset($item->attributes->display_name)) {
-                        $displayName = $item->attributes->display_name;
-                        // Exclude "System Message" contributor
-                        if ($displayName !== 'System Message') {
-                            $contributors[] = $displayName;
-                        }
-                    }
-                }
-            }
-            
-            return $contributors;
+            return $this->extractContributorsFromJsonApiResponse($data);
         } catch (RequestException) {
             // If the request fails, return empty array
             return [];
@@ -114,6 +95,98 @@ final class DrupalOrg
             // If JSON decoding fails, return empty array
             return [];
         }
+    }
+
+    /**
+     * Fetch contributors for multiple issues concurrently using promises.
+     *
+     * @param array $nids Array of issue node IDs
+     * @return array Associative array mapping nid => array of contributor display names
+     */
+    public function getContributorsFromJsonApiBatch(array $nids): array
+    {
+        if (empty($nids)) {
+            return [];
+        }
+
+        // Check if client supports async requests (not a mock)
+        if (!($this->client instanceof \GuzzleHttp\Client)) {
+            // Fallback to sequential requests for test mocks
+            $contributors = [];
+            foreach ($nids as $nid) {
+                $contributors[$nid] = $this->getContributorsFromJsonApi($nid);
+            }
+            return $contributors;
+        }
+
+        try {
+            $promises = [];
+            foreach ($nids as $nid) {
+                $url = sprintf(
+                  'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=https://www.drupal.org/node/%s&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user&fields[user--user]=display_name',
+                  urlencode($nid)
+                );
+                $promises[$nid] = $this->client->requestAsync('GET', $url);
+            }
+
+            // Wait for all promises to complete
+            $results = \GuzzleHttp\Promise\Utils::settle($promises)->wait();
+
+            // Process results
+            $contributors = [];
+            foreach ($results as $nid => $result) {
+                if ($result['state'] === 'fulfilled') {
+                    try {
+                        $data = \json_decode((string) $result['value']->getBody(), false, 512, JSON_THROW_ON_ERROR);
+                        $contributors[$nid] = $this->extractContributorsFromJsonApiResponse($data);
+                    } catch (\JsonException) {
+                        $contributors[$nid] = [];
+                    }
+                } else {
+                    // Request failed
+                    $contributors[$nid] = [];
+                }
+            }
+
+            return $contributors;
+        } catch (\Throwable $e) {
+            // If anything goes wrong with async, fallback to sequential
+            $contributors = [];
+            foreach ($nids as $nid) {
+                $contributors[$nid] = $this->getContributorsFromJsonApi($nid);
+            }
+            return $contributors;
+        }
+    }
+
+    /**
+     * Extract contributors from JSON:API response data.
+     *
+     * @param \stdClass $data The decoded JSON:API response
+     * @return array Array of contributor display names
+     */
+    private function extractContributorsFromJsonApiResponse(\stdClass $data): array
+    {
+        // Check if we have data
+        if (!isset($data->data) || count($data->data) === 0) {
+            return [];
+        }
+        
+        // Extract display names from included users
+        $contributors = [];
+        if (isset($data->included)) {
+            foreach ($data->included as $item) {
+                if ($item->type === 'user--user' && isset($item->attributes->display_name)) {
+                    $displayName = $item->attributes->display_name;
+                    // Exclude "System Message" contributor
+                    if ($displayName !== 'System Message') {
+                        $contributors[] = $displayName;
+                    }
+                }
+            }
+        }
+        
+        return $contributors;
     }
 
 }

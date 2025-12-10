@@ -75,4 +75,42 @@ class DrupalOrgTest extends TestCase
         
         self::assertEquals('923314', $projectId);
     }
+
+    public function testGetContributorsFromJsonApiBatch(): void
+    {
+        // Setup responses for two different issues
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-3560441.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-3294296.json')),
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        
+        $drupalOrg = new DrupalOrg($client);
+        $contributors = $drupalOrg->getContributorsFromJsonApiBatch(['3560441', '3294296']);
+        
+        // Verify we get both results mapped to their NIDs
+        self::assertArrayHasKey('3560441', $contributors);
+        self::assertArrayHasKey('3294296', $contributors);
+        
+        self::assertEquals([
+            'wim leers',
+            'penyaskito',
+        ], $contributors['3560441']);
+        
+        self::assertEquals([
+            'mrinalini9',
+            'Lal_',
+            'mglaman',
+        ], $contributors['3294296']);
+    }
+
+    public function testGetContributorsFromJsonApiBatchEmpty(): void
+    {
+        $drupalOrg = new DrupalOrg($this->createMock(Client::class));
+        $contributors = $drupalOrg->getContributorsFromJsonApiBatch([]);
+        
+        self::assertEquals([], $contributors);
+    }
 }

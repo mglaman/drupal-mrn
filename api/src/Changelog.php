@@ -44,13 +44,25 @@ final class Changelog
         $drupalOrg = new DrupalOrg($this->client);
         $projectId = $drupalOrg->getProjectId($this->project);
 
+        // Collect all NIDs for batch fetching
+        $nids = [];
+        foreach ($commits as $commit) {
+            $nid = CommitParser::getNid($commit->title);
+            if ($nid !== null) {
+                $nids[] = $nid;
+            }
+        }
+
+        // Fetch all contributors concurrently
+        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApiBatch($nids);
+
         foreach ($commits as $commit) {
             $nid = CommitParser::getNid($commit->title);
             $commitContributors = [];
             
-            // Try to fetch contributors from JSON:API if we have an issue ID
-            if ($nid !== null) {
-                $commitContributors = $drupalOrg->getContributorsFromJsonApi($nid);
+            // Try to use contributors from batch JSON:API fetch
+            if ($nid !== null && isset($contributorsFromApi[$nid]) && !empty($contributorsFromApi[$nid])) {
+                $commitContributors = $contributorsFromApi[$nid];
             }
             
             // Fallback to commit parsing if JSON:API didn't return contributors
