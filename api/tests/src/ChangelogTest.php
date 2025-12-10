@@ -24,6 +24,7 @@ class ChangelogTest extends TestCase
         $sut = new Changelog($client, 'views_remote_data', $fixture->commits, '1.0.1', '1.0.2');
         self::assertEquals([
           'Lal_',
+          'mglaman',
           'mrinalini9',
         ], $sut->getContributors());
     }
@@ -86,8 +87,6 @@ class ChangelogTest extends TestCase
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/redis-compare.json')), // GitLab compare
           new Response(200, [], '{"list":[{"nid":"923314"}]}'), // Project ID lookup for Redis
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // JSON:API contribution record (empty, fallback to commit parsing)
-          new Response(403), // User search (author)
-          new Response(403), // User search (committer)
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup (using existing fixture)
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/change-records-redis.json')), // Change records API response
         ]);
@@ -140,8 +139,6 @@ class ChangelogTest extends TestCase
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/views_remote_data.json')), // GitLab compare
           new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // JSON:API with no data - trigger fallback
-          new Response(403), // User search (author) - fallback to commit parsing
-          new Response(403), // User search (committer) - fallback to commit parsing
           new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')), // Issue lookup
           new Response(200, [], '{"list":[]}'), // Change records API response (empty)
         ]);

@@ -33,7 +33,6 @@ final class Changelog
       private readonly string $from,
       private readonly string $to
     ) {
-        $gitlab = new GitLab($this->client);
         if (count($commits) === 0) {
             throw new \RuntimeException('No commits for the changelog to process.');
         }
@@ -68,25 +67,12 @@ final class Changelog
             // Fallback to commit parsing if JSON:API didn't return contributors
             if (empty($commitContributors)) {
                 $commitContributors = CommitParser::extractUsernames($commit);
-                try {
-                    $author = $gitlab->users($commit->author_name);
-                    if (count($author) > 0) {
-                        $commitContributors[] = $author[0]->username;
-                    }
-                } catch (RequestException) {
-                    if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
-                        $commitContributors[] = $authorMatches[0];
-                    }
+                // Extract usernames from commit author and committer emails if available
+                if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
+                    $commitContributors[] = $authorMatches[0];
                 }
-                try {
-                    $committer = $gitlab->users($commit->committer_name);
-                    if (count($committer) > 0) {
-                        $commitContributors[] = $committer[0]->username;
-                    }
-                } catch (RequestException) {
-                    if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
-                        $commitContributors[] = $committerMatches[0];
-                    }
+                if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
+                    $commitContributors[] = $committerMatches[0];
                 }
             }
             $contributors[] = $commitContributors;
