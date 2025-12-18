@@ -52,7 +52,7 @@ final class GitLab
         $project = urlencode('project/' . $project);
         $response = $this->client->request(
           'GET',
-          "https://git.drupalcode.org/api/v4/projects/$project/repository/tags"
+          "https://git.drupalcode.org/api/v4/projects/$project/repository/tags?order_by=updated"
         );
         return \json_decode((string) $response->getBody());
     }
