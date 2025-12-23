@@ -19,7 +19,11 @@ class ChangelogTest extends TestCase
 
     public function testGetContributors(): void
     {
-        $client = $this->createMock(Client::class);
+        $client = new Client([
+            'handler' => HandlerStack::create(function () {
+                return new \GuzzleHttp\Promise\FulfilledPromise(new Response(404));
+            }),
+        ]);
         $fixture = json_decode(file_get_contents(__DIR__.'/../fixtures/views_remote_data.json'));
         $sut = new Changelog($client, 'views_remote_data', $fixture->commits, '1.0.1', '1.0.2');
         self::assertEquals([
@@ -64,7 +68,11 @@ class ChangelogTest extends TestCase
     }
 
     public function testNewFormat(): void {
-      $client = $this->createMock(Client::class);
+      $client = new Client([
+          'handler' => HandlerStack::create(function () {
+              return new \GuzzleHttp\Promise\FulfilledPromise(new Response(404));
+          }),
+      ]);
       $fixture = json_decode(file_get_contents(__DIR__ . '/../fixtures/entity_logger-new-format.json'), FALSE, 512, JSON_THROW_ON_ERROR);
       $sut = new Changelog($client, 'entity_logger', $fixture->commits, '1.0.11', '1.0.12');
       self::assertEquals([

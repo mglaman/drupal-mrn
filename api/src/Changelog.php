@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 final class Changelog
@@ -27,7 +27,7 @@ final class Changelog
     private array $changeRecords = [];
 
     public function __construct(
-      private readonly ClientInterface $client,
+      private readonly Client $client,
       private readonly string $project,
       array $commits,
       private readonly string $from,
@@ -53,7 +53,7 @@ final class Changelog
         }
 
         // Fetch all contributors concurrently
-        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApiBatch($nids);
+        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($nids);
 
         foreach ($commits as $commit) {
             $nid = CommitParser::getNid($commit->title);

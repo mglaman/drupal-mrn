@@ -23,12 +23,12 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi('3560441');
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441']);
         
         self::assertEquals([
             'wim leers',
             'penyaskito',
-        ], $contributors);
+        ], $contributors['3560441']);
     }
 
     public function testGetContributorsFromJsonApiEmpty(): void
@@ -41,9 +41,9 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi('9999999');
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['9999999']);
         
-        self::assertEquals([], $contributors);
+        self::assertEquals([], $contributors['9999999']);
     }
 
     public function testGetContributorsFromJsonApiRequestException(): void
@@ -56,9 +56,9 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi('3560441');
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441']);
         
-        self::assertEquals([], $contributors);
+        self::assertEquals([], $contributors['3560441']);
     }
 
     public function testGetProjectId(): void
@@ -88,7 +88,7 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApiBatch(['3560441', '3294296']);
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441', '3294296']);
         
         // Verify we get both results mapped to their NIDs
         self::assertArrayHasKey('3560441', $contributors);
@@ -108,8 +108,12 @@ class DrupalOrgTest extends TestCase
 
     public function testGetContributorsFromJsonApiBatchEmpty(): void
     {
-        $drupalOrg = new DrupalOrg($this->createMock(Client::class));
-        $contributors = $drupalOrg->getContributorsFromJsonApiBatch([]);
+        $mockHandler = new MockHandler([]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $drupalOrg = new DrupalOrg($client);
+        $contributors = $drupalOrg->getContributorsFromJsonApi([]);
         
         self::assertEquals([], $contributors);
     }

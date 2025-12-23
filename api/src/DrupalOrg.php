@@ -10,7 +10,7 @@ use GuzzleHttp\Promise\Utils;
 final class DrupalOrg
 {
     public function __construct(
-      private readonly ClientInterface $client
+      private readonly Client $client
     )
     {
     }
@@ -73,31 +73,7 @@ final class DrupalOrg
         }
     }
 
-    /**
-     * Fetch contributors for an issue from the contribution records API.
-     *
-     * @param string $nid The issue node ID
-     * @return array Array of contributor display names
-     */
-    public function getContributorsFromJsonApi(string $nid): array
-    {
-        try {
-            $url = sprintf(
-              'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=https://www.drupal.org/node/%s&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user&fields[user--user]=display_name',
-              urlencode($nid)
-            );
-            $response = $this->client->request('GET', $url);
-            $data = \json_decode((string) $response->getBody(), false, 512, JSON_THROW_ON_ERROR);
-            
-            return $this->extractContributorsFromJsonApiResponse($data);
-        } catch (RequestException) {
-            // If the request fails, return empty array
-            return [];
-        } catch (\JsonException) {
-            // If JSON decoding fails, return empty array
-            return [];
-        }
-    }
+
 
     /**
      * Fetch contributors for multiple issues concurrently using promises.
@@ -105,27 +81,20 @@ final class DrupalOrg
      * @param array $nids Array of issue node IDs
      * @return array Associative array mapping nid => array of contributor display names
      */
-    public function getContributorsFromJsonApiBatch(array $nids): array
+    public function getContributorsFromJsonApi(array $nids): array
     {
         if (empty($nids)) {
             return [];
         }
 
-        // Check if client supports async requests (not a mock)
-        if (!($this->client instanceof Client)) {
-            // Fallback to sequential requests for test mocks
-            $contributors = [];
-            foreach ($nids as $nid) {
-                $contributors[$nid] = $this->getContributorsFromJsonApi($nid);
-            }
-            return $contributors;
-        }
+
+        $contributors = [];
 
         try {
             $promises = [];
             foreach ($nids as $nid) {
                 $url = sprintf(
-                  'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=https://www.drupal.org/node/%s&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user&fields[user--user]=display_name',
+                  'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=https://www.drupal.org/node/%s&filter[field_contributors.field_credit_this_contributor]=1&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user,field_credit_this_contributor&fields[user--user]=display_name',
                   urlencode($nid)
                 );
                 $promises[$nid] = $this->client->requestAsync('GET', $url);
@@ -135,7 +104,6 @@ final class DrupalOrg
             $results = Utils::settle($promises)->wait();
 
             // Process results
-            $contributors = [];
             foreach ($results as $nid => $result) {
                 if ($result['state'] === 'fulfilled') {
                     try {
@@ -149,14 +117,9 @@ final class DrupalOrg
                     $contributors[$nid] = [];
                 }
             }
-
-            return $contributors;
         } catch (\Throwable $e) {
-            // If anything goes wrong with async, fallback to sequential
-            $contributors = [];
-            foreach ($nids as $nid) {
-                $contributors[$nid] = $this->getContributorsFromJsonApi($nid);
-            }
+            // If anything goes wrong with async
+        } finally {
             return $contributors;
         }
     }
