@@ -9,3 +9,10 @@
 
 node_modules
 .env
+
+# Test artifacts
+test-results/
+playwright-report/
+coverage/
+app/tests/**/*.png
+app/tests/**/screenshots/
