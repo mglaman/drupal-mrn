@@ -72,8 +72,6 @@ final class DrupalOrg
         }
     }
 
-
-
     /**
      * Fetch contributors for multiple issues concurrently using promises.
      *
@@ -152,5 +150,49 @@ final class DrupalOrg
         return $contributors;
     }
 
+    /**
+     * Fetch issue details for multiple issues concurrently.
+     *
+     * @param array $nids Array of issue node IDs
+     * @return array Associative array mapping nid => issue data object (or null)
+     */
+    public function getIssueDetails(array $nids): array
+    {
+        if (empty($nids)) {
+            return [];
+        }
+
+        $issues = [];
+        $promises = [];
+
+        try {
+            foreach ($nids as $nid) {
+                // Using api-d7 as per original code
+                $url = sprintf('https://www.drupal.org/api-d7/node/%s.json', $nid);
+                $promises[$nid] = $this->client->requestAsync('GET', $url);
+            }
+
+            // Wait for all promises to complete
+            $results = Utils::settle($promises)->wait();
+
+            // Process results
+            foreach ($results as $nid => $result) {
+                if ($result['state'] === 'fulfilled') {
+                    try {
+                        $issues[$nid] = \json_decode((string) $result['value']->getBody(), false, 512, JSON_THROW_ON_ERROR);
+                    } catch (\JsonException) {
+                        $issues[$nid] = null;
+                    }
+                } else {
+                    // Request failed
+                    $issues[$nid] = null;
+                }
+            }
+        } catch (\Throwable $e) {
+            // If anything goes wrong with async
+        }
+
+        return $issues;
+    }
 }
 

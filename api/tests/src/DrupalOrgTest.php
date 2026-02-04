@@ -117,4 +117,21 @@ class DrupalOrgTest extends TestCase
         
         self::assertEquals([], $contributors);
     }
+
+    public function testGetIssueDetails(): void
+    {
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/3294296.json')),
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        
+        $drupalOrg = new DrupalOrg($client);
+        $issues = $drupalOrg->getIssueDetails(['3294296']);
+        
+        self::assertArrayHasKey('3294296', $issues);
+        self::assertEquals('3294296', $issues['3294296']->nid);
+        self::assertEquals('2', $issues['3294296']->field_issue_category);
+    }
 }

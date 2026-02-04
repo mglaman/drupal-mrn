@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use GuzzleHttp\Client;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 
 final class Changelog
@@ -27,7 +27,7 @@ final class Changelog
     private array $changeRecords = [];
 
     public function __construct(
-      private readonly Client $client,
+      private readonly ClientInterface $client,
       private readonly string $project,
       array $commits,
       private readonly string $from,
@@ -43,21 +43,24 @@ final class Changelog
         $drupalOrg = new DrupalOrg($this->client);
         $projectId = $drupalOrg->getProjectId($this->project);
 
-        // Collect all NIDs for batch fetching
+        // Collect all NIDs for batch fetching and cache them keyed by commit index
         $nids = [];
-        foreach ($commits as $commit) {
+        $commitNids = [];
+        foreach ($commits as $index => $commit) {
             $nid = CommitParser::getNid($commit->title);
+            $commitNids[$index] = $nid;
             if ($nid !== null) {
                 $nids[] = $nid;
             }
         }
         $nids = array_unique($nids);
 
-        // Fetch all contributors concurrently
+        // Fetch all contributors and issue details concurrently
         $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($nids);
+        $issueDetails = $drupalOrg->getIssueDetails($nids);
 
-        foreach ($commits as $commit) {
-            $nid = CommitParser::getNid($commit->title);
+        foreach ($commits as $index => $commit) {
+            $nid = $commitNids[$index];
             $commitContributors = [];
             
             // Try to use contributors from batch JSON:API fetch
@@ -78,21 +81,14 @@ final class Changelog
             }
             $contributors[] = $commitContributors;
 
-            if ($nid !== null) {
-                try {
-                    $issue = \json_decode(
-                      (string) $this->client->request('GET', "https://www.drupal.org/api-d7/node/$nid.json")
-                        ->getBody()
-                    );
-                    $issueCategory = $issue->field_issue_category ?? 0;
-                    $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory];
-                    $this->issueCount++;
-                } catch (RequestException $e) {
-                    $issueCategoryLabel = self::CATEGORY_MAP[0];
-                }
-            } else {
-                $issueCategoryLabel = self::CATEGORY_MAP[0];
+            $issueCategoryLabel = self::CATEGORY_MAP[0];
+            if ($nid !== null && isset($issueDetails[$nid])) {
+                $issue = $issueDetails[$nid];
+                $issueCategory = $issue->field_issue_category ?? 0;
+                $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory] ?? self::CATEGORY_MAP[0];
+                $this->issueCount++;
             }
+
             $commitContributors = array_unique($commitContributors);
             sort($commitContributors);
             $this->changes[] = [
