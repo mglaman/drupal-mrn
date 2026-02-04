@@ -2,7 +2,6 @@
 
 namespace App;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Promise\Utils;
@@ -10,7 +9,7 @@ use GuzzleHttp\Promise\Utils;
 final class DrupalOrg
 {
     public function __construct(
-      private readonly Client $client
+      private readonly ClientInterface $client
     )
     {
     }
@@ -86,7 +85,6 @@ final class DrupalOrg
         if (empty($nids)) {
             return [];
         }
-
 
         $contributors = [];
 

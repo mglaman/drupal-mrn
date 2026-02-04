@@ -51,6 +51,7 @@ final class Changelog
                 $nids[] = $nid;
             }
         }
+        $nids = array_unique($nids);
 
         // Fetch all contributors concurrently
         $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($nids);
