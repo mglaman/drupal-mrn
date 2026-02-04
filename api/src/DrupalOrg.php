@@ -4,6 +4,7 @@ namespace App;
 
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Promise\Utils;
 
 final class DrupalOrg
@@ -101,7 +102,7 @@ final class DrupalOrg
 
             // Process results
             foreach ($results as $nid => $result) {
-                if ($result['state'] === 'fulfilled') {
+                if ($result['state'] === PromiseInterface::FULFILLED) {
                     try {
                         $data = \json_decode((string) $result['value']->getBody(), false, 512, JSON_THROW_ON_ERROR);
                         $contributors[$nid] = $this->extractContributorsFromJsonApiResponse($data);
@@ -177,19 +178,25 @@ final class DrupalOrg
 
             // Process results
             foreach ($results as $nid => $result) {
-                if ($result['state'] === 'fulfilled') {
+                if ($result['state'] === PromiseInterface::FULFILLED) {
                     try {
                         $issues[$nid] = \json_decode((string) $result['value']->getBody(), false, 512, JSON_THROW_ON_ERROR);
-                    } catch (\JsonException) {
+                    } catch (\JsonException $e) {
+                        \Sentry\captureException($e);
                         $issues[$nid] = null;
                     }
                 } else {
                     // Request failed
+                    if (isset($result['reason']) && $result['reason'] instanceof \Throwable) {
+                        \Sentry\captureException($result['reason']);
+                    } else {
+                        \Sentry\captureMessage("Failed to fetch issue $nid: " . ($result['reason'] ?? 'Unknown error'));
+                    }
                     $issues[$nid] = null;
                 }
             }
         } catch (\Throwable $e) {
-            // If anything goes wrong with async
+            \Sentry\captureException($e);
         }
 
         return $issues;
