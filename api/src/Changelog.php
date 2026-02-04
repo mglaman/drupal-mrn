@@ -33,7 +33,6 @@ final class Changelog
       private readonly string $from,
       private readonly string $to
     ) {
-        $gitlab = new GitLab($this->client);
         if (count($commits) === 0) {
             throw new \RuntimeException('No commits for the changelog to process.');
         }
@@ -44,46 +43,52 @@ final class Changelog
         $drupalOrg = new DrupalOrg($this->client);
         $projectId = $drupalOrg->getProjectId($this->project);
 
-        foreach ($commits as $commit) {
-            $commitContributors = CommitParser::extractUsernames($commit);
-            try {
-                $author = $gitlab->users($commit->author_name);
-                if (count($author) > 0) {
-                    $commitContributors[] = $author[0]->username;
-                }
-            } catch (RequestException) {
+        // Collect all NIDs for batch fetching and cache them keyed by commit index
+        $nids = [];
+        $commitNids = [];
+        foreach ($commits as $index => $commit) {
+            $nid = CommitParser::getNid($commit->title);
+            $commitNids[$index] = $nid;
+            if ($nid !== null) {
+                $nids[] = $nid;
+            }
+        }
+        $nids = array_unique($nids);
+
+        // Fetch all contributors and issue details concurrently
+        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($nids);
+        $issueDetails = $drupalOrg->getIssueDetails($nids);
+
+        foreach ($commits as $index => $commit) {
+            $nid = $commitNids[$index];
+            $commitContributors = [];
+            
+            // Try to use contributors from batch JSON:API fetch
+            if ($nid !== null && isset($contributorsFromApi[$nid]) && !empty($contributorsFromApi[$nid])) {
+                $commitContributors = $contributorsFromApi[$nid];
+            }
+            
+            // Fallback to commit parsing if JSON:API didn't return contributors
+            if (empty($commitContributors)) {
+                $commitContributors = CommitParser::extractUsernames($commit);
+                // Extract usernames from commit author and committer emails if available
                 if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
                     $commitContributors[] = $authorMatches[0];
                 }
-            }
-            try {
-                $committer = $gitlab->users($commit->committer_name);
-                if (count($committer) > 0) {
-                    $commitContributors[] = $committer[0]->username;
-                }
-            } catch (RequestException) {
                 if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
                     $commitContributors[] = $committerMatches[0];
                 }
             }
             $contributors[] = $commitContributors;
 
-            $nid = CommitParser::getNid($commit->title);
-            if ($nid !== null) {
-                try {
-                    $issue = \json_decode(
-                      (string) $this->client->request('GET', "https://www.drupal.org/api-d7/node/$nid.json")
-                        ->getBody()
-                    );
-                    $issueCategory = $issue->field_issue_category ?? 0;
-                    $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory];
-                    $this->issueCount++;
-                } catch (RequestException $e) {
-                    $issueCategoryLabel = self::CATEGORY_MAP[0];
-                }
-            } else {
-                $issueCategoryLabel = self::CATEGORY_MAP[0];
+            $issueCategoryLabel = self::CATEGORY_MAP[0];
+            if ($nid !== null && isset($issueDetails[$nid])) {
+                $issue = $issueDetails[$nid];
+                $issueCategory = $issue->field_issue_category ?? 0;
+                $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory] ?? self::CATEGORY_MAP[0];
+                $this->issueCount++;
             }
+
             $commitContributors = array_unique($commitContributors);
             sort($commitContributors);
             $this->changes[] = [

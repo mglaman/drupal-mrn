@@ -33,3 +33,9 @@ jobs:
       - name: "phpunit"
         working-directory: ./api
         run: "php vendor/bin/phpunit"
+      - name: "Integration Test (Canvas Project)"
+        working-directory: ./api
+        run: |
+          php -d max_execution_time=28 -S localhost:8000 &
+          sleep 3
+          curl --fail --show-error "http://localhost:8000/changelog.php?project=canvas&from=1.0.4&to=1.1.0"

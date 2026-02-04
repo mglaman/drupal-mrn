@@ -22,8 +22,7 @@ class MarkdownFormatOutputTest extends TestCase
         $mockHandler = new MockHandler([
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/views_remote_data.json')),
           new Response(200, [], '{"list":[{"nid":"3258499"}]}'), // Project ID lookup
-            new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.author_name.json')),
-            new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/users.search.committer_name.json')),
+          new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/contribution-record-3294296.json')), // JSON:API contribution record
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/3294296.json')),
           new Response(200, [], file_get_contents(__DIR__.'/../../fixtures/change-record-views-remote-data.json')), // Change records API response
         ]);
