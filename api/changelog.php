@@ -2,9 +2,9 @@
 declare(strict_types=1);
 
 use App\Changelog;
+use App\ClientFactory;
 use App\FormatOutput\FormatOutputFactory;
 use App\GitLab;
-use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -31,7 +31,7 @@ if (!is_string($project) || $project === '') {
     return;
 }
 
-$client = new Client();
+$client = ClientFactory::create();
 try {
     $compare = (new GitLab($client))->compare($project, $from, $to);
 } catch (\GuzzleHttp\Exception\RequestException $e) {

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 use App\Changelog;
+use App\ClientFactory;
 use App\FormatOutput\FormatOutputFactory;
 use App\GitLab;
-use GuzzleHttp\Client;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,7 +26,7 @@ if (!is_string($project) || $project === '') {
     ], 400))->send();
     return;
 }
-$client = new Client();
+$client = ClientFactory::create();
 $gitlab = new GitLab($client);
 
 try {
