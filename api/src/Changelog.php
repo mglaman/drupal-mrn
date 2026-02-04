@@ -87,6 +87,16 @@ final class Changelog
                 $issueCategory = $issue->field_issue_category ?? 0;
                 $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory] ?? self::CATEGORY_MAP[0];
                 $this->issueCount++;
+            } elseif ($nid === null) {
+                if (preg_match('/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci)(?:\([a-z0-9-]+\))?!?: /i', $commit->title, $matches)) {
+                    $type = strtolower($matches[1]);
+                    $issueCategoryLabel = match ($type) {
+                        'fix' => self::CATEGORY_MAP[1],
+                        'feat' => self::CATEGORY_MAP[3],
+                        'chore' => self::CATEGORY_MAP[2],
+                        default => self::CATEGORY_MAP[0],
+                    };
+                }
             }
 
             $commitContributors = array_unique($commitContributors);
