@@ -47,13 +47,27 @@ try {
 }
 $commits = $compare->commits;
 
-$changelog = new Changelog(
-  $client,
-  $project,
-  $commits,
-  $from,
-  $to
-);
+try {
+    $changelog = new Changelog(
+      $client,
+      $project,
+      $commits,
+      $from,
+      $to
+    );
+} catch (\RuntimeException $e) {
+    $compareUrl = sprintf(
+        'https://git.drupalcode.org/project/%s/-/compare/%s...%s',
+        $project,
+        $from,
+        $to
+    );
+    (new JsonResponse([
+      'message' => $e->getMessage(),
+      'compare_url' => $compareUrl,
+    ], 400))->send();
+    return;
+}
 
 $response = FormatOutputFactory::getFormatOutput($format)
   ->getResponse($changelog);

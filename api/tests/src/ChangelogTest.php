@@ -164,4 +164,18 @@ class ChangelogTest extends TestCase
         ], $sut->getContributors());
     }
 
+    public function testThrowsExceptionWhenNoCommits(): void
+    {
+        $client = new Client([
+            'handler' => HandlerStack::create(function () {
+                return new \GuzzleHttp\Promise\FulfilledPromise(new Response(404));
+            }),
+        ]);
+        
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('No commits for the changelog to process.');
+        
+        new Changelog($client, 'test_project', [], '1.0.0', '1.0.1');
+    }
+
 }
