@@ -14,6 +14,7 @@
   let processing = false;
   let copied = false;
   let viewMode = 'preview'; // 'source' or 'preview'
+  let versionWarning = false;
 
   function findPreviousVersion(version) {
     if (!projectData.tags || projectData.tags.length === 0) {
@@ -114,10 +115,70 @@
     return '';
   }
 
+  // Compare two versions to determine if versionA is newer than versionB
+  function isVersionNewer(versionA, versionB) {
+    if (!versionA || !versionB) {
+      return false;
+    }
+
+    // Helper function to extract numeric suffix from pre-release identifiers
+    function getPreReleaseNumber(versionStr) {
+      const match = versionStr.match(/(alpha|beta|rc)(\d+)/);
+      return match ? parseInt(match[2], 10) : 0;
+    }
+
+    // Helper function to get sort weight for pre-release versions
+    function getPreReleaseWeight(versionStr) {
+      // Default weight for stable versions
+      let weight = 1000;
+
+      // Check for pre-release identifiers
+      if (versionStr.includes('-alpha')) weight = 100;
+      else if (versionStr.includes('-beta')) weight = 200;
+      else if (versionStr.includes('-rc')) weight = 300;
+      else if (versionStr.includes('-dev')) weight = 50;
+
+      // Add the numeric suffix to the weight for proper sorting within a pre-release type
+      const preReleaseNum = getPreReleaseNumber(versionStr);
+      weight += preReleaseNum;
+
+      return weight;
+    }
+
+    // Strip prefixes like "8.x-" for comparison
+    const versionACompare = versionA.replace(/^\d+\.x-/, '');
+    const versionBCompare = versionB.replace(/^\d+\.x-/, '');
+
+    // Compare major.minor.patch parts numerically
+    const aBase = versionACompare.split('-')[0];
+    const bBase = versionBCompare.split('-')[0];
+
+    const baseComparison = aBase.localeCompare(bBase, undefined, {
+      numeric: true,
+      sensitivity: 'base'
+    });
+
+    // If base versions are different, return the comparison result
+    if (baseComparison !== 0) {
+      return baseComparison > 0;
+    }
+
+    // If base versions are the same, compare by stability weight
+    const aWeight = getPreReleaseWeight(versionA);
+    const bWeight = getPreReleaseWeight(versionB);
+    
+    return aWeight > bWeight;
+  }
+
   function handleVersionChange() {
     if (to) {
       from = findPreviousVersion(to);
     }
+  }
+
+  // Reactive statement to check if versions are in wrong order
+  $: {
+    versionWarning = from && to && isVersionNewer(from, to);
   }
 
   async function getProject() {
@@ -215,6 +276,23 @@
                         </datalist>
                     </div>
                 </div>
+                {#if versionWarning}
+                    <div class="rounded-md bg-yellow-50 p-4 my-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <!-- Heroicon name: mini/exclamation-triangle -->
+                                <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.19-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    <strong>Warning:</strong> The "Previous release" appears to be newer than the "Version". Did you get them the wrong way around?
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
                 {#if error.length > 0}
                     <div class="rounded-md bg-red-50 p-4 my-4">
                         <div class="flex">
