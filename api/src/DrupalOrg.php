@@ -46,12 +46,13 @@ final class DrupalOrg
     }
 
     /**
-     * Get project ID from project machine name.
+     * Get the project node from its machine name.
      *
      * @param string $machineName The project machine name (e.g., "redis")
-     * @return string|null The project ID (nid), or null if not found
+     * @return object|null The project node (has ->nid and
+     *   ->field_project_has_issue_queue), or null if not found
      */
-    public function getProjectId(string $machineName): ?string
+    public function getProjectInfo(string $machineName): ?object
     {
         try {
             $url = sprintf(
@@ -64,13 +65,24 @@ final class DrupalOrg
                 return null;
             }
             // The API returns a list array, get the first project node
-            return $data->list[0]->nid ?? null;
+            return $data->list[0] ?? null;
         } catch (RequestException) {
             return null;
         } catch (\JsonException) {
             // If JSON decoding fails, return null
             return null;
         }
+    }
+
+    /**
+     * Get project ID from project machine name.
+     *
+     * @param string $machineName The project machine name (e.g., "redis")
+     * @return string|null The project ID (nid), or null if not found
+     */
+    public function getProjectId(string $machineName): ?string
+    {
+        return $this->getProjectInfo($machineName)?->nid;
     }
 
     /**

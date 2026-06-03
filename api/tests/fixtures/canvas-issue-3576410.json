@@ -1,0 +1,14 @@
+{
+  "iid": 3576410,
+  "title": "Canvas' fix for the core bug in TextItemBase::applyDefaultValue() itself caused a bug",
+  "labels": [
+    "Contributed project blocker",
+    "category::bug",
+    "dataModel",
+    "priority::minor",
+    "state::fixed",
+    "v1.x-dev"
+  ],
+  "web_url": "https://git.drupalcode.org/project/canvas/-/work_items/3576410",
+  "state": "closed"
+}

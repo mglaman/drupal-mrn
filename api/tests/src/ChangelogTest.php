@@ -164,6 +164,83 @@ class ChangelogTest extends TestCase
         ], $sut->getContributors());
     }
 
+    public function testGitLabIssuesCategorization(): void
+    {
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/canvas-compare.json')), // GitLab compare
+          new Response(200, [], '{"list":[{"nid":"2431121","field_project_has_issue_queue":false}]}'), // Project node: migrated to GitLab issues
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // contributors nid 3555239
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // contributors nid 3588438
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-empty.json')), // contributors nid 3576410
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/canvas-issue-3555239.json')), // GitLab work item (category::bug)
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/canvas-issue-3588438.json')), // GitLab work item (category::task)
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/canvas-issue-3576410.json')), // GitLab work item (category::bug)
+          new Response(200, [], '{"list":[]}'), // Change records (empty)
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $fixture = (new GitLab($client))->compare('canvas', '1.4.1', '1.5.0');
+        $sut = new Changelog($client, 'canvas', $fixture->commits, '1.4.1', '1.5.0');
+
+        self::assertEquals(3, $sut->getIssueCount());
+
+        $changes = $sut->getChanges();
+        $byNid = [];
+        foreach ($changes as $change) {
+            $byNid[$change['nid']] = $change;
+        }
+
+        // Category comes from the scoped `category::*` GitLab label, not Misc.
+        self::assertEquals('Bug', $byNid['3555239']['type']);
+        self::assertEquals('Task', $byNid['3588438']['type']);
+        self::assertEquals('Bug', $byNid['3576410']['type']);
+
+        // Link is the work item web_url, not the broken /i/ link.
+        self::assertEquals(
+          'https://git.drupalcode.org/project/canvas/-/work_items/3555239',
+          $byNid['3555239']['link']
+        );
+    }
+
+    public function testGitLabIssuesFallBackToConventionalCommit(): void
+    {
+        // GitLab project where the work item lookup fails (404). Categories should
+        // fall back to the conventional-commit prefix instead of all-Misc.
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/canvas-compare.json')), // GitLab compare
+          new Response(200, [], '{"list":[{"nid":"2431121","field_project_has_issue_queue":false}]}'), // Project node
+          new Response(404), // contributors nid 3555239
+          new Response(404), // contributors nid 3588438
+          new Response(404), // contributors nid 3576410
+          new Response(404), // work item 3555239
+          new Response(404), // work item 3588438
+          new Response(404), // work item 3576410
+          new Response(200, [], '{"list":[]}'), // Change records (empty)
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $fixture = (new GitLab($client))->compare('canvas', '1.4.1', '1.5.0');
+        $sut = new Changelog($client, 'canvas', $fixture->commits, '1.4.1', '1.5.0');
+
+        $byNid = [];
+        foreach ($sut->getChanges() as $change) {
+            $byNid[$change['nid']] = $change;
+        }
+
+        // chore: -> Task, fix: -> Bug
+        self::assertEquals('Task', $byNid['3555239']['type']);
+        self::assertEquals('Task', $byNid['3588438']['type']);
+        self::assertEquals('Bug', $byNid['3576410']['type']);
+
+        // Falls back to the canonical project-scoped issue URL.
+        self::assertEquals(
+          'https://www.drupal.org/project/canvas/issues/3555239',
+          $byNid['3555239']['link']
+        );
+    }
+
     public function testThrowsExceptionWhenNoCommits(): void
     {
         // The client is needed by Changelog constructor but won't be used when commits array is empty
