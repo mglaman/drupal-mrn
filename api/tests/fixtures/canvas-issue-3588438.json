@@ -1,0 +1,14 @@
+{
+  "iid": 3588438,
+  "title": "Rename `LinkedPropSource` to `LinkedProp` and `LinkedPropSourceInterface` to `LinkablePropSourceInterface`",
+  "labels": [
+    "category::task",
+    "pageBuilder",
+    "priority::minor",
+    "state::fixed",
+    "technical debt",
+    "v1.x-dev"
+  ],
+  "web_url": "https://git.drupalcode.org/project/canvas/-/work_items/3588438",
+  "state": "closed"
+}

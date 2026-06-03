@@ -46,12 +46,13 @@ final class DrupalOrg
     }
 
     /**
-     * Get project ID from project machine name.
+     * Get the project node from its machine name.
      *
      * @param string $machineName The project machine name (e.g., "redis")
-     * @return string|null The project ID (nid), or null if not found
+     * @return object|null The project node (has ->nid and
+     *   ->field_project_has_issue_queue), or null if not found
      */
-    public function getProjectId(string $machineName): ?string
+    public function getProjectInfo(string $machineName): ?object
     {
         try {
             $url = sprintf(
@@ -64,7 +65,7 @@ final class DrupalOrg
                 return null;
             }
             // The API returns a list array, get the first project node
-            return $data->list[0]->nid ?? null;
+            return $data->list[0] ?? null;
         } catch (RequestException) {
             return null;
         } catch (\JsonException) {
@@ -74,14 +75,28 @@ final class DrupalOrg
     }
 
     /**
+     * Get project ID from project machine name.
+     *
+     * @param string $machineName The project machine name (e.g., "redis")
+     * @return string|null The project ID (nid), or null if not found
+     */
+    public function getProjectId(string $machineName): ?string
+    {
+        return $this->getProjectInfo($machineName)?->nid;
+    }
+
+    /**
      * Fetch contributors for multiple issues concurrently using promises.
      *
-     * @param array $nids Array of issue node IDs
-     * @return array Associative array mapping nid => array of contributor display names
+     * Contribution records are keyed by the issue's source link. Legacy issues
+     * use the Drupal.org node URL; GitLab work items use the work item URL.
+     *
+     * @param array $sourceLinks Map of issue key => source link URI
+     * @return array Associative array mapping issue key => array of contributor display names
      */
-    public function getContributorsFromJsonApi(array $nids): array
+    public function getContributorsFromJsonApi(array $sourceLinks): array
     {
-        if (empty($nids)) {
+        if (empty($sourceLinks)) {
             return [];
         }
 
@@ -89,29 +104,29 @@ final class DrupalOrg
 
         try {
             $promises = [];
-            foreach ($nids as $nid) {
+            foreach ($sourceLinks as $key => $sourceLink) {
                 $url = sprintf(
-                  'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=https://www.drupal.org/node/%s&filter[field_contributors.field_credit_this_contributor]=1&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user,field_credit_this_contributor&fields[user--user]=display_name',
-                  urlencode($nid)
+                  'https://www.drupal.org/jsonapi/node/contribution_record?filter[field_source_link.uri]=%s&filter[field_contributors.field_credit_this_contributor]=1&include=field_contributors.field_contributor_user&fields[node--contribution_record]=field_contributors&fields[paragraph--contributor]=field_contributor_user,field_credit_this_contributor&fields[user--user]=display_name',
+                  urlencode($sourceLink)
                 );
-                $promises[$nid] = $this->client->requestAsync('GET', $url);
+                $promises[$key] = $this->client->requestAsync('GET', $url);
             }
 
             // Wait for all promises to complete
             $results = Utils::settle($promises)->wait();
 
             // Process results
-            foreach ($results as $nid => $result) {
+            foreach ($results as $key => $result) {
                 if ($result['state'] === PromiseInterface::FULFILLED) {
                     try {
                         $data = \json_decode((string) $result['value']->getBody(), false, 512, JSON_THROW_ON_ERROR);
-                        $contributors[$nid] = $this->extractContributorsFromJsonApiResponse($data);
+                        $contributors[$key] = $this->extractContributorsFromJsonApiResponse($data);
                     } catch (\JsonException) {
-                        $contributors[$nid] = [];
+                        $contributors[$key] = [];
                     }
                 } else {
                     // Request failed
-                    $contributors[$nid] = [];
+                    $contributors[$key] = [];
                 }
             }
         } catch (\Throwable $e) {

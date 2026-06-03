@@ -49,6 +49,37 @@ class GitLabTest extends TestCase
         self::assertCount(1, $sut->branches('views_remote_data'));
     }
 
+    public function testIssues(): void {
+        $container = [];
+        $history = \GuzzleHttp\Middleware::history($container);
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/canvas-issue-3555239.json')),
+          new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/canvas-issue-3588438.json')),
+        ]);
+        $handlerStack = HandlerStack::create($mockHandler);
+        $handlerStack->push($history);
+        $client = new Client([
+          'handler' => $handlerStack
+        ]);
+        $sut = new GitLab($client);
+        $issues = $sut->issues('canvas', ['3555239', '3588438']);
+
+        self::assertCount(2, $issues);
+        self::assertContains('category::bug', $issues['3555239']->labels);
+        self::assertContains('category::task', $issues['3588438']->labels);
+        self::assertStringContainsString(
+          '/api/v4/projects/project%2Fcanvas/issues/3555239',
+          (string) $container[0]['request']->getUri()
+        );
+    }
+
+    public function testIssuesWithNoIids(): void {
+        $client = new Client([
+          'handler' => HandlerStack::create(new MockHandler([]))
+        ]);
+        self::assertSame([], (new GitLab($client))->issues('canvas', []));
+    }
+
     public function testUsers(): void {
         $mockHandler = new MockHandler([
             new Response(200, [], file_get_contents(__DIR__ . '/../fixtures/users.search.author_name.json')),

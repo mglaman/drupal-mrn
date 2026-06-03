@@ -1,0 +1,17 @@
+{
+  "iid": 3555239,
+  "title": "Canvas AI: Make chat history length configurable",
+  "labels": [
+    "AI Initiative",
+    "AI Initiative Sprint",
+    "AI Innovation",
+    "AI Page Generation",
+    "ai",
+    "category::bug",
+    "priority::normal",
+    "state::fixed",
+    "v1.x-dev"
+  ],
+  "web_url": "https://git.drupalcode.org/project/canvas/-/work_items/3555239",
+  "state": "closed"
+}

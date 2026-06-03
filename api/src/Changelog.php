@@ -39,9 +39,14 @@ final class Changelog
         $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
         $contributors = [];
 
-        // Get project ID from machine name
+        // Get the project node from its machine name.
         $drupalOrg = new DrupalOrg($this->client);
-        $projectId = $drupalOrg->getProjectId($this->project);
+        $projectInfo = $drupalOrg->getProjectInfo($this->project);
+        $projectId = $projectInfo?->nid;
+        // Projects migrated to GitLab work items have field_project_has_issue_queue
+        // set to false. The field is absent for projects on the legacy queue.
+        $hasGitLabIssues = isset($projectInfo->field_project_has_issue_queue)
+          && !filter_var($projectInfo->field_project_has_issue_queue, FILTER_VALIDATE_BOOLEAN);
 
         // Collect all NIDs for batch fetching and cache them keyed by commit index
         $nids = [];
@@ -55,9 +60,24 @@ final class Changelog
         }
         $nids = array_unique($nids);
 
-        // Fetch all contributors and issue details concurrently
-        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($nids);
-        $issueDetails = $drupalOrg->getIssueDetails($nids);
+        // Fetch all contributors and issue details concurrently. GitLab-issues
+        // projects resolve issues from the GitLab API; legacy projects from the
+        // Drupal.org node API. Contribution records are keyed by the issue's
+        // source link, which differs by project type.
+        $sourceLinks = [];
+        foreach ($nids as $nid) {
+            $sourceLinks[$nid] = $hasGitLabIssues
+              ? "https://git.drupalcode.org/project/$this->project/-/work_items/$nid"
+              : "https://www.drupal.org/node/$nid";
+        }
+        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($sourceLinks);
+        $gitlabIssues = [];
+        $issueDetails = [];
+        if ($hasGitLabIssues) {
+            $gitlabIssues = (new GitLab($this->client))->issues($this->project, $nids);
+        } else {
+            $issueDetails = $drupalOrg->getIssueDetails($nids);
+        }
 
         foreach ($commits as $index => $commit) {
             $nid = $commitNids[$index];
@@ -81,29 +101,35 @@ final class Changelog
             }
             $contributors[] = $commitContributors;
 
-            $issueCategoryLabel = self::CATEGORY_MAP[0];
-            if ($nid !== null && isset($issueDetails[$nid])) {
+            $issueCategoryLabel = null;
+            $link = $nid !== null ? "https://www.drupal.org/i/$nid" : '';
+            if ($nid !== null && $hasGitLabIssues) {
+                // Work item IIDs are not globally unique, so the canonical
+                // project-scoped issue URL replaces the /i/ link.
+                $link = "https://www.drupal.org/project/$this->project/issues/$nid";
+                if (isset($gitlabIssues[$nid])) {
+                    $issue = $gitlabIssues[$nid];
+                    $issueCategoryLabel = self::categoryFromGitLabLabels($issue->labels ?? []);
+                    $link = $issue->web_url ?? $link;
+                    $this->issueCount++;
+                }
+            } elseif ($nid !== null && isset($issueDetails[$nid])) {
                 $issue = $issueDetails[$nid];
                 $issueCategory = $issue->field_issue_category ?? 0;
-                $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory] ?? self::CATEGORY_MAP[0];
+                $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory] ?? null;
                 $this->issueCount++;
-            } elseif ($nid === null) {
-                if (preg_match('/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci)(?:\([a-z0-9-]+\))?!?: /i', $commit->title, $matches)) {
-                    $type = strtolower($matches[1]);
-                    $issueCategoryLabel = match ($type) {
-                        'fix' => self::CATEGORY_MAP[1],
-                        'feat' => self::CATEGORY_MAP[3],
-                        'chore' => self::CATEGORY_MAP[2],
-                        default => self::CATEGORY_MAP[0],
-                    };
-                }
             }
+
+            // Fall back to the conventional-commit prefix when no category was
+            // resolved (e.g. non-standard GitLab labels, or a failed lookup).
+            $issueCategoryLabel ??= self::categoryFromConventionalCommit($commit->title);
+            $issueCategoryLabel ??= self::CATEGORY_MAP[0];
 
             $commitContributors = array_unique($commitContributors);
             sort($commitContributors);
             $this->changes[] = [
               'nid' => $nid,
-              'link' => $nid !== null ? "https://www.drupal.org/i/$nid" : '',
+              'link' => $link,
               'type' => $issueCategoryLabel,
               'summary' => preg_replace('/^(Patch |- |Issue ){0,3}/', '', $commit->title),
               'contributors' => $commitContributors,
@@ -172,6 +198,42 @@ final class Changelog
     public function getChangeRecords(): array
     {
         return $this->changeRecords;
+    }
+
+    /**
+     * Map a GitLab scoped `category::*` label to a category, or null if none.
+     */
+    private static function categoryFromGitLabLabels(array $labels): ?string
+    {
+        foreach ($labels as $label) {
+            if (preg_match('/^category::(.+)$/i', (string) $label, $matches) === 1) {
+                return match (strtolower(trim($matches[1]))) {
+                    'bug' => self::CATEGORY_MAP[1],
+                    'task' => self::CATEGORY_MAP[2],
+                    'feature' => self::CATEGORY_MAP[3],
+                    'support' => self::CATEGORY_MAP[4],
+                    'plan' => self::CATEGORY_MAP[5],
+                    default => null,
+                };
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Map a conventional-commit prefix to a category, or null if none.
+     */
+    private static function categoryFromConventionalCommit(string $title): ?string
+    {
+        if (preg_match('/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci)(?:\([^)]+\))?!?: /i', $title, $matches) === 1) {
+            return match (strtolower($matches[1])) {
+                'fix' => self::CATEGORY_MAP[1],
+                'feat' => self::CATEGORY_MAP[3],
+                'chore' => self::CATEGORY_MAP[2],
+                default => null,
+            };
+        }
+        return null;
     }
 
     public static function groupByType(array $changes): array
