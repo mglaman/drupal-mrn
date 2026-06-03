@@ -225,7 +225,7 @@ final class Changelog
      */
     private static function categoryFromConventionalCommit(string $title): ?string
     {
-        if (preg_match('/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci)(?:\([a-z0-9-]+\))?!?: /i', $title, $matches) === 1) {
+        if (preg_match('/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci)(?:\([^)]+\))?!?: /i', $title, $matches) === 1) {
             return match (strtolower($matches[1])) {
                 'fix' => self::CATEGORY_MAP[1],
                 'feat' => self::CATEGORY_MAP[3],

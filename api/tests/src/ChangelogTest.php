@@ -241,6 +241,45 @@ class ChangelogTest extends TestCase
         );
     }
 
+    public function testConventionalCommitScopeWithSpacesAndCaps(): void
+    {
+        // GitLab work items without a category:: label fall back to the
+        // conventional-commit prefix. Scopes here contain spaces and capitals,
+        // e.g. "feat(CLI Tool):" and "chore(Project management):".
+        $commit = static function (string $title): \stdClass {
+            $c = new \stdClass();
+            $c->title = $title;
+            $c->message = $title;
+            $c->author_email = 'noreply@example.com';
+            $c->committer_email = 'noreply@example.com';
+            return $c;
+        };
+        $commits = [
+          $commit('feat(CLI Tool): #3591610 Clean up output of Canvas Create'),
+          $commit('chore(Project management): #3591594 Adopt COMPOSER_NO_BLOCKING'),
+        ];
+
+        $mockHandler = new MockHandler([
+          new Response(200, [], '{"list":[{"nid":"2431121","field_project_has_issue_queue":false}]}'), // Project node
+          new Response(404), // contributors nid 3591610
+          new Response(404), // contributors nid 3591594
+          new Response(404), // work item 3591610
+          new Response(404), // work item 3591594
+          new Response(200, [], '{"list":[]}'), // Change records (empty)
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $sut = new Changelog($client, 'canvas', $commits, '1.4.1', '1.5.0');
+
+        $byNid = [];
+        foreach ($sut->getChanges() as $change) {
+            $byNid[$change['nid']] = $change;
+        }
+        self::assertEquals('Feature', $byNid['3591610']['type']);
+        self::assertEquals('Task', $byNid['3591594']['type']);
+    }
+
     public function testThrowsExceptionWhenNoCommits(): void
     {
         // The client is needed by Changelog constructor but won't be used when commits array is empty
