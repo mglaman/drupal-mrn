@@ -23,12 +23,35 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441']);
-        
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441' => 'https://www.drupal.org/node/3560441']);
+
         self::assertEquals([
             'wim leers',
             'penyaskito',
         ], $contributors['3560441']);
+    }
+
+    public function testGetContributorsFromJsonApiWorkItemSourceLink(): void
+    {
+        $container = [];
+        $history = \GuzzleHttp\Middleware::history($container);
+        $mockHandler = new MockHandler([
+          new Response(200, [], file_get_contents(__DIR__.'/../fixtures/contribution-record-3560441.json')),
+        ]);
+        $handlerStack = HandlerStack::create($mockHandler);
+        $handlerStack->push($history);
+        $client = new Client(['handler' => $handlerStack]);
+
+        $drupalOrg = new DrupalOrg($client);
+        $sourceLink = 'https://git.drupalcode.org/project/canvas/-/work_items/3560441';
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441' => $sourceLink]);
+
+        self::assertEquals(['wim leers', 'penyaskito'], $contributors['3560441']);
+        // The request filters on the work item source link, not a node URL.
+        self::assertStringContainsString(
+          'filter%5Bfield_source_link.uri%5D=' . urlencode($sourceLink),
+          (string) $container[0]['request']->getUri()
+        );
     }
 
     public function testGetContributorsFromJsonApiEmpty(): void
@@ -41,7 +64,7 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi(['9999999']);
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['9999999' => 'https://www.drupal.org/node/9999999']);
         
         self::assertEquals([], $contributors['9999999']);
     }
@@ -56,8 +79,8 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441']);
-        
+        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441' => 'https://www.drupal.org/node/3560441']);
+
         self::assertEquals([], $contributors['3560441']);
     }
 
@@ -88,8 +111,11 @@ class DrupalOrgTest extends TestCase
         ]);
         
         $drupalOrg = new DrupalOrg($client);
-        $contributors = $drupalOrg->getContributorsFromJsonApi(['3560441', '3294296']);
-        
+        $contributors = $drupalOrg->getContributorsFromJsonApi([
+          '3560441' => 'https://www.drupal.org/node/3560441',
+          '3294296' => 'https://www.drupal.org/node/3294296',
+        ]);
+
         // Verify we get both results mapped to their NIDs
         self::assertArrayHasKey('3560441', $contributors);
         self::assertArrayHasKey('3294296', $contributors);

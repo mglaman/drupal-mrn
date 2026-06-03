@@ -62,8 +62,15 @@ final class Changelog
 
         // Fetch all contributors and issue details concurrently. GitLab-issues
         // projects resolve issues from the GitLab API; legacy projects from the
-        // Drupal.org node API.
-        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($nids);
+        // Drupal.org node API. Contribution records are keyed by the issue's
+        // source link, which differs by project type.
+        $sourceLinks = [];
+        foreach ($nids as $nid) {
+            $sourceLinks[$nid] = $hasGitLabIssues
+              ? "https://git.drupalcode.org/project/$this->project/-/work_items/$nid"
+              : "https://www.drupal.org/node/$nid";
+        }
+        $contributorsFromApi = $drupalOrg->getContributorsFromJsonApi($sourceLinks);
         $gitlabIssues = [];
         $issueDetails = [];
         if ($hasGitLabIssues) {
