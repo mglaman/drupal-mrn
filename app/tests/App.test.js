@@ -308,6 +308,70 @@ describe('App', () => {
     expect(window.pwned).toBeUndefined()
   })
 
+  it('generates Markdown when that format is selected', async () => {
+    const markdown = '### Contributors (2)\n\nChanges since 8.x-1.16'
+    const fetchMock = vi.fn(async (url) => {
+      if (url.includes('/project?')) {
+        return { ok: true, json: async () => projectResponse }
+      }
+      if (url.includes('/changelog?')) {
+        return { ok: true, text: async () => markdown }
+      }
+      throw new Error(`Unexpected fetch: ${url}`)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+
+    await fireEvent.click(screen.getByRole('button', { name: 'Markdown' }))
+
+    const submit = screen.getByRole('button', { name: 'Generate release notes' })
+    await waitFor(() => expect(submit).toBeEnabled())
+    await fireEvent.click(submit)
+
+    await screen.findByText('Here are your release notes!')
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining('format=markdown')
+      )
+    })
+
+    // Markdown skips the Preview/Source tabs and renders straight to the textarea.
+    expect(screen.queryByRole('tab', { name: 'Preview' })).not.toBeInTheDocument()
+    expect(screen.getByRole('textbox', { name: '' })).toHaveValue(markdown)
+  })
+
+  it('clears generated notes when the format changes', async () => {
+    const fetchMock = mockFetch()
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+
+    const submit = screen.getByRole('button', { name: 'Generate release notes' })
+    await waitFor(() => expect(submit).toBeEnabled())
+    await fireEvent.click(submit)
+    await screen.findByText('Here are your release notes!')
+
+    // Switching format discards the HTML-formatted notes instead of
+    // presenting them as Markdown.
+    await fireEvent.click(screen.getByRole('button', { name: 'Markdown' }))
+    await waitFor(() => {
+      expect(
+        screen.queryByText('Here are your release notes!')
+      ).not.toBeInTheDocument()
+    })
+  })
+
   it('copies the notes to the clipboard', async () => {
     const fetchMock = mockFetch()
     vi.stubGlobal('fetch', fetchMock)

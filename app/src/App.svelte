@@ -30,6 +30,15 @@
     }
   }
 
+  function setFormat(newFormat) {
+    if (format !== newFormat) {
+      format = newFormat;
+      // Notes were generated in the old format; require a regenerate.
+      notes = '';
+      notesError = '';
+    }
+  }
+
   // Reactive statement to check if versions are in wrong order
   $: {
     versionWarning = from && to && isVersionNewer(from, to);
@@ -191,6 +200,27 @@
                         </div>
                     </div>
                 {/if}
+                <fieldset>
+                    <legend class="block text-xs font-medium text-gray-800 mb-1">Format</legend>
+                    <div class="inline-flex rounded-lg border border-gray-300 p-1">
+                        <button
+                            type="button"
+                            aria-pressed={format === 'html'}
+                            on:click={() => setFormat('html')}
+                            class="px-4 py-2 text-sm font-medium rounded-md transition-colors {format === 'html' ? 'bg-drupal-light-navy-blue text-white' : 'text-gray-700 hover:bg-gray-100'}"
+                        >
+                            HTML
+                        </button>
+                        <button
+                            type="button"
+                            aria-pressed={format === 'markdown'}
+                            on:click={() => setFormat('markdown')}
+                            class="px-4 py-2 text-sm font-medium rounded-md transition-colors {format === 'markdown' ? 'bg-drupal-light-navy-blue text-white' : 'text-gray-700 hover:bg-gray-100'}"
+                        >
+                            Markdown
+                        </button>
+                    </div>
+                </fieldset>
                 <div class="flex flex-row items-center">
                     <button
                         type="submit"
