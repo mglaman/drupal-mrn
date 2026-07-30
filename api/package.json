@@ -9,5 +9,8 @@
   "license": "MIT",
   "devDependencies": {
     "osls": "^3.59.3"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
   }
 }

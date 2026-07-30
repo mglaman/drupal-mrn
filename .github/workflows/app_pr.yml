@@ -21,6 +21,9 @@ jobs:
       - name: "npm install"
         working-directory: ./app
         run: "npm install"
+      - name: "npm test"
+        working-directory: ./app
+        run: "npm test"
       - name: "npm build"
         working-directory: ./app
         run: "npm run build"
