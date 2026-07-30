@@ -52,7 +52,12 @@ final class HtmlFormatOutput implements FormatOutputInterface
             );
             $buffer->writeln('<ul>');
             foreach ($changeCategoryItems as $change) {
-              $summary = preg_replace('/#(\d+)/S', sprintf('<a href="%s">#$1</a>', $change['link']), $change['summary']);
+              // Commit titles are attacker-controlled; escape before linkifying.
+              $summary = preg_replace(
+                '/#(\d+)/S',
+                sprintf('<a href="%s">#$1</a>', htmlspecialchars($change['link'], ENT_QUOTES)),
+                htmlspecialchars($change['summary'], ENT_QUOTES)
+              );
                 $buffer->writeln(
                   sprintf('  <li>%s</li>', $summary)
                 );

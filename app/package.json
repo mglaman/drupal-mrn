@@ -26,6 +26,7 @@
     "vitest": "^3.2.7"
   },
   "dependencies": {
-    "@sentry/svelte": "^8.0.0"
+    "@sentry/svelte": "^8.0.0",
+    "dompurify": "^3.4.12"
   }
 }

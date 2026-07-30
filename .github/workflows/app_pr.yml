@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - '.github/workflows/app.yml'
+      - '.github/workflows/app_pr.yml'
       - 'app/**'
 jobs:
   build:
@@ -18,9 +18,11 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: "24"
+          cache: "npm"
+          cache-dependency-path: "app/package-lock.json"
       - name: "npm install"
         working-directory: ./app
-        run: "npm install"
+        run: "npm ci"
       - name: "npm test"
         working-directory: ./app
         run: "npm test"

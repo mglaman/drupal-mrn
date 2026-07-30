@@ -192,6 +192,41 @@ describe('App', () => {
     ).toBeInTheDocument()
   })
 
+  it('sanitizes active content out of the HTML preview', async () => {
+    const fetchMock = vi.fn(async (url) => {
+      if (url.includes('/project?')) {
+        return { ok: true, json: async () => projectResponse }
+      }
+      if (url.includes('/changelog?')) {
+        return {
+          ok: true,
+          text: async () =>
+            '<p>safe</p><script>window.pwned = true</script><img src=x onerror="window.pwned = true">',
+        }
+      }
+      throw new Error(`Unexpected fetch: ${url}`)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+
+    const submit = screen.getByRole('button', { name: 'Generate release notes' })
+    await waitFor(() => expect(submit).toBeEnabled())
+    await fireEvent.click(submit)
+    await screen.findByText('Here are your release notes!')
+
+    const preview = screen.getByRole('region', { name: 'Release notes preview' })
+    expect(preview.innerHTML).toContain('<p>safe</p>')
+    expect(preview.innerHTML).not.toContain('<script')
+    expect(preview.innerHTML).not.toContain('onerror')
+    expect(window.pwned).toBeUndefined()
+  })
+
   it('copies the notes to the clipboard', async () => {
     const fetchMock = mockFetch()
     vi.stubGlobal('fetch', fetchMock)

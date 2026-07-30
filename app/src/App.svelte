@@ -1,4 +1,5 @@
 <script>
+  import DOMPurify from 'dompurify';
   import { findPreviousVersion as findPreviousVersionInTags, isVersionNewer } from './lib/versions.js';
 
   const apiUrl = 'https://api.drupal-mrn.dev'
@@ -227,7 +228,7 @@
                     on:dblclick={() => viewMode = 'source'}
                     title="Double-click to view source"
                 >
-                    {@html notes}
+                    {@html DOMPurify.sanitize(notes)}
                 </div>
             {:else}
                 <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>

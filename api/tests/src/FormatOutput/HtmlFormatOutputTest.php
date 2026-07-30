@@ -60,4 +60,52 @@ HTML;
         );
     }
 
+    public function testEscapesMarkupInCommitTitles(): void
+    {
+        $html = $this->formatCommits([
+          (object) [
+            'id' => 'abc123',
+            'title' => 'Issue #3294296 by mglaman: fix <script>alert(1)</script> handling',
+            'message' => '',
+            'author_email' => 'git@example.com',
+            'committer_email' => 'git@example.com',
+          ],
+        ]);
+
+        self::assertStringNotContainsString('<script>', $html);
+        self::assertStringContainsString('&lt;script&gt;alert(1)&lt;/script&gt;', $html);
+        // Escaping must not break issue linkification.
+        self::assertStringContainsString(
+          '<a href="https://www.drupal.org/i/3294296">#3294296</a>',
+          $html
+        );
+    }
+
+    public function testEscapesMarkupInContributorNames(): void
+    {
+        $html = $this->formatCommits([
+          (object) [
+            'id' => 'abc123',
+            'title' => 'Issue #3294296 by <img src=x onerror=alert(1)>: some fix',
+            'message' => '',
+            'author_email' => 'git@example.com',
+            'committer_email' => 'git@example.com',
+          ],
+        ]);
+
+        self::assertStringNotContainsString('<img', $html);
+        self::assertStringContainsString('&lt;img src=x onerror=alert(1)&gt;', $html);
+    }
+
+    private function formatCommits(array $commits): string
+    {
+        $client = new Client([
+          'handler' => HandlerStack::create(function () {
+            return new \GuzzleHttp\Promise\FulfilledPromise(new Response(404));
+          }),
+        ]);
+        $changelog = new Changelog($client, 'test_project', $commits, '1.0.0', '1.1.0');
+        return (new HtmlFormatOutput())->format($changelog);
+    }
+
 }
