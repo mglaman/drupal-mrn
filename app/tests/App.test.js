@@ -121,6 +121,16 @@ describe('App', () => {
     })
   })
 
+  it('does not call the API when the project field is blurred empty', async () => {
+    const fetchMock = mockFetch()
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await fireEvent.blur(screen.getByLabelText('Project'))
+
+    expect(fetchMock).not.toHaveBeenCalled()
+  })
+
   it('shows the API error message when the project lookup fails', async () => {
     const fetchMock = mockFetch({ projectOk: false })
     vi.stubGlobal('fetch', fetchMock)

@@ -45,6 +45,9 @@
   }
 
   async function getProject() {
+    if (!project) {
+      return;
+    }
     processing = true;
     // Clear from/to values immediately when project changes
     from = '';

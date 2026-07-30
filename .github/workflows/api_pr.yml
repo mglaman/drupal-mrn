@@ -32,6 +32,9 @@ jobs:
       - name: "composer"
         working-directory: ./api
         run: "composer install --no-interaction --no-progress"
+      - name: "phpstan"
+        working-directory: ./api
+        run: "php vendor/bin/phpstan analyse --no-progress"
       - name: "phpunit"
         working-directory: ./api
         run: "php vendor/bin/phpunit"
