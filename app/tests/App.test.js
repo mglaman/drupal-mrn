@@ -192,6 +192,87 @@ describe('App', () => {
     ).toBeInTheDocument()
   })
 
+  it('shows an error instead of notes when changelog generation fails, and allows retry', async () => {
+    let failNext = true
+    const fetchMock = vi.fn(async (url) => {
+      if (url.includes('/project?')) {
+        return { ok: true, json: async () => projectResponse }
+      }
+      if (url.includes('/changelog?')) {
+        if (failNext) {
+          return {
+            ok: false,
+            status: 429,
+            json: async () => ({ message: 'Too many requests. Try again later.' }),
+          }
+        }
+        return { ok: true, text: async () => notesHtml }
+      }
+      throw new Error(`Unexpected fetch: ${url}`)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+
+    const submit = screen.getByRole('button', { name: 'Generate release notes' })
+    await waitFor(() => expect(submit).toBeEnabled())
+    await fireEvent.click(submit)
+
+    // The error body is not rendered as release notes.
+    expect(
+      await screen.findByText('Too many requests. Try again later.')
+    ).toBeInTheDocument()
+    expect(screen.queryByText('Here are your release notes!')).not.toBeInTheDocument()
+
+    // The failure does not lock the form; retrying succeeds and clears the error.
+    expect(submit).toBeEnabled()
+    failNext = false
+    await fireEvent.click(submit)
+    expect(await screen.findByText('Here are your release notes!')).toBeInTheDocument()
+    expect(
+      screen.queryByText('Too many requests. Try again later.')
+    ).not.toBeInTheDocument()
+  })
+
+  it('shows a generic error when the changelog failure body is not JSON', async () => {
+    const fetchMock = vi.fn(async (url) => {
+      if (url.includes('/project?')) {
+        return { ok: true, json: async () => projectResponse }
+      }
+      if (url.includes('/changelog?')) {
+        return {
+          ok: false,
+          status: 500,
+          json: async () => {
+            throw new Error('not json')
+          },
+        }
+      }
+      throw new Error(`Unexpected fetch: ${url}`)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+
+    const submit = screen.getByRole('button', { name: 'Generate release notes' })
+    await waitFor(() => expect(submit).toBeEnabled())
+    await fireEvent.click(submit)
+
+    expect(
+      await screen.findByText('Unable to generate release notes (HTTP 500).')
+    ).toBeInTheDocument()
+  })
+
   it('sanitizes active content out of the HTML preview', async () => {
     const fetchMock = vi.fn(async (url) => {
       if (url.includes('/project?')) {
