@@ -1,12 +1,21 @@
 {
     "name": "mglaman/drupal-mrn",
     "require": {
-        "php": "^8.2",
-        "bref/bref": "^2.0",
+        "php": "^8.4",
+        "bref/bref": "^3.0",
         "caseyamcl/guzzle_retry_middleware": "^2.13",
         "guzzlehttp/guzzle": "^7.4",
         "sentry/sentry": "^4.7",
         "symfony/http-foundation": "^7.1"
+    },
+    "config": {
+        "platform": {
+            "php": "8.4.99"
+        },
+        "allow-plugins": {
+            "symfony/runtime": true,
+            "php-http/discovery": false
+        }
     },
     "autoload": {
         "psr-4": {
