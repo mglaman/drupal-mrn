@@ -147,12 +147,12 @@
   <!-- / Fathom -->
 </svelte:head>
 <div class="py-8">
-    <main class="container mx-auto max-w-screen-md shadow-sm bg-white rounded-lg overflow-hidden">
+    <main class="container mx-auto max-w-(--breakpoint-md) shadow-xs bg-white rounded-lg overflow-hidden">
         <div class="p-8">
             <h1 class="text-3xl font-bold mb-1">Generate release notes</h1>
             <p class="mb-2 text-gray-700">Generates release notes for projects hosted on Drupal.org</p>
             <form class="space-y-4" on:submit={getChangeLog}>
-                <div class="border border-gray-300 rounded-md px-3 py-2 shadow-sm focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue {error !== '' ? 'border-red-300 focus:within:ring-red-300 focus-within:border-red-300' : ''}">
+                <div class="border border-gray-300 rounded-md px-3 py-2 shadow-xs focus-within:ring-1 focus:within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue {error !== '' ? 'border-red-300 focus:within:ring-red-300 focus-within:border-red-300' : ''}">
                     <label for="project" class="block text-xs font-medium text-gray-800">Project</label>
                     <input type="text" name="project" id="project" bind:value={project}
                            on:blur={getProject}
@@ -160,7 +160,7 @@
                            placeholder="machine_name"
                            required>
                 </div>
-                <div class="isolate -space-x-px grid grid-cols-2 rounded-md shadow-sm">
+                <div class="isolate -space-x-px grid grid-cols-2 rounded-md shadow-xs">
                     <div class="relative border border-gray-300 rounded-md rounded-r-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
                         <label class="block text-xs font-medium text-gray-900" for="ref2">Version</label>
                         <input id="ref2" list="ref2options" type="text" bind:value={to} placeholder="1.0.1"
@@ -188,7 +188,7 @@
                 {#if versionWarning}
                     <div class="rounded-md bg-yellow-50 p-4 my-4">
                         <div class="flex">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <!-- Heroicon name: mini/exclamation-triangle -->
                                 <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.19-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
@@ -205,7 +205,7 @@
                 {#if error.length > 0}
                     <div class="rounded-md bg-red-50 p-4 my-4">
                         <div class="flex">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <!-- Heroicon name: mini/x-circle -->
                                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
@@ -220,7 +220,7 @@
                 {#if notesError.length > 0}
                     <div class="rounded-md bg-red-50 p-4 my-4">
                         <div class="flex">
-                            <div class="flex-shrink-0">
+                            <div class="shrink-0">
                                 <!-- Heroicon name: mini/x-circle -->
                                 <svg class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z" clip-rule="evenodd" />
@@ -257,7 +257,7 @@
                     <button
                         type="submit"
                         disabled={from === '' || to === '' || processing || error.length > 0}
-                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue disabled:bg-drupal-pale-gray disabled:text-gray-400 hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue {processing ? 'disabled:cursor-wait' : ''} {error ? 'cursor-not-allowed' : ''}">
+                        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-xs text-white bg-drupal-light-navy-blue disabled:bg-drupal-pale-gray disabled:text-gray-400 hover:bg-drupal-navy-blue focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue {processing ? 'disabled:cursor-wait' : ''} {error ? 'cursor-not-allowed' : ''}">
                         Generate release notes
                     </button>
                     {#if processing}
@@ -277,7 +277,7 @@
         </div>
     </main>
     {#if notes.length > 0}
-        <section class="container mx-auto max-w-screen-md mt-8 shadow-sm bg-white p-8 rounded-lg">
+        <section class="container mx-auto max-w-(--breakpoint-md) mt-8 shadow-xs bg-white p-8 rounded-lg">
             <div class="mb-4 flex items-center justify-between">
                 <p class="mb-0">Here are your release notes!</p>
                 <div class="flex items-center gap-3">
@@ -303,7 +303,7 @@
                     {/if}
                     <button
                         on:click={copyNotes}
-                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-xs text-white bg-drupal-light-navy-blue hover:bg-drupal-navy-blue focus:outline-hidden focus:ring-2 focus:ring-offset-2 focus:ring-drupal-navy-blue"
                     >
                         Copy
                     </button>
@@ -323,7 +323,7 @@
                     {@html DOMPurify.sanitize(notes)}
                 </div>
             {:else}
-                <textarea class="shadow-sm focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>
+                <textarea class="shadow-xs focus:ring-drupal-light-navy-blue focus:border-drupal-light-navy-blue block w-full h-96 sm:text-sm border-gray-300 rounded-md font-mono">{notes}</textarea>
             {/if}
         </section>
     {/if}
