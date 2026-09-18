@@ -6,6 +6,7 @@ use App\Changelog;
 use App\ClientFactory;
 use App\FormatOutput\FormatOutputFactory;
 use App\GitLab;
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -19,7 +20,14 @@ ini_set('display_errors', '1');
 ]);
 
 $request = Request::createFromGlobals();
-$project = $request->query->get('project', '');
+try {
+    $project = $request->query->get('project', '');
+} catch (BadRequestException) {
+    (new JsonResponse([
+      'message' => 'The project parameter must be a string.',
+    ], 400))->send();
+    return;
+}
 if (!is_string($project) || $project === '') {
     (new JsonResponse([
       'message' => 'The project must be provided.',
