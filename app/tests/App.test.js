@@ -47,6 +47,7 @@ async function loadProject(fetchMock) {
 describe('App', () => {
   beforeEach(() => {
     vi.unstubAllGlobals()
+    window.history.replaceState(null, '', '/')
   })
 
   it('renders the form with a disabled submit button', () => {
@@ -407,5 +408,88 @@ describe('App', () => {
 
     expect(writeText).toHaveBeenCalledWith(notesHtml)
     expect(await screen.findByText('Copied!')).toBeInTheDocument()
+  })
+
+  describe('deep links', () => {
+    it('loads the project, detects the previous release, and generates notes', async () => {
+      window.history.replaceState(null, '', '/?project=token&to=8.x-1.17')
+      const fetchMock = mockFetch()
+      vi.stubGlobal('fetch', fetchMock)
+      render(App)
+
+      expect(await screen.findByText('Here are your release notes!')).toBeInTheDocument()
+      expect(screen.getByLabelText('Project')).toHaveValue('token')
+      expect(screen.getByLabelText('Version')).toHaveValue('8.x-1.17')
+      expect(screen.getByLabelText('Previous release')).toHaveValue('8.x-1.16')
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining(
+          '/changelog?project=token&to=8.x-1.17&from=8.x-1.16&format=html'
+        )
+      )
+    })
+
+    it('uses the from and format parameters when provided', async () => {
+      window.history.replaceState(
+        null,
+        '',
+        '/?project=token&to=8.x-1.17&from=8.x-1.15&format=markdown'
+      )
+      const fetchMock = mockFetch()
+      vi.stubGlobal('fetch', fetchMock)
+      render(App)
+
+      await screen.findByText('Here are your release notes!')
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining(
+          '/changelog?project=token&to=8.x-1.17&from=8.x-1.15&format=markdown'
+        )
+      )
+    })
+
+    it('fills the project without generating when no version is given', async () => {
+      window.history.replaceState(null, '', '/?project=token')
+      const fetchMock = mockFetch()
+      vi.stubGlobal('fetch', fetchMock)
+      render(App)
+
+      await waitFor(() => {
+        expect(fetchMock).toHaveBeenCalledWith(
+          expect.stringContaining('/project?project=token')
+        )
+      })
+      expect(screen.getByLabelText('Project')).toHaveValue('token')
+      expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('does not generate notes when the project lookup fails', async () => {
+      window.history.replaceState(null, '', '/?project=nope&to=1.0.0')
+      const fetchMock = mockFetch({ projectOk: false })
+      vi.stubGlobal('fetch', fetchMock)
+      render(App)
+
+      expect(await screen.findByText('Unable to load project.')).toBeInTheDocument()
+      expect(fetchMock).toHaveBeenCalledTimes(1)
+    })
+
+    it('updates the URL after generating notes from the form', async () => {
+      const fetchMock = mockFetch()
+      vi.stubGlobal('fetch', fetchMock)
+      render(App)
+
+      await loadProject(fetchMock)
+
+      const versionInput = screen.getByLabelText('Version')
+      await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+      await fireEvent.change(versionInput)
+
+      const submit = screen.getByRole('button', { name: 'Generate release notes' })
+      await waitFor(() => expect(submit).toBeEnabled())
+      await fireEvent.click(submit)
+      await screen.findByText('Here are your release notes!')
+
+      expect(window.location.search).toBe(
+        '?project=token&to=8.x-1.17&from=8.x-1.16&format=html'
+      )
+    })
   })
 })
