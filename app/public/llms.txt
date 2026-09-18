@@ -1,0 +1,45 @@
+# Drupal MRN
+
+> Generates release notes for projects hosted on Drupal.org. Changes are grouped by issue type (bug, feature, task) and contributors are credited. Use the HTTP API below instead of the web UI. The UI is a JavaScript app and returns no content without a browser.
+
+## Generate release notes
+
+One request returns release notes for a tagged release. Use `format=markdown` unless you need HTML or structured data.
+
+```
+GET https://api.drupal-mrn.dev/changelog?project=token&to=8.x-1.11&format=markdown
+```
+
+Parameters:
+
+- `project` (required): The project machine name, as in `drupal.org/project/{project}`.
+- `to`: The tag or branch to generate notes for. Defaults to `HEAD`, so pass a tag in practice.
+- `from` (optional): The tag to compare against. When omitted and `to` is a tag, the API uses the release before `to`. Pass `from` when `to` is a branch or `HEAD`.
+- `format` (optional): `markdown`, `html` (default), or `json`.
+
+The `json` format returns `contributors`, `issueCount`, `from`, `to`, `changes` (grouped by type), and `changeRecords`.
+
+## List tags and branches
+
+Use this to find valid values for `from` and `to`.
+
+```
+GET https://api.drupal-mrn.dev/project?project=token
+```
+
+Returns `{"tags": [...], "branches": [...]}`. Each entry has a `name` field. Tags are ordered by most recently updated.
+
+## Errors
+
+Errors return JSON with a `message` field that explains how to fix the request.
+
+- `400`: A parameter is missing or invalid, or `from` could not be detected.
+- `404`: The project or a version does not exist.
+- `502`: Drupal.org's GitLab could not be reached. Retry later.
+
+Large releases can take up to 28 seconds. Responses are cached for 24 hours.
+
+## Links
+
+- Web UI: https://drupal-mrn.dev
+- Source: https://github.com/mglaman/drupal-mrn

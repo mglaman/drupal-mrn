@@ -15,6 +15,8 @@ The following request gets the release notes for the Token module's 8.x-1.11 rel
 GET https://api.drupal-mrn.dev/changelog?project=token&from=8.x-1.10&to=8.x-1.11
 ```
 
+Omit `from` and the API uses the release before `to`. See [`app/public/llms.txt`](app/public/llms.txt), served at https://drupal-mrn.dev/llms.txt, for the full API reference for agents.
+
 ## Contributing
 
 @TODO HOW TO WORK LOCAL
