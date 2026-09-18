@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/app_deploy.yml'
       - 'app/**'
+permissions:
+  contents: read
 concurrency: app_build
 jobs:
   build:
