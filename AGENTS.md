@@ -38,7 +38,9 @@ drupal-mrn/
 1. `changelog` - `/changelog` endpoint (GET)
    - Generates release notes between two versions
    - Parameters: `project`, `from`, `to`, `format` (html|markdown|json)
+   - `from` is optional; when empty, `App\Versions::findPrevious()` picks the release before `to`
    - Returns formatted release notes
+   - Public API docs for agents live in `app/public/llms.txt`; update it when parameters or errors change
 
 2. `project` - `/project` endpoint (GET)
    - Returns project metadata (tags, branches)
@@ -286,10 +288,10 @@ npm run dev  # Starts local dev server
 
 ### Version Format
 - Drupal projects use formats like: `8.x-1.11`, `1.0.1`, etc.
-- Frontend handles version sorting (including pre-release versions: alpha, beta, rc)
+- Version sorting (including pre-release versions: alpha, beta, rc) lives in both `app/src/lib/versions.js` and `api/src/Versions.php`; keep them and their tests in sync
 
 ### Error Handling
-- Backend returns JSON error responses with appropriate HTTP status codes
+- Backend returns JSON error responses as `{"message": ...}`: 400 for bad input, 404 for an unknown project or version, 502 when GitLab is unreachable
 - Frontend displays errors in UI
 - Sentry integration for error tracking (backend)
 

@@ -5,6 +5,7 @@ use App\Changelog;
 use App\ClientFactory;
 use App\FormatOutput\FormatOutputFactory;
 use App\GitLab;
+use App\Versions;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -26,23 +27,81 @@ $format = $request->query->get('format', 'html');
 
 if (!is_string($project) || $project === '') {
     (new JsonResponse([
-      'message' => 'Project cannot be empty',
+      'message' => 'The project must be provided.',
+    ], 400))->send();
+    return;
+}
+if (!is_string($from) || !is_string($to) || !is_string($format)) {
+    (new JsonResponse([
+      'message' => 'The from, to, and format parameters must be strings.',
+    ], 400))->send();
+    return;
+}
+
+try {
+    $formatOutput = FormatOutputFactory::getFormatOutput($format);
+} catch (\InvalidArgumentException) {
+    (new JsonResponse([
+      'message' => sprintf('Invalid format "%s". Use one of: html, markdown, json.', $format),
     ], 400))->send();
     return;
 }
 
 $client = ClientFactory::create();
-try {
-    $compare = (new GitLab($client))->compare($project, $from, $to);
-} catch (\GuzzleHttp\Exception\RequestException $e) {
-    if ($e->hasResponse()) {
-        $response = $e->getResponse();
-        JsonResponse::fromJsonString((string) $response->getBody(), 400)->send();
-    } else {
+$gitlab = new GitLab($client);
+$projectHint = sprintf('Call /project?project=%s to list its tags and branches.', urlencode($project));
+
+if ($from === '') {
+    try {
+        $tagNames = array_map(static fn (object $tag): string => $tag->name, $gitlab->tags($project));
+    } catch (\GuzzleHttp\Exception\ClientException $e) {
+        if ($e->getResponse()->getStatusCode() === 404) {
+            (new JsonResponse([
+              'message' => 'The project cannot be found.',
+            ], 404))->send();
+            return;
+        }
         (new JsonResponse([
-          'message' => 'error contacting gitlab',
-        ], 400))->send();
+          'message' => 'Error contacting GitLab: ' . $e->getMessage(),
+        ], 502))->send();
+        return;
+    } catch (\GuzzleHttp\Exception\RequestException $e) {
+        (new JsonResponse([
+          'message' => 'Error contacting GitLab: ' . $e->getMessage(),
+        ], 502))->send();
+        return;
     }
+    $previous = Versions::findPrevious($to, $tagNames);
+    if ($previous === null) {
+        (new JsonResponse([
+          'message' => sprintf('Could not detect the release before "%s". Pass the from parameter. %s', $to, $projectHint),
+        ], 400))->send();
+        return;
+    }
+    $from = $previous;
+}
+
+try {
+    $compare = $gitlab->compare($project, $from, $to);
+} catch (\GuzzleHttp\Exception\ClientException $e) {
+    if ($e->getResponse()->getStatusCode() === 404) {
+        $gitlabMessage = json_decode((string) $e->getResponse()->getBody())->message ?? '';
+        $message = str_contains((string) $gitlabMessage, 'Project')
+          ? 'The project cannot be found.'
+          : sprintf('The version "%s" or "%s" does not exist. %s', $from, $to, $projectHint);
+        (new JsonResponse([
+          'message' => $message,
+        ], 404))->send();
+        return;
+    }
+    (new JsonResponse([
+      'message' => 'Error contacting GitLab: ' . $e->getMessage(),
+    ], 502))->send();
+    return;
+} catch (\GuzzleHttp\Exception\RequestException $e) {
+    (new JsonResponse([
+      'message' => 'Error contacting GitLab: ' . $e->getMessage(),
+    ], 502))->send();
     return;
 }
 $commits = $compare->commits;
@@ -69,8 +128,7 @@ try {
     return;
 }
 
-$response = FormatOutputFactory::getFormatOutput($format)
-  ->getResponse($changelog);
+$response = $formatOutput->getResponse($changelog);
 $response->headers->set('Access-Control-Allow-Origin', '*');
 $response->headers->set('Cache-Control', 'public, max-age=86400');
 $timestamp = time();

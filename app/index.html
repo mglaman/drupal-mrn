@@ -14,8 +14,16 @@
     <meta property="og:site_name" content="Drupal maintainer release notes">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://drupal-mrn.dev/">
+    <link rel="alternate" type="text/markdown" href="/llms.txt" title="API documentation for agents">
   </head>
   <body class="bg-gradient-to-br from-drupal-navy-blue via-drupal-light-navy-blue to-drupal-pale-gray">
+    <noscript>
+      <p>
+        This app requires JavaScript. To generate release notes without a browser, use the API:
+        <code>https://api.drupal-mrn.dev/changelog?project=token&amp;to=8.x-1.11&amp;format=markdown</code>.
+        See <a href="/llms.txt">/llms.txt</a> for the full reference.
+      </p>
+    </noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>

@@ -38,17 +38,17 @@ try {
     if ($exception->getResponse()->getStatusCode() === 404) {
         (new JsonResponse([
           'message' => 'The project cannot be found.'
-        ], 400))->send();
+        ], 404))->send();
         return;
     }
     (new JsonResponse([
-      'message' => 'error:' . $exception->getMessage(),
-    ], 400))->send();
+      'message' => 'Error contacting GitLab: ' . $exception->getMessage(),
+    ], 502))->send();
     return;
 } catch (\GuzzleHttp\Exception\RequestException $exception) {
     (new JsonResponse([
-      'message' => 'error:' . $exception->getMessage(),
-    ], 400))->send();
+      'message' => 'Error contacting GitLab: ' . $exception->getMessage(),
+    ], 502))->send();
     return;
 }
 
