@@ -1,8 +1,10 @@
 <script>
   import DOMPurify from 'dompurify';
+  import { onMount } from 'svelte';
   import { findPreviousVersion as findPreviousVersionInTags, isVersionNewer } from './lib/versions.js';
 
   const apiUrl = 'https://api.drupal-mrn.dev'
+  const formats = ['html', 'markdown']
   let project = ''
   let projectData = {
     branches: [],
@@ -61,11 +63,6 @@
         error = ''
         projectData = await res.json()
         options = [...projectData.branches, ...projectData.tags].map(obj => obj.name).sort();
-
-        // If version is already populated, update the previous release
-        if (to) {
-          from = findPreviousVersion(to);
-        }
       }
     } catch (e) {
       console.error(e)
@@ -76,7 +73,7 @@
   }
 
   async function getChangeLog (event) {
-    event.preventDefault()
+    event?.preventDefault()
     processing = true;
     try {
       const res = await fetch(`${apiUrl}/changelog?${new URLSearchParams({project, to, from, format})}`)
@@ -93,6 +90,7 @@
       } else {
         notesError = ''
         notes = await res.text()
+        updateUrl()
       }
     } catch (e) {
       console.error(e)
@@ -102,6 +100,37 @@
         processing = false;
     }
   }
+
+  // Keep the URL shareable: it reproduces these notes when opened.
+  function updateUrl() {
+    const params = new URLSearchParams({project, to, from, format})
+    history.replaceState(null, '', `?${params}`)
+  }
+
+  // Load ?project=token&to=8.x-1.11 links. The previous release is
+  // detected when from is omitted, and the notes generate right away.
+  async function loadFromUrl() {
+    const params = new URLSearchParams(window.location.search)
+    const initialProject = params.get('project')
+    if (!initialProject) {
+      return
+    }
+    project = initialProject
+    if (formats.includes(params.get('format'))) {
+      format = params.get('format')
+    }
+    await getProject()
+    to = params.get('to') ?? ''
+    if (error || !to) {
+      return
+    }
+    from = params.get('from') || findPreviousVersion(to)
+    if (from) {
+      await getChangeLog()
+    }
+  }
+
+  onMount(loadFromUrl)
 
   function copyNotes() {
     navigator.clipboard.writeText(notes);

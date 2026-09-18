@@ -39,6 +39,14 @@ Errors return JSON with a `message` field that explains how to fix the request.
 
 Large releases can take up to 28 seconds. Responses are cached for 24 hours.
 
+## Link to the web UI
+
+The web UI accepts the same `project`, `to`, `from`, and `format` (`html` or `markdown`) query parameters and generates the notes on load. Give users this link when they want to review or copy the notes themselves:
+
+```
+https://drupal-mrn.dev/?project=token&to=8.x-1.11
+```
+
 ## Links
 
 - Web UI: https://drupal-mrn.dev
