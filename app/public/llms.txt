@@ -15,7 +15,7 @@ Parameters:
 - `project` (required): The project machine name, as in `drupal.org/project/{project}`.
 - `to`: The tag or branch to generate notes for. Defaults to `HEAD`, so pass a tag in practice.
 - `from` (optional): The tag to compare against. When omitted and `to` is a tag, the API uses the release before `to`. Pass `from` when `to` is a branch or `HEAD`.
-- `format` (optional): `markdown`, `html` (default), or `json`.
+- `format` (optional): `markdown`, `html` (default), or `json`. Without it, the API honors the `Accept` header (`text/markdown`, `application/json`, or `text/html`).
 
 The `json` format returns `contributors`, `issueCount`, `from`, `to`, `changes` (grouped by type), and `changeRecords`.
 

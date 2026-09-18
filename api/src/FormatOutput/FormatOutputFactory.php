@@ -12,4 +12,27 @@ final class FormatOutputFactory {
             default => throw new \InvalidArgumentException("$format isn't a valid format.")
         };
     }
+
+    /**
+     * Picks a format from the request's acceptable content types.
+     *
+     * @param list<string> $contentTypes
+     *   Content types ordered by preference, as returned by
+     *   Request::getAcceptableContentTypes().
+     */
+    public static function formatFromContentTypes(array $contentTypes): string
+    {
+        foreach ($contentTypes as $contentType) {
+            $format = match ($contentType) {
+                'text/markdown' => 'markdown',
+                'application/json' => 'json',
+                'text/html' => 'html',
+                default => null,
+            };
+            if ($format !== null) {
+                return $format;
+            }
+        }
+        return 'html';
+    }
 }

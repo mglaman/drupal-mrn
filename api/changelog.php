@@ -25,7 +25,12 @@ try {
     $project = $request->query->get('project', '');
     $from = $request->query->get('from', '');
     $to = $request->query->get('to', 'HEAD');
-    $format = $request->query->get('format', 'html');
+    // The format parameter wins. Without it, honor the Accept header so
+    // clients can send `Accept: text/markdown`.
+    $format = $request->query->get(
+      'format',
+      FormatOutputFactory::formatFromContentTypes($request->getAcceptableContentTypes())
+    );
 } catch (BadRequestException) {
     (new JsonResponse([
       'message' => 'The project, from, to, and format parameters must be strings.',
@@ -139,6 +144,7 @@ try {
 $response = $formatOutput->getResponse($changelog);
 $response->headers->set('Access-Control-Allow-Origin', '*');
 $response->headers->set('Cache-Control', 'public, max-age=86400');
+$response->setVary('Accept');
 $timestamp = time();
 $response->setLastModified(new \DateTime(gmdate(\DateTimeInterface::RFC7231, $timestamp)));
 $response->setEtag((string) $timestamp);
