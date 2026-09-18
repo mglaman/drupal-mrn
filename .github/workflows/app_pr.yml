@@ -6,6 +6,12 @@ on:
     paths:
       - '.github/workflows/app_pr.yml'
       - 'app/**'
+permissions:
+  contents: read
+# Cancel the previous run when a PR gets a new push.
+concurrency:
+  group: app-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
 jobs:
   build:
     name: "Build"

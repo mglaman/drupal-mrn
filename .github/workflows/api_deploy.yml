@@ -6,6 +6,8 @@ on:
     paths:
       - '.github/workflows/api_deploy.yml'
       - 'api/**'
+permissions:
+  contents: read
 concurrency: api_build
 jobs:
   deploy:
