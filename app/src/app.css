@@ -1,3 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+
+@theme {
+  --color-drupal-navy-blue: #064771;
+  --color-drupal-light-navy-blue: #0d7dc1;
+  --color-drupal-pale-gray: #f6f6f2;
+}
+
+/*
+  Tailwind v4 changed the default border color to currentcolor. Keep the v3
+  gray-200 default so existing borders look the same.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
