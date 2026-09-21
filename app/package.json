@@ -26,6 +26,6 @@
   },
   "dependencies": {
     "@sentry/svelte": "^10.75.0",
-    "dompurify": "^3.4.12"
+    "dompurify": "^3.4.15"
   }
 }
