@@ -53,9 +53,18 @@ final class HtmlFormatOutput implements FormatOutputInterface
             $buffer->writeln('<ul>');
             foreach ($changeCategoryItems as $change) {
               // Commit titles are attacker-controlled; escape before linkifying.
-              $summary = preg_replace(
+              // The commit's own issue uses its change link, other issue
+              // numbers link to their own issue.
+              $summary = preg_replace_callback(
                 '/#(\d+)/S',
-                sprintf('<a href="%s">#$1</a>', htmlspecialchars($change['link'], ENT_QUOTES)),
+                static fn(array $matches): string => sprintf(
+                  '<a href="%s">#%s</a>',
+                  htmlspecialchars(
+                    $matches[1] === $change['nid'] ? $change['link'] : $changelog->getIssueLink($matches[1]),
+                    ENT_QUOTES
+                  ),
+                  $matches[1]
+                ),
                 htmlspecialchars($change['summary'], ENT_QUOTES)
               );
                 $buffer->writeln(

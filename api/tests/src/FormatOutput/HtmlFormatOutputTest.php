@@ -81,6 +81,28 @@ HTML;
         );
     }
 
+    public function testOtherIssueNumbersLinkToTheirOwnIssue(): void
+    {
+        $html = $this->formatCommits([
+          (object) [
+            'id' => 'abc123',
+            'title' => 'Issue #3594117 by mglaman: Expand test coverage (follow-up to #3547913)',
+            'message' => '',
+            'author_email' => 'git@example.com',
+            'committer_email' => 'git@example.com',
+          ],
+        ]);
+
+        self::assertStringContainsString(
+          '<a href="https://www.drupal.org/i/3594117">#3594117</a>',
+          $html
+        );
+        self::assertStringContainsString(
+          '(follow-up to <a href="https://www.drupal.org/i/3547913">#3547913</a>)',
+          $html
+        );
+    }
+
     public function testEscapesMarkupInContributorNames(): void
     {
         $html = $this->formatCommits([

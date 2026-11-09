@@ -26,6 +26,8 @@ final class Changelog
 
     private array $changeRecords = [];
 
+    private bool $hasGitLabIssues = false;
+
     public function __construct(
       private readonly ClientInterface $client,
       private readonly string $project,
@@ -47,6 +49,7 @@ final class Changelog
         // set to false. The field is absent for projects on the legacy queue.
         $hasGitLabIssues = isset($projectInfo->field_project_has_issue_queue)
           && !filter_var($projectInfo->field_project_has_issue_queue, FILTER_VALIDATE_BOOLEAN);
+        $this->hasGitLabIssues = $hasGitLabIssues;
 
         // Collect all NIDs for batch fetching and cache them keyed by commit index
         $nids = [];
@@ -198,6 +201,19 @@ final class Changelog
     public function getChangeRecords(): array
     {
         return $this->changeRecords;
+    }
+
+    /**
+     * Link for an issue number mentioned in a commit title.
+     *
+     * The commit's own issue uses the change's 'link', which may come from an
+     * issue lookup. Other issue numbers in the title use this link instead.
+     */
+    public function getIssueLink(string $nid): string
+    {
+        return $this->hasGitLabIssues
+          ? "https://git.drupalcode.org/project/$this->project/-/work_items/$nid"
+          : "https://www.drupal.org/i/$nid";
     }
 
     /**
