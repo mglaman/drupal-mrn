@@ -37,7 +37,9 @@ final class Changelog
             throw new \RuntimeException('No commits for the changelog to process.');
         }
         $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
-        $contributors = [];
+        // Names from contribution records, and names parsed from commits.
+        $creditedContributors = [];
+        $fallbackContributors = [];
 
         // Get the project node from its machine name.
         $drupalOrg = new DrupalOrg($this->client);
@@ -86,8 +88,9 @@ final class Changelog
             // Try to use contributors from batch JSON:API fetch
             if ($nid !== null && isset($contributorsFromApi[$nid]) && !empty($contributorsFromApi[$nid])) {
                 $commitContributors = $contributorsFromApi[$nid];
+                $creditedContributors[] = $commitContributors;
             }
-            
+
             // Fallback to commit parsing if JSON:API didn't return contributors
             if (empty($commitContributors)) {
                 $commitContributors = CommitParser::extractUsernames($commit);
@@ -98,8 +101,8 @@ final class Changelog
                 if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
                     $commitContributors[] = $committerMatches[0];
                 }
+                $fallbackContributors[] = $commitContributors;
             }
-            $contributors[] = $commitContributors;
 
             $issueCategoryLabel = null;
             $link = $nid !== null ? "https://www.drupal.org/i/$nid" : '';
@@ -125,8 +128,6 @@ final class Changelog
             $issueCategoryLabel ??= self::categoryFromConventionalCommit($commit->title);
             $issueCategoryLabel ??= self::CATEGORY_MAP[0];
 
-            $commitContributors = array_unique($commitContributors);
-            sort($commitContributors);
             $this->changes[] = [
               'nid' => $nid,
               'link' => $link,
@@ -135,8 +136,23 @@ final class Changelog
               'contributors' => $commitContributors,
             ];
         }
-        $this->contributors = array_unique(array_merge(...$contributors));
+        // The same person can be spelled differently across sources, so map
+        // every name to one spelling before listing contributors.
+        $aliases = self::contributorAliases(
+          array_merge(...$creditedContributors),
+          array_merge(...$fallbackContributors)
+        );
+        $this->contributors = array_values(array_unique($aliases));
         sort($this->contributors);
+        foreach ($this->changes as $changeIndex => $change) {
+            $changeContributors = array_map(
+              static fn(string $name): string => $aliases[$name],
+              $change['contributors']
+            );
+            $changeContributors = array_values(array_unique($changeContributors));
+            sort($changeContributors);
+            $this->changes[$changeIndex]['contributors'] = $changeContributors;
+        }
 
         // Fetch change records if we have a project ID
         if ($projectId !== null) {
@@ -198,6 +214,47 @@ final class Changelog
     public function getChangeRecords(): array
     {
         return $this->changeRecords;
+    }
+
+    /**
+     * Map each contributor name to the spelling to list them under.
+     *
+     * Drupal.org usernames are case-insensitive, so names that differ only by
+     * case are one person. Names parsed from commits can also be GitLab
+     * usernames, which drop or change punctuation (e.g. "claudiucristea" for
+     * "claudiu.cristea"), so those also match ignoring "_", ".", "-" and
+     * spaces. Contribution record names are preferred over commit names.
+     *
+     * @param string[] $creditedNames
+     *   Names from contribution records.
+     * @param string[] $fallbackNames
+     *   Names parsed from commit messages and emails.
+     *
+     * @return array<string, string>
+     *   The spelling to use, keyed by each name.
+     */
+    private static function contributorAliases(array $creditedNames, array $fallbackNames): array
+    {
+        $aliases = [];
+        $byLowercase = [];
+        $byNormalized = [];
+        foreach ($creditedNames as $name) {
+            $lowercase = mb_strtolower($name);
+            $byLowercase[$lowercase] ??= $name;
+            $byNormalized[self::normalizeContributorName($name)] ??= $byLowercase[$lowercase];
+            $aliases[$name] = $byLowercase[$lowercase];
+        }
+        foreach ($fallbackNames as $name) {
+            $normalized = self::normalizeContributorName($name);
+            $byNormalized[$normalized] ??= $name;
+            $aliases[$name] = $byNormalized[$normalized];
+        }
+        return $aliases;
+    }
+
+    private static function normalizeContributorName(string $name): string
+    {
+        return preg_replace('/[\s_.\-]+/u', '', mb_strtolower($name));
     }
 
     /**
