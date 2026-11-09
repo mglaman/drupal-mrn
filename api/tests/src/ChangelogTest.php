@@ -8,7 +8,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\FulfilledPromise;
 use Nyholm\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
@@ -139,6 +141,75 @@ class ChangelogTest extends TestCase
             'penyaskito',
             'wim leers',
         ], $changes[0]['contributors']);
+    }
+
+    public function testDuplicateContributorsAreMerged(): void
+    {
+        $commit = static function (string $title, string $authorEmail = 'git@example.com'): \stdClass {
+            $c = new \stdClass();
+            $c->title = $title;
+            $c->message = '';
+            $c->author_email = $authorEmail;
+            $c->committer_email = 'git@example.com';
+            return $c;
+        };
+        $commits = [
+          // Credited via contribution record.
+          $commit('Issue #3000001: Credited issue'),
+          // No contribution record: names come from the commit instead.
+          $commit('Issue #3000002 by andras_szilagyi, john.smith: Fallback issue', '123-claudiucristea@users.noreply.drupalcode.org'),
+          $commit('Issue #3000003 by johnsmith2: Another fallback issue'),
+        ];
+
+        $contributionRecord = json_encode([
+          'data' => [['type' => 'node--contribution_record', 'id' => 'record-1']],
+          'included' => [
+            ['type' => 'user--user', 'id' => 'user-1', 'attributes' => ['display_name' => 'claudiu.cristea']],
+            ['type' => 'user--user', 'id' => 'user-2', 'attributes' => ['display_name' => 'Andras_Szilagyi']],
+          ],
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create(static function (RequestInterface $request) use ($contributionRecord) {
+              $url = urldecode((string) $request->getUri());
+              if (str_contains($url, 'contribution_record') && str_contains($url, 'node/3000001')) {
+                  return new FulfilledPromise(new Response(200, [], $contributionRecord));
+              }
+              return new FulfilledPromise(new Response(404));
+          }),
+        ]);
+        $sut = new Changelog($client, 'babel', $commits, '1.0.0-alpha3', '1.0.0-alpha4');
+
+        // Case duplicates and GitLab usernames from commit emails are merged
+        // into the contribution record's spelling. Different people are kept.
+        self::assertEquals([
+          'Andras_Szilagyi',
+          'claudiu.cristea',
+          'john.smith',
+          'johnsmith2',
+        ], $sut->getContributors());
+
+        // A change's contributors use the same merged spelling.
+        self::assertEquals([
+          'Andras_Szilagyi',
+          'claudiu.cristea',
+          'john.smith',
+        ], $sut->getChanges()[1]['contributors']);
+    }
+
+    public function testGitLabUsernameMergedWithinFallbackChange(): void
+    {
+        $commit = new \stdClass();
+        $commit->title = 'Issue #3000004 by scott_euser: Fallback issue';
+        $commit->message = '';
+        $commit->author_email = '37198-scotteuser@users.noreply.drupalcode.org';
+        $commit->committer_email = 'git@example.com';
+        $client = new Client([
+          'handler' => HandlerStack::create(static fn() => new FulfilledPromise(new Response(404))),
+        ]);
+        $sut = new Changelog($client, 'views_ajax_history', [$commit], '8.x-1.8', '8.x-1.9');
+
+        self::assertEquals(['scott_euser'], $sut->getContributors());
+        self::assertEquals(['scott_euser'], $sut->getChanges()[0]['contributors']);
     }
 
     public function testGetContributorsFallbackToCommitParsing(): void
