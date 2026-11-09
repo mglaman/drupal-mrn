@@ -201,6 +201,12 @@ class ChangelogTest extends TestCase
           'https://git.drupalcode.org/project/canvas/-/work_items/3555239',
           $byNid['3555239']['link']
         );
+
+        // Other issues mentioned in a title link to the project's work items.
+        self::assertEquals(
+          'https://git.drupalcode.org/project/canvas/-/work_items/3547913',
+          $sut->getIssueLink('3547913')
+        );
     }
 
     public function testGitLabIssuesFallBackToConventionalCommit(): void
