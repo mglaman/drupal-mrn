@@ -6,7 +6,7 @@
         "caseyamcl/guzzle_retry_middleware": "^2.13",
         "guzzlehttp/guzzle": "^7.4",
         "sentry/sentry": "^4.7",
-        "symfony/http-foundation": "^7.1"
+        "symfony/http-foundation": "^8.1"
     },
     "config": {
         "platform": {
@@ -35,6 +35,6 @@
     ],
     "require-dev": {
         "phpstan/phpstan": "^2.2",
-        "phpunit/phpunit": "^11.1"
+        "phpunit/phpunit": "^13.3"
     }
 }

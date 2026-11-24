@@ -283,7 +283,7 @@ class ChangelogTest extends TestCase
     public function testThrowsExceptionWhenNoCommits(): void
     {
         // The client is needed by Changelog constructor but won't be used when commits array is empty
-        $client = $this->createMock(ClientInterface::class);
+        $client = $this->createStub(ClientInterface::class);
         
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('No commits for the changelog to process.');
