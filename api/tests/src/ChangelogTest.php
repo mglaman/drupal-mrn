@@ -280,6 +280,50 @@ class ChangelogTest extends TestCase
         self::assertEquals('Task', $byNid['3591594']['type']);
     }
 
+    public function testConventionalCommitPrefixStrippedFromSummary(): void
+    {
+        $commit = static function (string $title): \stdClass {
+            $c = new \stdClass();
+            $c->title = $title;
+            $c->message = $title;
+            $c->author_email = 'noreply@example.com';
+            $c->committer_email = 'noreply@example.com';
+            return $c;
+        };
+        $commits = [
+          $commit('bug: #3613938 cleanURL() encodes spaces as %20'),
+          $commit('task: #3547913 Introduce automated tests'),
+          $commit('fix(Views UI)!: #3600001 Breaking fix'),
+          $commit('README: update install steps'),
+        ];
+
+        $mockHandler = new MockHandler([
+          new Response(200, [], '{"list":[{"nid":"2431121","field_project_has_issue_queue":false}]}'), // Project node
+          new Response(404), // contributors nid 3613938
+          new Response(404), // contributors nid 3547913
+          new Response(404), // contributors nid 3600001
+          new Response(404), // work item 3613938
+          new Response(404), // work item 3547913
+          new Response(404), // work item 3600001
+          new Response(200, [], '{"list":[]}'), // Change records (empty)
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create($mockHandler),
+        ]);
+        $sut = new Changelog($client, 'views_ajax_history', $commits, '8.x-1.8', '8.x-1.9');
+
+        $changes = $sut->getChanges();
+        self::assertEquals('#3613938 cleanURL() encodes spaces as %20', $changes[0]['summary']);
+        self::assertEquals('Bug', $changes[0]['type']);
+        self::assertEquals('#3547913 Introduce automated tests', $changes[1]['summary']);
+        self::assertEquals('Task', $changes[1]['type']);
+        self::assertEquals('#3600001 Breaking fix', $changes[2]['summary']);
+        self::assertEquals('Bug', $changes[2]['type']);
+        // Not a conventional commit type, so the title is kept as is.
+        self::assertEquals('README: update install steps', $changes[3]['summary']);
+        self::assertEquals('Misc', $changes[3]['type']);
+    }
+
     public function testThrowsExceptionWhenNoCommits(): void
     {
         // The client is needed by Changelog constructor but won't be used when commits array is empty

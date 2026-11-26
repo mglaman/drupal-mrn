@@ -18,6 +18,13 @@ final class Changelog
       5 => 'Plan',
     ];
 
+    /**
+     * Conventional-commit prefix, e.g. "fix: ", "feat(scope)!: " or "bug: ".
+     *
+     * Limited to known types, so titles such as "README: update" are kept.
+     */
+    private const CONVENTIONAL_COMMIT_PREFIX = '/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci|bug|task)(?:\([^)]+\))?!?: +/i';
+
     private int $issueCount = 0;
 
     private array $changes = [];
@@ -131,7 +138,11 @@ final class Changelog
               'nid' => $nid,
               'link' => $link,
               'type' => $issueCategoryLabel,
-              'summary' => preg_replace('/^(Patch |- |Issue ){0,3}/', '', $commit->title),
+              'summary' => preg_replace(
+                [self::CONVENTIONAL_COMMIT_PREFIX, '/^(Patch |- |Issue ){0,3}/'],
+                '',
+                $commit->title
+              ),
               'contributors' => $commitContributors,
             ];
         }
@@ -225,11 +236,11 @@ final class Changelog
      */
     private static function categoryFromConventionalCommit(string $title): ?string
     {
-        if (preg_match('/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci)(?:\([^)]+\))?!?: /i', $title, $matches) === 1) {
+        if (preg_match(self::CONVENTIONAL_COMMIT_PREFIX, $title, $matches) === 1) {
             return match (strtolower($matches[1])) {
-                'fix' => self::CATEGORY_MAP[1],
+                'fix', 'bug' => self::CATEGORY_MAP[1],
                 'feat' => self::CATEGORY_MAP[3],
-                'chore' => self::CATEGORY_MAP[2],
+                'chore', 'task' => self::CATEGORY_MAP[2],
                 default => null,
             };
         }
