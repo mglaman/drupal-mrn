@@ -53,8 +53,10 @@ final class HtmlFormatOutput implements FormatOutputInterface
             $buffer->writeln('<ul>');
             foreach ($changeCategoryItems as $change) {
               // Commit titles are attacker-controlled; escape before linkifying.
+              // Skip "#" preceded by "&" or a word character, so numeric
+              // entities from the escaping (e.g. &#039;) are not linked.
               $summary = preg_replace(
-                '/#(\d+)/S',
+                '/(?<![&\w])#(\d+)/S',
                 sprintf('<a href="%s">#$1</a>', htmlspecialchars($change['link'], ENT_QUOTES)),
                 htmlspecialchars($change['summary'], ENT_QUOTES)
               );

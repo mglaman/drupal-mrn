@@ -81,6 +81,27 @@ HTML;
         );
     }
 
+    public function testApostropheIsNotLinkedAsIssue(): void
+    {
+        $html = $this->formatCommits([
+          (object) [
+            'id' => 'abc123',
+            'title' => "Issue #3294296 by mglaman: Error when filter's value contains %",
+            'message' => '',
+            'author_email' => 'git@example.com',
+            'committer_email' => 'git@example.com',
+          ],
+        ]);
+
+        // The escaped apostrophe (&#039;) must not be linked as issue #039.
+        self::assertStringContainsString('filter&#039;s value contains %', $html);
+        self::assertStringNotContainsString('>#039</a>', $html);
+        self::assertStringContainsString(
+          '<a href="https://www.drupal.org/i/3294296">#3294296</a>',
+          $html
+        );
+    }
+
     public function testEscapesMarkupInContributorNames(): void
     {
         $html = $this->formatCommits([
