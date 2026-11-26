@@ -62,7 +62,9 @@
       } else {
         error = ''
         projectData = await res.json()
-        options = [...projectData.branches, ...projectData.tags].map(obj => obj.name).sort();
+        // Keep the API order: branches first, then tags newest first. Sorting
+        // the combined list mixed them alphabetically.
+        options = [...projectData.branches, ...projectData.tags].map(obj => obj.name);
       }
     } catch (e) {
       console.error(e)
