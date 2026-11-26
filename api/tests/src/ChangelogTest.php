@@ -266,9 +266,9 @@ class ChangelogTest extends TestCase
         self::assertEquals('Task', $byNid['3588438']['type']);
         self::assertEquals('Bug', $byNid['3576410']['type']);
 
-        // Falls back to the canonical project-scoped issue URL.
+        // Falls back to the project's work item URL.
         self::assertEquals(
-          'https://www.drupal.org/project/canvas/issues/3555239',
+          'https://git.drupalcode.org/project/canvas/-/work_items/3555239',
           $byNid['3555239']['link']
         );
     }
