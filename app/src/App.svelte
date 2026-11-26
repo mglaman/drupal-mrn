@@ -21,15 +21,22 @@
   let copied = false;
   let viewMode = 'preview'; // 'source' or 'preview'
   let versionWarning = false;
+  // Set once the user types a previous release, so changing the version
+  // doesn't replace their choice. Clearing the field turns detection back on.
+  let fromChosen = false;
 
   function findPreviousVersion(version) {
     return findPreviousVersionInTags(version, projectData.tags);
   }
 
   function handleVersionChange() {
-    if (to) {
+    if (to && !fromChosen) {
       from = findPreviousVersion(to);
     }
+  }
+
+  function handleFromInput() {
+    fromChosen = from !== '';
   }
 
   function setFormat(newFormat) {
@@ -54,6 +61,7 @@
     // Clear from/to values immediately when project changes
     from = '';
     to = '';
+    fromChosen = false;
     try {
       const res = await fetch(`${apiUrl}/project?${new URLSearchParams({project})}`)
       if (!res.ok) {
@@ -176,6 +184,7 @@
                     <div class="relative border border-gray-300 rounded-md rounded-l-none px-3 py-2 focus-within:z-10 focus-within:ring-1 focus-within:ring-drupal-navy-blue focus-within:border-drupal-navy-blue">
                         <label class="block text-xs font-medium text-gray-900" for="ref1">Previous release</label>
                         <input id="ref1" list="ref1options" type="text" bind:value={from} placeholder="1.0.0"
+                               on:input={handleFromInput}
                                class="block w-full border-0 p-0 text-gray-900 placeholder-gray-400 focus:ring-0 sm:text-sm lg:text-lg"
                                required />
                         <datalist id="ref1options">

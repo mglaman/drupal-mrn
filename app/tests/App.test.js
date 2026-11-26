@@ -97,6 +97,42 @@ describe('App', () => {
     expect(screen.getByLabelText('Previous release')).toHaveValue('8.x-1.16')
   })
 
+  it('keeps a previous release the user chose when the version changes', async () => {
+    const fetchMock = mockFetch()
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    const fromInput = screen.getByLabelText('Previous release')
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+    await fireEvent.input(fromInput, { target: { value: '8.x-1.15' } })
+    // Detection would pick 2.0.0-beta1 here.
+    await fireEvent.input(versionInput, { target: { value: '2.0.0' } })
+    await fireEvent.change(versionInput)
+
+    expect(fromInput).toHaveValue('8.x-1.15')
+  })
+
+  it('detects the previous release again after the user clears it', async () => {
+    const fetchMock = mockFetch()
+    vi.stubGlobal('fetch', fetchMock)
+    render(App)
+
+    await loadProject(fetchMock)
+
+    const versionInput = screen.getByLabelText('Version')
+    const fromInput = screen.getByLabelText('Previous release')
+    await fireEvent.input(fromInput, { target: { value: '8.x-1.15' } })
+    await fireEvent.input(fromInput, { target: { value: '' } })
+    await fireEvent.input(versionInput, { target: { value: '8.x-1.17' } })
+    await fireEvent.change(versionInput)
+
+    expect(fromInput).toHaveValue('8.x-1.16')
+  })
+
   it('warns when the previous release is newer than the version', async () => {
     const fetchMock = mockFetch()
     vi.stubGlobal('fetch', fetchMock)
