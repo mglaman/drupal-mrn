@@ -62,7 +62,7 @@ describe('App', () => {
     ).toBeDisabled()
   })
 
-  it('loads branches and tags into the version datalists on project blur', async () => {
+  it('lists branches, then tags, in the order the API returns them', async () => {
     const fetchMock = mockFetch()
     vi.stubGlobal('fetch', fetchMock)
     const { container } = render(App)
@@ -72,13 +72,13 @@ describe('App', () => {
     await waitFor(() => {
       const options = [...container.querySelectorAll('#ref2options option')]
       expect(options.map((o) => o.value)).toEqual([
-        '2.0.0',
-        '2.0.0-beta1',
+        '8.x-1.x',
         '2.0.x',
         '8.x-1.15',
         '8.x-1.16',
         '8.x-1.17',
-        '8.x-1.x',
+        '2.0.0-beta1',
+        '2.0.0',
       ])
     })
   })
