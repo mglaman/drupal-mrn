@@ -111,9 +111,11 @@ final class Changelog
             $issueCategoryLabel = null;
             $link = $nid !== null ? "https://www.drupal.org/i/$nid" : '';
             if ($nid !== null && $hasGitLabIssues) {
-                // Work item IIDs are not globally unique, so the canonical
-                // project-scoped issue URL replaces the /i/ link.
-                $link = "https://www.drupal.org/project/$this->project/issues/$nid";
+                // Work item IIDs are not globally unique, so link to the
+                // project's work item. This is the fallback when the lookup
+                // fails: the drupal.org/project/{project}/issues/{iid} URL only
+                // redirects.
+                $link = "https://git.drupalcode.org/project/$this->project/-/work_items/$nid";
                 if (isset($gitlabIssues[$nid])) {
                     $issue = $gitlabIssues[$nid];
                     $issueCategoryLabel = self::categoryFromGitLabLabels($issue->labels ?? []);
