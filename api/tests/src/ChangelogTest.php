@@ -8,7 +8,9 @@ use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Promise\FulfilledPromise;
 use Nyholm\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\TestCase;
@@ -162,6 +164,36 @@ class ChangelogTest extends TestCase
             'mglaman',
             'mrinalini9',
         ], $sut->getContributors());
+    }
+
+    public function testIssueWithSeveralCommitsCountsOnce(): void
+    {
+        $commit = static function (string $title): \stdClass {
+            $c = new \stdClass();
+            $c->title = $title;
+            $c->message = '';
+            $c->author_email = 'git@example.com';
+            $c->committer_email = 'git@example.com';
+            return $c;
+        };
+        $commits = [
+          $commit('Issue #3294296 by mglaman: Error when filter value contains %'),
+          $commit('Issue #3294296 by mglaman: Fix coding standards'),
+        ];
+        $issue = (string) file_get_contents(__DIR__.'/../fixtures/3294296.json');
+        $client = new Client([
+          'handler' => HandlerStack::create(static function (RequestInterface $request) use ($issue) {
+              if (str_contains((string) $request->getUri(), 'api-d7/node/3294296.json')) {
+                  return new FulfilledPromise(new Response(200, [], $issue));
+              }
+              return new FulfilledPromise(new Response(404));
+          }),
+        ]);
+        $sut = new Changelog($client, 'views_remote_data', $commits, '1.0.1', '1.0.2');
+
+        self::assertEquals(1, $sut->getIssueCount());
+        // Each commit is still listed.
+        self::assertCount(2, $sut->getChanges());
     }
 
     public function testGitLabIssuesCategorization(): void
