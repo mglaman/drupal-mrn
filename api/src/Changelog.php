@@ -25,7 +25,14 @@ final class Changelog
      */
     private const CONVENTIONAL_COMMIT_PREFIX = '/^(fix|feat|chore|docs|style|refactor|perf|test|build|ci|bug|task)(?:\([^)]+\))?!?: +/i';
 
-    private int $issueCount = 0;
+    /**
+     * Issues found by the issue lookup, keyed by issue number.
+     *
+     * Keyed so an issue with several commits counts once.
+     *
+     * @var array<string, true>
+     */
+    private array $resolvedIssues = [];
 
     private array $changes = [];
 
@@ -118,13 +125,13 @@ final class Changelog
                     $issue = $gitlabIssues[$nid];
                     $issueCategoryLabel = self::categoryFromGitLabLabels($issue->labels ?? []);
                     $link = $issue->web_url ?? $link;
-                    $this->issueCount++;
+                    $this->resolvedIssues[$nid] = true;
                 }
             } elseif ($nid !== null && isset($issueDetails[$nid])) {
                 $issue = $issueDetails[$nid];
                 $issueCategory = $issue->field_issue_category ?? 0;
                 $issueCategoryLabel = self::CATEGORY_MAP[$issueCategory] ?? null;
-                $this->issueCount++;
+                $this->resolvedIssues[$nid] = true;
             }
 
             // Fall back to the conventional-commit prefix when no category was
@@ -176,7 +183,7 @@ final class Changelog
      */
     public function getIssueCount(): int
     {
-        return $this->issueCount;
+        return count($this->resolvedIssues);
     }
 
     /**
