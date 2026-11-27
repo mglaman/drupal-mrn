@@ -37,9 +37,11 @@ final class Changelog
             throw new \RuntimeException('No commits for the changelog to process.');
         }
         $emailUsernameRegex = '/(?<=[0-9]-)([a-zA-Z0-9-_\.]{2,255})(?=@users\.noreply\.drupalcode\.org)/';
-        // Names from contribution records, and names parsed from commits.
+        // Names from contribution records, Drupal.org usernames parsed from
+        // commit text, and GitLab usernames from noreply emails.
         $creditedContributors = [];
-        $fallbackContributors = [];
+        $commitTextContributors = [];
+        $emailContributors = [];
 
         // Get the project node from its machine name.
         $drupalOrg = new DrupalOrg($this->client);
@@ -94,14 +96,16 @@ final class Changelog
             // Fallback to commit parsing if JSON:API didn't return contributors
             if (empty($commitContributors)) {
                 $commitContributors = CommitParser::extractUsernames($commit);
+                $commitTextContributors[] = $commitContributors;
                 // Extract usernames from commit author and committer emails if available
                 if (preg_match($emailUsernameRegex, $commit->author_email, $authorMatches)) {
                     $commitContributors[] = $authorMatches[0];
+                    $emailContributors[] = $authorMatches[0];
                 }
                 if (preg_match($emailUsernameRegex, $commit->committer_email, $committerMatches)) {
                     $commitContributors[] = $committerMatches[0];
+                    $emailContributors[] = $committerMatches[0];
                 }
-                $fallbackContributors[] = $commitContributors;
             }
 
             $issueCategoryLabel = null;
@@ -140,7 +144,8 @@ final class Changelog
         // every name to one spelling before listing contributors.
         $aliases = self::contributorAliases(
           array_merge(...$creditedContributors),
-          array_merge(...$fallbackContributors)
+          array_merge(...$commitTextContributors),
+          $emailContributors
         );
         $this->contributors = array_values(array_unique($aliases));
         sort($this->contributors);
@@ -220,34 +225,40 @@ final class Changelog
      * Map each contributor name to the spelling to list them under.
      *
      * Drupal.org usernames are case-insensitive, so names that differ only by
-     * case are one person. Names parsed from commits can also be GitLab
-     * usernames, which drop or change punctuation (e.g. "claudiucristea" for
-     * "claudiu.cristea"), so those also match ignoring "_", ".", "-" and
-     * spaces. Contribution record names are preferred over commit names.
+     * case are one person. Drupal.org usernames can differ only by
+     * punctuation ("john smith" and "john.smith" are different people), so
+     * only GitLab usernames from noreply emails, which drop or change
+     * punctuation (e.g. "claudiucristea" for "claudiu.cristea"), also match
+     * ignoring "_", ".", "-" and spaces. Earlier sources win: contribution
+     * records, then commit text, then emails.
      *
      * @param string[] $creditedNames
      *   Names from contribution records.
-     * @param string[] $fallbackNames
-     *   Names parsed from commit messages and emails.
+     * @param string[] $commitTextNames
+     *   Drupal.org usernames from "by" text and trailers in commit messages.
+     * @param string[] $emailNames
+     *   GitLab usernames from commit author and committer emails.
      *
      * @return array<string, string>
      *   The spelling to use, keyed by each name.
      */
-    private static function contributorAliases(array $creditedNames, array $fallbackNames): array
+    private static function contributorAliases(array $creditedNames, array $commitTextNames, array $emailNames): array
     {
         $aliases = [];
         $byLowercase = [];
         $byNormalized = [];
-        foreach ($creditedNames as $name) {
+        foreach ([...$creditedNames, ...$commitTextNames] as $name) {
             $lowercase = mb_strtolower($name);
             $byLowercase[$lowercase] ??= $name;
             $byNormalized[self::normalizeContributorName($name)] ??= $byLowercase[$lowercase];
-            $aliases[$name] = $byLowercase[$lowercase];
+            $aliases[$name] ??= $byLowercase[$lowercase];
         }
-        foreach ($fallbackNames as $name) {
+        foreach ($emailNames as $name) {
+            $lowercase = mb_strtolower($name);
             $normalized = self::normalizeContributorName($name);
-            $byNormalized[$normalized] ??= $name;
-            $aliases[$name] = $byNormalized[$normalized];
+            $byLowercase[$lowercase] ??= $byNormalized[$normalized] ?? $name;
+            $byNormalized[$normalized] ??= $byLowercase[$lowercase];
+            $aliases[$name] ??= $byLowercase[$lowercase];
         }
         return $aliases;
     }

@@ -212,6 +212,42 @@ class ChangelogTest extends TestCase
         self::assertEquals(['scott_euser'], $sut->getChanges()[0]['contributors']);
     }
 
+    public function testCommitTextSpellingPreferredOverEmailUsername(): void
+    {
+        // Commit 1 only has the author email (scotteuser); commit 2 says
+        // "by scott_euser". The Drupal.org spelling wins.
+        self::assertEquals(
+          ['scott_euser' => 'scott_euser', 'scotteuser' => 'scott_euser'],
+          self::contributorAliases([], ['scott_euser'], ['scotteuser'])
+        );
+    }
+
+    public function testDrupalOrgNamesDifferingByPunctuationAreKept(): void
+    {
+        // Two different credited users, and a fallback commit that names one
+        // of them.
+        self::assertEquals(
+          ['john.smith' => 'john.smith', 'johnsmith' => 'johnsmith'],
+          self::contributorAliases(['john.smith', 'johnsmith'], ['johnsmith'], [])
+        );
+        // Names from commit text only match case-insensitively.
+        self::assertEquals(
+          ['john.smith' => 'john.smith', 'John Smith' => 'John Smith'],
+          self::contributorAliases(['john.smith'], ['John Smith'], [])
+        );
+        // An email username matching a credited name exactly keeps it.
+        self::assertEquals(
+          ['john.smith' => 'john.smith', 'johnsmith' => 'johnsmith'],
+          self::contributorAliases(['john.smith', 'johnsmith'], [], ['johnsmith'])
+        );
+    }
+
+    private static function contributorAliases(array $creditedNames, array $commitTextNames, array $emailNames): array
+    {
+        return (new \ReflectionMethod(Changelog::class, 'contributorAliases'))
+          ->invoke(null, $creditedNames, $commitTextNames, $emailNames);
+    }
+
     public function testGetContributorsFallbackToCommitParsing(): void
     {
         $mockHandler = new MockHandler([
