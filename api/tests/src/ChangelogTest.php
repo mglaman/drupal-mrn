@@ -143,6 +143,111 @@ class ChangelogTest extends TestCase
         ], $changes[0]['contributors']);
     }
 
+    public function testDuplicateContributorsAreMerged(): void
+    {
+        $commit = static function (string $title, string $authorEmail = 'git@example.com'): \stdClass {
+            $c = new \stdClass();
+            $c->title = $title;
+            $c->message = '';
+            $c->author_email = $authorEmail;
+            $c->committer_email = 'git@example.com';
+            return $c;
+        };
+        $commits = [
+          // Credited via contribution record.
+          $commit('Issue #3000001: Credited issue'),
+          // No contribution record: names come from the commit instead.
+          $commit('Issue #3000002 by andras_szilagyi, john.smith: Fallback issue', '123-claudiucristea@users.noreply.drupalcode.org'),
+          $commit('Issue #3000003 by johnsmith2: Another fallback issue'),
+        ];
+
+        $contributionRecord = json_encode([
+          'data' => [['type' => 'node--contribution_record', 'id' => 'record-1']],
+          'included' => [
+            ['type' => 'user--user', 'id' => 'user-1', 'attributes' => ['display_name' => 'claudiu.cristea']],
+            ['type' => 'user--user', 'id' => 'user-2', 'attributes' => ['display_name' => 'Andras_Szilagyi']],
+          ],
+        ]);
+        $client = new Client([
+          'handler' => HandlerStack::create(static function (RequestInterface $request) use ($contributionRecord) {
+              $url = urldecode((string) $request->getUri());
+              if (str_contains($url, 'contribution_record') && str_contains($url, 'node/3000001')) {
+                  return new FulfilledPromise(new Response(200, [], $contributionRecord));
+              }
+              return new FulfilledPromise(new Response(404));
+          }),
+        ]);
+        $sut = new Changelog($client, 'babel', $commits, '1.0.0-alpha3', '1.0.0-alpha4');
+
+        // Case duplicates and GitLab usernames from commit emails are merged
+        // into the contribution record's spelling. Different people are kept.
+        self::assertEquals([
+          'Andras_Szilagyi',
+          'claudiu.cristea',
+          'john.smith',
+          'johnsmith2',
+        ], $sut->getContributors());
+
+        // A change's contributors use the same merged spelling.
+        self::assertEquals([
+          'Andras_Szilagyi',
+          'claudiu.cristea',
+          'john.smith',
+        ], $sut->getChanges()[1]['contributors']);
+    }
+
+    public function testGitLabUsernameMergedWithinFallbackChange(): void
+    {
+        $commit = new \stdClass();
+        $commit->title = 'Issue #3000004 by scott_euser: Fallback issue';
+        $commit->message = '';
+        $commit->author_email = '37198-scotteuser@users.noreply.drupalcode.org';
+        $commit->committer_email = 'git@example.com';
+        $client = new Client([
+          'handler' => HandlerStack::create(static fn() => new FulfilledPromise(new Response(404))),
+        ]);
+        $sut = new Changelog($client, 'views_ajax_history', [$commit], '8.x-1.8', '8.x-1.9');
+
+        self::assertEquals(['scott_euser'], $sut->getContributors());
+        self::assertEquals(['scott_euser'], $sut->getChanges()[0]['contributors']);
+    }
+
+    public function testCommitTextSpellingPreferredOverEmailUsername(): void
+    {
+        // Commit 1 only has the author email (scotteuser); commit 2 says
+        // "by scott_euser". The Drupal.org spelling wins.
+        self::assertEquals(
+          ['scott_euser' => 'scott_euser', 'scotteuser' => 'scott_euser'],
+          self::contributorAliases([], ['scott_euser'], ['scotteuser'])
+        );
+    }
+
+    public function testDrupalOrgNamesDifferingByPunctuationAreKept(): void
+    {
+        // Two different credited users, and a fallback commit that names one
+        // of them.
+        self::assertEquals(
+          ['john.smith' => 'john.smith', 'johnsmith' => 'johnsmith'],
+          self::contributorAliases(['john.smith', 'johnsmith'], ['johnsmith'], [])
+        );
+        // Names from commit text only match case-insensitively.
+        self::assertEquals(
+          ['john.smith' => 'john.smith', 'John Smith' => 'John Smith'],
+          self::contributorAliases(['john.smith'], ['John Smith'], [])
+        );
+        // An email username matching a credited name exactly keeps it.
+        self::assertEquals(
+          ['john.smith' => 'john.smith', 'johnsmith' => 'johnsmith'],
+          self::contributorAliases(['john.smith', 'johnsmith'], [], ['johnsmith'])
+        );
+    }
+
+    private static function contributorAliases(array $creditedNames, array $commitTextNames, array $emailNames): array
+    {
+        return (new \ReflectionMethod(Changelog::class, 'contributorAliases'))
+          ->invoke(null, $creditedNames, $commitTextNames, $emailNames);
+    }
+
     public function testGetContributorsFallbackToCommitParsing(): void
     {
         $mockHandler = new MockHandler([
