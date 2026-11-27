@@ -51,7 +51,17 @@ final class MarkdownFormatOutput implements FormatOutputInterface
             $buffer->writeln(sprintf('#### %s', $changeCategory));
             $buffer->writeln('');
             foreach ($changeCategoryItems as $change) {
-                $summary = preg_replace('/#(\d+)/S', sprintf('[#$1](%s)', $change['link']), $change['summary']);
+                // The commit's own issue uses its change link, other issue
+                // numbers link to their own issue.
+                $summary = preg_replace_callback(
+                  '/#(\d+)/S',
+                  static fn(array $matches): string => sprintf(
+                    '[#%s](%s)',
+                    $matches[1],
+                    $matches[1] === $change['nid'] ? $change['link'] : $changelog->getIssueLink($matches[1])
+                  ),
+                  $change['summary']
+                );
                 $buffer->writeln(sprintf('* %s', $summary));
             }
             $buffer->writeln('');

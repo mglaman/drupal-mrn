@@ -67,4 +67,32 @@ MARKDOWN;
         );
     }
 
+    public function testOtherIssueNumbersLinkToTheirOwnIssue(): void
+    {
+        $client = new Client([
+          'handler' => HandlerStack::create(function () {
+              return new \GuzzleHttp\Promise\FulfilledPromise(new Response(404));
+          }),
+        ]);
+        $changelog = new Changelog($client, 'test_project', [
+          (object) [
+            'id' => 'abc123',
+            'title' => 'Issue #3594117 by mglaman: Expand test coverage (follow-up to #3547913)',
+            'message' => '',
+            'author_email' => 'git@example.com',
+            'committer_email' => 'git@example.com',
+          ],
+        ], '1.0.0', '1.1.0');
+        $markdown = (new MarkdownFormatOutput())->format($changelog);
+
+        self::assertStringContainsString(
+          '[#3594117](https://www.drupal.org/i/3594117)',
+          $markdown
+        );
+        self::assertStringContainsString(
+          '(follow-up to [#3547913](https://www.drupal.org/i/3547913))',
+          $markdown
+        );
+    }
+
 }
